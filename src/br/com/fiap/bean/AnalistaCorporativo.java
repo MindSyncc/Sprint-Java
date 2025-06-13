@@ -11,8 +11,8 @@ public class AnalistaCorporativo extends Funcionario{
 
     }
 
-    public AnalistaCorporativo(int idFuncionario, String nome, LocalDate dataDeNascimento, int cpf, float salario, LocalDate dataDeInicio, String turno, String funcao, String areaDeAtuacao, String departamento) {
-        super(idFuncionario, nome, dataDeNascimento, cpf, salario, dataDeInicio, turno, funcao);
+    public AnalistaCorporativo(int idFuncionario, String nome, String senha, LocalDate dataDeNascimento, String cpf, float salario, LocalDate dataDeInicio, String turno, String funcao, String areaDeAtuacao, String departamento) {
+        super(idFuncionario, nome, senha, dataDeNascimento, cpf, salario, dataDeInicio, turno, funcao);
         this.areaDeAtuacao = areaDeAtuacao;
         this.departamento = departamento;
     }

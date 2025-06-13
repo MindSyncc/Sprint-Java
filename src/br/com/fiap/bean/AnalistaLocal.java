@@ -9,8 +9,8 @@ public class AnalistaLocal extends Funcionario {
 
     }
 
-    public AnalistaLocal(int idFuncionario, String nome, LocalDate dataDeNascimento, int cpf, float salario, LocalDate dataDeInicio, String turno, String funcao) {
-        super(idFuncionario, nome, dataDeNascimento, cpf, salario, dataDeInicio, turno, funcao);
+    public AnalistaLocal(int idFuncionario, String nome, String senha, LocalDate dataDeNascimento, String cpf, float salario, LocalDate dataDeInicio, String turno, String funcao) {
+        super(idFuncionario, nome, senha, dataDeNascimento, cpf, salario, dataDeInicio, turno, funcao);
     }
 
     public void exibirInformacoesDoFuncionario() {

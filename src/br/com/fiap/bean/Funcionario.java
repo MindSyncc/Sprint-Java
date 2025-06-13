@@ -6,20 +6,24 @@ import javax.swing.*;
 public class Funcionario {
     private int idFuncionario;
     private String nome;
+    private String senha;
     private LocalDate dataDeNascimento;
-    private int cpf;
+    private String cpf;
     private float salario;
     private LocalDate dataDeInicio;
     private String turno;
     private String funcao;
 
+    // construtores
+
     public Funcionario() {
 
     }
 
-    public Funcionario(int idFuncionario, String nome, LocalDate dataDeNascimento, int cpf, float salario, LocalDate dataDeInicio, String turno, String funcao) {
+    public Funcionario(int idFuncionario, String nome, String senha, LocalDate dataDeNascimento, String cpf, float salario, LocalDate dataDeInicio, String turno, String funcao) {
         this.idFuncionario = idFuncionario;
         this.nome = nome;
+        this.senha = senha;
         this.dataDeNascimento = dataDeNascimento;
         this.cpf = cpf;
         this.salario = salario;
@@ -44,6 +48,14 @@ public class Funcionario {
         this.nome = nome;
     }
 
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
     public LocalDate getDataDeNascimento() {
         return dataDeNascimento;
     }
@@ -52,12 +64,12 @@ public class Funcionario {
         this.dataDeNascimento = dataDeNascimento;
     }
 
-    public int getCpf() {
+    public String getCpf() {
         return cpf;
     }
 
-    // Aplicar a regra de negócio de 11 digitos
-    public void setCpf(int cpf) {
+    // aplicar a regra de negocio de 11 digitos
+    public void setCpf(String cpf) {
         this.cpf = cpf;
     }
 
