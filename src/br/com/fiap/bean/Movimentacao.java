@@ -1,5 +1,6 @@
 package br.com.fiap.bean;
 
+import javax.swing.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -103,5 +104,40 @@ public class Movimentacao {
 
     public void setFuncionario(Funcionario funcionario) {
         this.funcionario = funcionario;
+    }
+
+    // metodos da classe
+
+    /**
+     *
+     * Classe para exibir as informacoes do insumo em um string formatada
+     *
+     */
+    public void exibirInformacoesDaMovimentacao() {
+        String info = String.format(
+                """
+                🔄 Informações da Movimentação 🔄
+                📦 ID Movimentação: %d
+                📝 Motivo: %s
+                📅 Data: %s
+                ⏰ Entrada: %s
+                ⏳ Saída: %s
+                📂 Tipo: %s
+                🔢 Quantidade: %d
+                📍 Prateleira: %s
+                👤 Feito pelo funcionário: %s
+                """,
+                idMovimentacao,
+                motivo,
+                data,
+                dataHoraEntrada,
+                dataHoraSaida,
+                tipoMovimentacao,
+                quantidade,
+                prateleira,
+                funcionario
+        );
+
+        JOptionPane.showMessageDialog(null, info, "Detalhes da Movimentação", JOptionPane.INFORMATION_MESSAGE);
     }
 }

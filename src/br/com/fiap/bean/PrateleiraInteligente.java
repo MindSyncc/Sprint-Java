@@ -1,5 +1,7 @@
 package br.com.fiap.bean;
 
+import javax.swing.*;
+
 public class PrateleiraInteligente {
     private int idPrateleira;
     private String status;
@@ -41,4 +43,21 @@ public class PrateleiraInteligente {
     public void setResponsavelPelaVerificacao(AnalistaLocal responsavelPelaVerificacao) {
         this.responsavelPelaVerificacao = responsavelPelaVerificacao;
     }
+
+    public void exibirInformacoesDaPrateleira() {
+        String info = String.format(
+                """
+                🗄️ Informações da Prateleira Inteligente 🗄️
+                🆔 ID da Prateleira: %d
+                📶 Status: %s
+                👨‍💼 Responsável pela Verificação: %s
+                """,
+                idPrateleira,
+                status,
+                responsavelPelaVerificacao
+        );
+
+        JOptionPane.showMessageDialog(null, info, "Detalhes da Prateleira", JOptionPane.INFORMATION_MESSAGE);
+    }
+
 }

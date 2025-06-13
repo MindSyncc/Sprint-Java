@@ -1,6 +1,8 @@
 package br.com.fiap.bean;
 
+import javax.swing.*;
 import java.time.LocalDate;
+
 
 public class Insumo {
     private int idInsumo;
@@ -82,5 +84,34 @@ public class Insumo {
 
     public void setQRCode(QRCode QRCode) {
         this.QRCode = QRCode;
+    }
+
+    // metodos da classe
+
+    /**
+     * Classe para exibir as informacoes do insumo em um string formatada
+     */
+    public void exibirInformacoesDoInsumo() {
+        String info = String.format(
+                """
+                🧪 Informações do Insumo 🧪
+                🆔 ID Insumo: %d
+                🧾 Lote: %s
+                🗓️ Validade: %s
+                🧷 Nome: %s
+                📏 Unidade de Medida: %s
+                🗂️ Categoria: %s
+                📱 QR Code: %s
+                """,
+                idInsumo,
+                lote,
+                dataValidade,
+                nome,
+                unidadeMedida,
+                categoriaInsumo,
+                QRCode
+        );
+
+        JOptionPane.showMessageDialog(null, info, "Detalhes do Insumo", JOptionPane.INFORMATION_MESSAGE);
     }
 }

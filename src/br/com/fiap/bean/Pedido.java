@@ -1,5 +1,6 @@
 package br.com.fiap.bean;
 
+import javax.swing.*;
 import java.time.LocalDate;
 
 public class Pedido {
@@ -73,4 +74,27 @@ public class Pedido {
     public void setAnalistaLocal(AnalistaLocal analistaLocal) {
         this.analistaLocal = analistaLocal;
     }
+
+    public void exibirInformacoesDoPedido() {
+        String info = String.format(
+                """
+                📦 Informações do Pedido 📦
+                🆔 ID do Pedido: %d
+                📋 Nome do Item: %s
+                🔢 Quantidade: %d
+                📅 Data do Pedido: %s
+                📌 Status: %s
+                👨‍💼 Analista Responsável: %s
+                """,
+                idDoPedido,
+                nomeItem,
+                qtdItem,
+                dataPedido,
+                status,
+                analistaLocal
+        );
+
+        JOptionPane.showMessageDialog(null, info, "Detalhes do Pedido", JOptionPane.INFORMATION_MESSAGE);
+    }
+
 }
