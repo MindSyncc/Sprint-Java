@@ -19,6 +19,30 @@ public class Almoxarife extends Funcionario {
         this.qtdInsumosReabastecidos = qtdInsumosReabastecidos;
     }
 
+    public int getQtdOperacoesDia() {
+        return qtdOperacoesDia;
+    }
+
+    public void setQtdOperacoesDia(int qtdOperacoesDia) {
+        this.qtdOperacoesDia = qtdOperacoesDia;
+    }
+
+    public LocalDate getDataUltimoReabastecimento() {
+        return dataUltimoReabastecimento;
+    }
+
+    public void setDataUltimoReabastecimento(LocalDate dataUltimoReabastecimento) {
+        this.dataUltimoReabastecimento = dataUltimoReabastecimento;
+    }
+
+    public int getQtdInsumosReabastecidos() {
+        return qtdInsumosReabastecidos;
+    }
+
+    public void setQtdInsumosReabastecidos(int qtdInsumosReabastecidos) {
+        this.qtdInsumosReabastecidos = qtdInsumosReabastecidos;
+    }
+
     // Vê se da para usar super.exiInformacoesDoFuncionario
     public void exibirInformacoesDoFuncionario() {
         String dadosFuncionario = String.format("ID do Funcionário: %d%n" +
