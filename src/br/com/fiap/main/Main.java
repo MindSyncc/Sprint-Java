@@ -130,7 +130,6 @@ public class Main {
                                         case 6: // Sair do sistema
                                             JOptionPane.showMessageDialog(null, "Até a próxima!");
                                             System.exit(0);
-                                            break;
                                         default:
                                             JOptionPane.showMessageDialog(null, "Opção inválida");
                                     }
@@ -160,7 +159,6 @@ public class Main {
                                         case 4: // Sair do sistema
                                             JOptionPane.showMessageDialog(null, "Até a próxima!");
                                             System.exit(0);
-                                            break;
 
                                         default: // Sair do Sistema
                                             JOptionPane.showMessageDialog(null, "Opção inválida");
