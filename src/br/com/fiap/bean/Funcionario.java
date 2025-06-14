@@ -54,10 +54,10 @@ public class Funcionario {
 
     public void setSenha(String senha) {
         try {
-            if (cpf.length() == 6) {
+            if (senha.length() >= 5) {
                 this.senha = senha;
             } else {
-                throw new Exception("CPF Inválido. O CPF precisa ter 11 digitos");
+                throw new Exception("A senha precisa ter pelo menos 5 digitos");
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.WARNING_MESSAGE);

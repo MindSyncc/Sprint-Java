@@ -33,16 +33,17 @@ public class AnalistaLocal extends Funcionario {
     }
 
     public Pedido realizarPedidoDeInsumo() {
-        Pedido pedido;
-        String auxiliar;
-
         JOptionPane.showMessageDialog(null, "Para ordenar um novo pedido é necessário que preencha algumas informações relevantes",
                 "PREENCHIMENTO DE DADOS", JOptionPane.WARNING_MESSAGE);
 
+        // Informações do Pedido
+        int idPedido = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID do pedido: "));
+        String nomeItem = JOptionPane.showInputDialog("Digite o nome do item que será pedido: ");
+        int quantidadeItem = Integer.parseInt(JOptionPane.showInputDialog("Digite a quantidade que será pedida: "));
+        LocalDate dataDoPedido = LocalDate.now();
+        String statusPedido = "Pendente";
 
-
-
-        return new Pedido();
+        return new Pedido(idPedido,quantidadeItem, nomeItem, dataDoPedido, statusPedido, getNome());
     }
 
     public void verificarMovimentacoes() {

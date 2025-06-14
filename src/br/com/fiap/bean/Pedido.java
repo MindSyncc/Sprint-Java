@@ -9,20 +9,20 @@ public class Pedido {
     private String nomeItem;
     private LocalDate dataPedido;
     private String status;
-    private AnalistaLocal analistaLocal;
+    private String analistaResponsavelPeloPedido;
 
     // construtores
 
     public Pedido() {
     }
 
-    public Pedido(int idDoPedido, int qtdItem, String nomeItem, LocalDate dataPedido, String status, AnalistaLocal analistaLocal) {
+    public Pedido(int idDoPedido, int qtdItem, String nomeItem, LocalDate dataPedido, String status, String analistaResponsavelPeloPedido) {
         this.idDoPedido = idDoPedido;
         this.qtdItem = qtdItem;
         this.nomeItem = nomeItem;
         this.dataPedido = dataPedido;
         this.status = status;
-        this.analistaLocal = analistaLocal;
+        this.analistaResponsavelPeloPedido = analistaResponsavelPeloPedido;
     }
 
     // getters/setters
@@ -67,12 +67,12 @@ public class Pedido {
         this.status = status;
     }
 
-    public AnalistaLocal getAnalistaLocal() {
-        return analistaLocal;
+    public String getAnalistaResponsavelPeloPedido() {
+        return analistaResponsavelPeloPedido;
     }
 
-    public void setAnalistaLocal(AnalistaLocal analistaLocal) {
-        this.analistaLocal = analistaLocal;
+    public void setAnalistaResponsavelPeloPedido(String analistaResponsavelPeloPedido) {
+        this.analistaResponsavelPeloPedido = analistaResponsavelPeloPedido;
     }
 
     public void exibirInformacoesDoPedido() {
@@ -91,7 +91,7 @@ public class Pedido {
                 qtdItem,
                 dataPedido,
                 status,
-                analistaLocal
+                analistaResponsavelPeloPedido
         );
 
         JOptionPane.showMessageDialog(null, info, "Detalhes do Pedido", JOptionPane.INFORMATION_MESSAGE);
