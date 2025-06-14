@@ -14,9 +14,10 @@ public class Almoxarife extends Funcionario {
 
     }
 
-    public Almoxarife(String nome, String senha, LocalDate dataDeNascimento, String cpf, float salario, String turno, int qtdOperacoesDia, LocalDate dataUltimoReabastecimento, int qtdInsumosReabastecidos) {
+    public Almoxarife(String nome, String senha, LocalDate dataDeNascimento, String cpf, float salario, String turno) {
         super(nome, senha, dataDeNascimento, cpf, salario, turno);
         setFuncao("Almoxarife");
+        setDataUltimoReabastecimento(LocalDate.parse("2000-01-01"));
         this.qtdOperacoesDia = qtdOperacoesDia;
         this.dataUltimoReabastecimento = dataUltimoReabastecimento;
         this.qtdInsumosReabastecidos = qtdInsumosReabastecidos;
@@ -144,6 +145,8 @@ public class Almoxarife extends Funcionario {
         if (etiquetarQRCode) {
             qrCode = gerarQRCode();
         }
+
+        setDataUltimoReabastecimento(LocalDate.now());
 
         JOptionPane.showMessageDialog(null, "Insumo registrado com sucesso!", "EXITO", JOptionPane.INFORMATION_MESSAGE);
 

@@ -32,9 +32,12 @@ public class Main {
 
                     switch (tipoCadastro) {
                         case 1: // Cadastro de um almoxarife
+                            almoxarifes.add(new Almoxarife(nomeCadastro, senhaCadastro, dataDeNascimento, cpf, salario, turno));
+
                             break;
 
                         case 2: // Cadastro de um Analista Local
+                            analistasLocais.add(new AnalistaLocal(nomeCadastro, senhaCadastro, dataDeNascimento, cpf, salario, turno));
                             break;
 
                         case 3: // Cadastro de um Analista corporativo
