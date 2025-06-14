@@ -123,7 +123,7 @@ public class Almoxarife extends Funcionario {
         int idInsumo = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID do Insumo recebido: "));
         String nomeDoInsumo = JOptionPane.showInputDialog("Digite o nome do insumo recebido: ");
         String loteDoInsumo = JOptionPane.showInputDialog("Digite o lote do insumo recebido: ");
-        String unidadeDeMedida = JOptionPane.showInputDialog("Digite a unidade de medida do insumo (Caso o insumo não possuia uma unidade de medida digite Unitário): ");
+        String unidadeDeMedida = JOptionPane.showInputDialog("Digite a unidade de medida do insumo (Caso o insumo não possua uma unidade de medida digite 'Unitário'): ");
         LocalDate dataDeValidade = LocalDate.parse(JOptionPane.showInputDialog("Digite a data de validade prescrita no insumo recebido: "), dtf);
 
         boolean registrarCategoriaDoInsumo = JOptionPane.showConfirmDialog(null, "Gostaria de detalhar a categoria do insumo recebido?","ADICIONAR CATEGORIA DO INSUMO", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;

@@ -3,6 +3,7 @@ import br.com.fiap.bean.*;
 
 import javax.swing.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Main {
@@ -13,8 +14,11 @@ public class Main {
         List<AnalistaLocal> analistasLocais = new ArrayList<>();
         List<AnalistaCorporativo> analistasCorporativos = new ArrayList<>();
         List<Movimentacao> movimentacoes = new ArrayList<>();
-        List<Pedido> pedido = new ArrayList<>();
-        List<Insumo> insumo = new ArrayList<>();
+        List<Pedido> pedidos = new ArrayList<>();
+        List<Insumo> insumos = new ArrayList<>();
+
+        // Formatador
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         while (true) {
             int escolha = Integer.parseInt(JOptionPane.showInputDialog("MENU PRINCIPAL \n\n Escolha uma opção \n\n1 - Cadastrar \n2 - Login \n3 - Sair"));
@@ -23,8 +27,8 @@ public class Main {
                 case 1:
                     int tipoCadastro = Integer.parseInt(JOptionPane.showInputDialog("Escolha o tipo de funcionário a ser cadastrado \n1 - Almoxarife \n2 - Analista Local \n3 - Analista Corporativo"));
 
-                    String nomeCadastro = JOptionPane.showInputDialog("Digite o nome");
-                    String senhaCadastro = JOptionPane.showInputDialog("Digite a senha");
+                    String nomeCadastro = JOptionPane.showInputDialog("Digite o nome que será utilizado no cadastro. Recomendamos que utilize seu nome completo");
+                    String senhaCadastro = JOptionPane.showInputDialog("Digite a senha de cadastro");
 
                     switch (tipoCadastro) {
                         case 1: // Cadastro de um almoxarife
