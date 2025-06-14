@@ -40,8 +40,8 @@ public class AnalistaCorporativo extends Funcionario{
                 "Data de Nascimento: %s%n" +
                 "CPF do Funcionário: %s%n" +
                 "Turno Alocado: %s%n" +
-                "Função do Funcionário: %s" +
-                "Área de Atuação: %s" +
+                "Função do Funcionário: %s%n" +
+                "Área de Atuação: %s%n" +
                 "Departamento: %s", getIdFuncionario(), getNome(), getDataDeNascimento(), getCpf(), getTurno(), getFuncao(), areaDeAtuacao, departamento);
         JOptionPane.showMessageDialog(null, dadosFuncionario, "Dados do Analista Corporativo", JOptionPane.INFORMATION_MESSAGE);
     }

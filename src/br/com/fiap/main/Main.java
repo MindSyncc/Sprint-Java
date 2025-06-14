@@ -1,4 +1,5 @@
 package br.com.fiap.main;
+
 import br.com.fiap.bean.*;
 
 import javax.swing.*;
@@ -149,43 +150,56 @@ public class Main {
                             }
                             break;
                         case 3:
+                            AnalistaCorporativo analistaCorporativoBusca = null;
+                            boolean encontrou = false;
+
                             for (AnalistaCorporativo analistaCorporativo : analistasCorporativos) {
                                 if (analistaCorporativo.getNome().equals(nomeLogin) && analistaCorporativo.getSenha().equals(senhaLogin)) {
-                                    autenticado = true;
-                                    while (true) {
-                                        int opcao = Integer.parseInt(JOptionPane.showInputDialog("MENU DO ANALISTA CORPORATIVO \n\n1 - Exibir informações do funcionário \n2 - Visualizar o estado das unidades \n3 - Deslogar\n4 - Sair do Sistema\n"));
-                                        switch (opcao) {
-
-                                            case 1: // Exibir informações do funcionário
-                                                break;
-
-                                            case 2: // Visualizar o estado das unidades
-                                                break;
-
-                                            case 3: // Deslogar
-                                                break;
-
-                                            case 4: // Sair do sistema
-                                                JOptionPane.showMessageDialog(null, "Até a próxima!");
-                                                System.exit(0);
-
-                                            default: // Sair do Sistema
-                                                JOptionPane.showMessageDialog(null, "Opção inválida");
-                                        }
-
-                                        if (opcao == 3) {
-                                            break;
-                                        }
-                                    }
+                                    encontrou = true;
+                                    analistaCorporativoBusca = analistaCorporativo;
+                                    break;
                                 }
+                            }
+
+                            if (encontrou) {
+                                autenticado = true;
+                                boolean continuar = true;
+
+                                while (continuar) {
+                                    int opcao = Integer.parseInt(JOptionPane.showInputDialog("MENU DO ANALISTA CORPORATIVO \n\n1 - Exibir informações do funcionário \n2 - Visualizar o estado das unidades \n3 - Deslogar\n4 - Sair do Sistema\n"));
+
+                                    switch (opcao) {
+
+                                        case 1: // Exibir informações do funcionário
+                                            analistaCorporativoBusca.exibirInformacoesDoFuncionario();
+                                            break;
+                                        case 2: // Visualizar o estado das unidades
+                                            analistaCorporativoBusca.visualizarUnidades();
+                                            break;
+                                        case 3: // Deslogar
+                                            autenticado = false;
+                                            break;
+                                        case 4: // Sair do sistema
+                                            JOptionPane.showMessageDialog(null, "Até a próxima!");
+                                            System.exit(0);
+                                        default: // Sair do Sistema
+                                            JOptionPane.showMessageDialog(null, "Opção inválida");
+                                            break;
+                                    }
+
+                                    if (!autenticado) {
+                                        break;
+                                    }
+
+                                    continuar = JOptionPane.showConfirmDialog(null, "Deseja continuar?", "CONTINUAR", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
+                                }
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Login falhou. Usuário não encontrado, verifique se digitou o nome e senha corretamente\n");
                             }
                             break;
                         default:
                             JOptionPane.showMessageDialog(null, "Opção Inválida");
                             break;
-                    }
-                    if (!autenticado) {
-                        JOptionPane.showMessageDialog(null, "Login falhou. Verifique nome e senha.\n");
                     }
                     break;
                 case 3:
