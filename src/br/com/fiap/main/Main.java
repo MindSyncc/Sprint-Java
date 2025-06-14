@@ -177,9 +177,8 @@ public class Main {
 
                             if (encontrou) {
                                 autenticado = true;
-                                boolean continuar = true;
 
-                                while (continuar) {
+                                while (autenticado) {
                                     int opcao = Integer.parseInt(JOptionPane.showInputDialog("MENU DO ANALISTA CORPORATIVO \n\n1 - Exibir informações do funcionário \n2 - Visualizar o estado das unidades \n3 - Deslogar\n4 - Sair do Sistema\n"));
 
                                     switch (opcao) {
@@ -200,12 +199,6 @@ public class Main {
                                             JOptionPane.showMessageDialog(null, "Opção inválida");
                                             break;
                                     }
-
-                                    if (!autenticado) {
-                                        break;
-                                    }
-
-                                    continuar = JOptionPane.showConfirmDialog(null, "Deseja continuar?", "CONTINUAR", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
                                 }
                             } else {
                                 JOptionPane.showMessageDialog(null, "Login falhou. Usuário não encontrado, verifique se digitou o nome e senha corretamente\n");
