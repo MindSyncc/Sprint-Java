@@ -96,14 +96,14 @@ public class Main {
                                                 boolean existeMotivo = JOptionPane.showConfirmDialog(null, "Deseja inserir o motivo de retirada?", "Atenção", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
                                                 if (existeMotivo) {
                                                     String motivo = JOptionPane.showInputDialog("Insira o motivo de retirada");
-                                                    almoxarife.retirarInsumo(insumos, insumo, motivo);
+                                                    insumos = almoxarife.retirarInsumo(insumos, insumo, motivo);
                                                 } else {
-                                                    almoxarife.retirarInsumo(insumos, insumo);
+                                                    insumos = almoxarife.retirarInsumo(insumos, insumo);
                                                 }
                                                 break;
 
                                             case 3: // Registrar entrada de insumo
-                                                almoxarife.registrarEntradaDeInsumo();
+                                                insumos.add(almoxarife.registrarEntradaDeInsumo());
                                                 break;
 
                                             case 4: // Deslogar
@@ -140,7 +140,7 @@ public class Main {
                                                 break;
 
                                             case 3: // Realizar pedido de Insumo()
-                                                analistaLocal.realizarPedidoDeInsumo();
+                                                pedidos.add(analistaLocal.realizarPedidoDeInsumo());
                                                 break;
 
                                             case 4: // Verificar movimentacoes()

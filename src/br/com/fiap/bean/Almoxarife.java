@@ -53,10 +53,10 @@ public class Almoxarife extends Funcionario {
                 "Data de Nascimento: %s%n" +
                 "CPF do Funcionário: %s%n" +
                 "Turno Alocado: %s%n" +
-                "Função do Funcionário: %s" +
-                "Quantidade de movimentações realizadas nesse dia: %d" +
+                "Função do Funcionário: %s%n" +
+                "Quantidade de movimentações realizadas nesse dia: %d%n" +
                 "Quantidade de insumos já reabastecidos: %d", getIdFuncionario(), getNome(), getDataDeNascimento(), getCpf(), getTurno(), getFuncao(), qtdOperacoesDia, qtdInsumosReabastecidos);
-        JOptionPane.showMessageDialog(null, dadosFuncionario, "Dados do Analista Corporativo", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, dadosFuncionario, "Dados do Almoxarife", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public QRCode gerarQRCode() {

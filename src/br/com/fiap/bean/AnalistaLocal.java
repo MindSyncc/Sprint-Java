@@ -22,7 +22,7 @@ public class AnalistaLocal extends Funcionario {
                 "Data de Nascimento: %s%n" +
                 "CPF do Funcionário: %s%n" +
                 "Turno Alocado: %s%n" +
-                "Função do Funcionário: %s" +
+                "Função do Funcionário: %s%n" +
                 "Salário vigente: %.2f", getIdFuncionario(), getNome(), getDataDeNascimento(), getCpf(), getTurno(), getFuncao(), getSalario());
         JOptionPane.showMessageDialog(null, dadosFuncionario, "Dados do Analista Local", JOptionPane.INFORMATION_MESSAGE);
     }
