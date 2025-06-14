@@ -8,7 +8,6 @@ import java.time.LocalDate;
 import java.util.*;
 
 public class Main {
-
     static List<Almoxarife> almoxarifes = new ArrayList<>();
     static List<AnalistaLocal> analistasLocais = new ArrayList<>();
     static List<AnalistaCorporativo> analistasCorporativos = new ArrayList<>();
@@ -21,7 +20,7 @@ public class Main {
         LocalDate dataDeInicio = LocalDate.parse("2001-12-10");
         LocalDate dataUltimoReabastecimento = LocalDate.parse("2001-12-08");
 
-        almoxarifes.add(new Almoxarife(2500, "admin", "admin", dataDeNascimento, "12345678912", 2500, dataDeInicio, "tarde", "almoxarife", 50, dataUltimoReabastecimento, 50));
+        almoxarifes.add(new Almoxarife(2500, "admin", "admin", dataDeNascimento, "12345678912", 2500, "tarde", "almoxarife", 50, dataUltimoReabastecimento, 50));
 
 
         while (true) {

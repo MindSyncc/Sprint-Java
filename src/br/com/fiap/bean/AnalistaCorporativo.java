@@ -12,7 +12,7 @@ public class AnalistaCorporativo extends Funcionario{
     }
 
     public AnalistaCorporativo(int idFuncionario, String nome, String senha, LocalDate dataDeNascimento, String cpf, float salario, LocalDate dataDeInicio, String turno, String funcao, String areaDeAtuacao, String departamento) {
-        super(idFuncionario, nome, senha, dataDeNascimento, cpf, salario, dataDeInicio, turno, funcao);
+        super(idFuncionario, nome, senha, dataDeNascimento, cpf, salario, turno, funcao);
         this.areaDeAtuacao = areaDeAtuacao;
         this.departamento = departamento;
     }
@@ -37,7 +37,7 @@ public class AnalistaCorporativo extends Funcionario{
         String dadosFuncionario = String.format("ID do Funcionário: %d%n" +
                 "Nome do Funcionário: %s%n" +
                 "Data de Nascimento: %s%n" +
-                "CPF do Funcionário: %d%n" +
+                "CPF do Funcionário: %s%n" +
                 "Turno Alocado: %s%n" +
                 "Função do Funcionário: %s" +
                 "Área de Atuação: %s" +

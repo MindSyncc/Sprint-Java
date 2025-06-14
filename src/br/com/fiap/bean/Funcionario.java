@@ -20,14 +20,14 @@ public class Funcionario {
 
     }
 
-    public Funcionario(int idFuncionario, String nome, String senha, LocalDate dataDeNascimento, String cpf, float salario, LocalDate dataDeInicio, String turno, String funcao) {
+    public Funcionario (int idFuncionario, String nome, String senha, LocalDate dataDeNascimento, String cpf, float salario, String turno, String funcao) {
         this.idFuncionario = idFuncionario;
         this.nome = nome;
-        this.senha = senha;
-        this.dataDeNascimento = dataDeNascimento;
-        this.cpf = cpf;
+        setSenha(senha);
+        setDataDeNascimento(dataDeNascimento);
+        setCpf(cpf);
         this.salario = salario;
-        this.dataDeInicio = dataDeInicio;
+        this.dataDeInicio = LocalDate.now();
         this.turno = turno;
         this.funcao = funcao;
     }
@@ -53,7 +53,15 @@ public class Funcionario {
     }
 
     public void setSenha(String senha) {
-        this.senha = senha;
+        try {
+            if (cpf.length() == 6) {
+                this.senha = senha;
+            } else {
+                throw new Exception("CPF Inválido. O CPF precisa ter 11 digitos");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     public LocalDate getDataDeNascimento() {
@@ -61,16 +69,34 @@ public class Funcionario {
     }
 
     public void setDataDeNascimento(LocalDate dataDeNascimento) {
-        this.dataDeNascimento = dataDeNascimento;
+        LocalDate dataInicio = LocalDate.parse("1899-12-31");
+        LocalDate dataAtual = LocalDate.now();
+
+        try {
+            if (dataDeNascimento.isAfter(dataInicio) && (dataDeNascimento.isBefore(dataAtual) || dataDeNascimento.equals(dataAtual))) {
+                this.dataDeNascimento = dataDeNascimento;
+            } else {
+                throw new Exception("ERRO ao registrar data de nascimento. Faixa permitida: Min=1900, Max=Data Atual");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     public String getCpf() {
         return cpf;
     }
 
-    // aplicar a regra de negocio de 11 digitos
     public void setCpf(String cpf) {
-        this.cpf = cpf;
+        try {
+            if (cpf.length() == 11) {
+                this.cpf = cpf;
+            } else {
+                throw new Exception("CPF Inválido. O CPF precisa ter 11 digitos");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     public float getSalario() {
@@ -109,7 +135,7 @@ public class Funcionario {
         String dadosFuncionario = String.format("ID do Funcionário: %d%n" +
                 "Nome do Funcionário: %s%n" +
                 "Data de Nascimento: %s%n" +
-                "CPF do Funcionário: %d%n" +
+                "CPF do Funcionário: %s%n" +
                 "Turno Alocado: %s%n" +
                 "Função do Funcionário: %s", idFuncionario, nome, dataDeNascimento, cpf, turno, funcao);
         JOptionPane.showMessageDialog(null, dadosFuncionario, "Dados do Funcionário", JOptionPane.INFORMATION_MESSAGE);
