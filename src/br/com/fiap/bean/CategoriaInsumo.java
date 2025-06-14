@@ -3,14 +3,14 @@ package br.com.fiap.bean;
 public class CategoriaInsumo {
     private int idCategoria;
     private String tipoCategoria;
-    Almoxarife responsavelPeloRegistro;
+    private String responsavelPeloRegistro;
 
     // construtores
 
     public CategoriaInsumo() {
     }
 
-    public CategoriaInsumo(int idCategoria, String tipoCategoria, Almoxarife responsavelPeloRegistro) {
+    public CategoriaInsumo(int idCategoria, String tipoCategoria, String responsavelPeloRegistro) {
         this.idCategoria = idCategoria;
         this.tipoCategoria = tipoCategoria;
         this.responsavelPeloRegistro = responsavelPeloRegistro;
@@ -34,11 +34,11 @@ public class CategoriaInsumo {
         this.tipoCategoria = tipoCategoria;
     }
 
-    public Almoxarife getResponsavelPeloRegistro() {
+    public String getResponsavelPeloRegistro() {
         return responsavelPeloRegistro;
     }
 
-    public void setResponsavelPeloRegistro(Almoxarife responsavelPeloRegistro) {
+    public void setResponsavelPeloRegistro(String responsavelPeloRegistro) {
         this.responsavelPeloRegistro = responsavelPeloRegistro;
     }
 }

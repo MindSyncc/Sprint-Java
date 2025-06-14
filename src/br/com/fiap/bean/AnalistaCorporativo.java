@@ -45,7 +45,7 @@ public class AnalistaCorporativo extends Funcionario{
         JOptionPane.showMessageDialog(null, dadosFuncionario, "Dados do Analista Corporativo", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    public void visualizarUnidade() {
+    public void visualizarUnidades() {
         String informcoesSimuladas = """
                 ID da Unidade: 12
                 Local da Unidade: Santo André, SP

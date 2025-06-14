@@ -91,27 +91,13 @@ public class Insumo {
     /**
      * Classe para exibir as informacoes do insumo em um string formatada
      */
-    public void exibirInformacoesDoInsumo() {
-        String info = String.format(
-                """
-                🧪 Informações do Insumo 🧪
-                🆔 ID Insumo: %d
-                🧾 Lote: %s
-                🗓️ Validade: %s
-                🧷 Nome: %s
-                📏 Unidade de Medida: %s
-                🗂️ Categoria: %s
-                📱 QR Code: %s
-                """,
-                idInsumo,
-                lote,
-                dataValidade,
-                nome,
-                unidadeMedida,
-                categoriaInsumo,
-                QRCode
-        );
+    public String exibirInformacoesDoInsumo() {
+        String info = String.format("ID do Insumo: %d%n" +
+                "Nome: %s%n" +
+                "Validade: %s%n" +
+                "Lote: %s%n" +
+                "Unidade de Medida: %s%n", idInsumo, nome, dataValidade, lote, unidadeMedida);
 
-        JOptionPane.showMessageDialog(null, info, "Detalhes do Insumo", JOptionPane.INFORMATION_MESSAGE);
+        return info;
     }
 }

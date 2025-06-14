@@ -1,8 +1,5 @@
 package br.com.fiap.main;
-import br.com.fiap.bean.Almoxarife;
-import br.com.fiap.bean.AnalistaCorporativo;
-import br.com.fiap.bean.AnalistaLocal;
-import br.com.fiap.bean.Movimentacao;
+import br.com.fiap.bean.*;
 
 import javax.swing.*;
 import java.time.LocalDate;
@@ -15,8 +12,6 @@ public class Main {
     static List<Movimentacao> movimentacoes = new ArrayList<>();
 
     public static void main(String[] args) {
-
-
         // teste com um almoxarife mock (deletar depois)
         LocalDate dataDeNascimento = LocalDate.parse("2001-12-12");
         LocalDate dataDeInicio = LocalDate.parse("2001-12-10");
