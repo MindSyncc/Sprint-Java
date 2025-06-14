@@ -6,23 +6,15 @@ import java.time.LocalDate;
 import java.util.*;
 
 public class Main {
-    static List<Almoxarife> almoxarifes = new ArrayList<>();
-    static List<AnalistaLocal> analistasLocais = new ArrayList<>();
-    static List<AnalistaCorporativo> analistasCorporativos = new ArrayList<>();
-    static List<Movimentacao> movimentacoes = new ArrayList<>();
-
     public static void main(String[] args) {
-        // teste com um almoxarife mock (deletar depois)
-        LocalDate dataDeNascimento = LocalDate.parse("2001-12-12");
-        LocalDate dataDeInicio = LocalDate.parse("2001-12-10");
-        LocalDate dataUltimoReabastecimento = LocalDate.parse("2001-12-08");
 
-        almoxarifes.add(new Almoxarife(2500, "admin", "admins", dataDeNascimento, "12345678912", 2500, "tarde", "almoxarife", 50, dataUltimoReabastecimento, 50));
-
-        analistasLocais.add(new AnalistaLocal(2500, "admin", "admins", dataDeNascimento, "12345678912", 2500, "tarde", "almoxarife"));
-
-        analistasCorporativos.add(new AnalistaCorporativo(2500, "admins", "admin", dataDeNascimento, "12345678912", 2500, dataDeInicio, "almoxarife", "analistaCorporativo", "Saúde", "nenhum"));
-
+        // Listas
+        List<Almoxarife> almoxarifes = new ArrayList<>();
+        List<AnalistaLocal> analistasLocais = new ArrayList<>();
+        List<AnalistaCorporativo> analistasCorporativos = new ArrayList<>();
+        List<Movimentacao> movimentacoes = new ArrayList<>();
+        List<Pedido> pedido = new ArrayList<>();
+        List<Insumo> insumo = new ArrayList<>();
 
         while (true) {
             int escolha = Integer.parseInt(JOptionPane.showInputDialog("MENU PRINCIPAL \n\n Escolha uma opção \n\n1 - Cadastrar \n2 - Login \n3 - Sair"));
