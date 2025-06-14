@@ -25,42 +25,47 @@ public class Main {
 
             switch (escolha) {
                 case 1:
-                    int tipoCadastro = Integer.parseInt(JOptionPane.showInputDialog("Escolha o tipo de funcionário a ser cadastrado \n1 - Almoxarife \n2 - Analista Local \n3 - Analista Corporativo"));
+                    try {
+                        int tipoCadastro = Integer.parseInt(JOptionPane.showInputDialog("Escolha o tipo de funcionário a ser cadastrado \n1 - Almoxarife \n2 - Analista Local \n3 - Analista Corporativo"));
 
-                    String nomeCadastro = JOptionPane.showInputDialog("Digite o nome que será utilizado no cadastro. Recomendamos que utilize seu nome completo");
-                    String senhaCadastro = JOptionPane.showInputDialog("Digite a senha de cadastro. A senha deve conter pelo menos 5 caracteres");
+                        String nomeCadastro = JOptionPane.showInputDialog("Digite o nome que será utilizado no cadastro. Recomendamos que utilize seu nome completo");
+                        String senhaCadastro = JOptionPane.showInputDialog("Digite a senha de cadastro. A senha deve conter pelo menos 5 caracteres");
 
-                    LocalDate dataDeNascimento = LocalDate.parse(JOptionPane.showInputDialog("Digite sua data de nascimento"), dtf);
-                    String cpf = JOptionPane.showInputDialog("Digite seu CPF");
-                    float salario = Float.parseFloat(JOptionPane.showInputDialog("Digite seu salário"));
-                    String turno = JOptionPane.showInputDialog("Digite seu turno");
+                        LocalDate dataDeNascimento = LocalDate.parse(JOptionPane.showInputDialog("Digite sua data de nascimento"), dtf);
+                        String cpf = JOptionPane.showInputDialog("Digite seu CPF");
+                        float salario = Float.parseFloat(JOptionPane.showInputDialog("Digite seu salário"));
+                        String turno = JOptionPane.showInputDialog("Digite seu turno");
 
 
-                    switch (tipoCadastro) {
-                        case 1: // Cadastro de um almoxarife
-                            almoxarifes.add(new Almoxarife(nomeCadastro, senhaCadastro, dataDeNascimento, cpf, salario, turno));
+                        switch (tipoCadastro) {
+                            case 1: // Cadastro de um almoxarife
+                                almoxarifes.add(new Almoxarife(nomeCadastro, senhaCadastro, dataDeNascimento, cpf, salario, turno));
+                                System.out.println(almoxarifes);
+                                JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso!\n");
+                                break;
 
-                            break;
+                            case 2: // Cadastro de um Analista Local
+                                analistasLocais.add(new AnalistaLocal(nomeCadastro, senhaCadastro, dataDeNascimento, cpf, salario, turno));
+                                System.out.println(analistasLocais);
+                                JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso!\n");
+                                break;
 
-                        case 2: // Cadastro de um Analista Local
-                            analistasLocais.add(new AnalistaLocal(nomeCadastro, senhaCadastro, dataDeNascimento, cpf, salario, turno));
-                            break;
+                            case 3: // Cadastro de um Analista corporativo
+                                String areaDeAtuacao = JOptionPane.showInputDialog("Digite sua área de atuação. Ex: Analista de Previsões");
+                                String departamento = JOptionPane.showInputDialog("Digite seu departamento. Ex: Planejamento Estratégico");
 
-                        case 3: // Cadastro de um Analista corporativo
-                            String areaDeAtuacao = JOptionPane.showInputDialog("Digite sua área de atuação. Ex: Analista de Previsões");
-                            String departamento = JOptionPane.showInputDialog("Digite seu departamento. Ex: Planejamento Estratégico");
-
-                            analistasCorporativos.add(new AnalistaCorporativo(nomeCadastro, senhaCadastro, dataDeNascimento, cpf, salario, turno, areaDeAtuacao, departamento));
-                            break;
-
-                        default:
-                            JOptionPane.showMessageDialog(null, "Tipo inválido");
-                            continue;
+                                analistasCorporativos.add(new AnalistaCorporativo(nomeCadastro, senhaCadastro, dataDeNascimento, cpf, salario, turno, areaDeAtuacao, departamento));
+                                System.out.println(analistasCorporativos);
+                                JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso!\n");
+                                break;
+                            default:
+                                JOptionPane.showMessageDialog(null, "Tipo inválido");
+                                continue;
+                        }
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.WARNING_MESSAGE);
                     }
-
-                    JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso!\n");
                     break;
-
                 case 2:
                     int tipoLogin = Integer.parseInt(JOptionPane.showInputDialog("Escolha o tipo de funcionário \n1 - Almoxarife \n2 - Analista Local \n3 - Analista Corporativo"));
 

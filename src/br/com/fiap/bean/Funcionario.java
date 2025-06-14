@@ -59,10 +59,11 @@ public class Funcionario {
             if (senha.length() >= 5) {
                 this.senha = senha;
             } else {
-                throw new Exception("A senha precisa ter pelo menos 5 digitos");
+                throw new Exception("A senha precisa ter pelo menos 5 digitos. Tente novamente mais tarde");
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.WARNING_MESSAGE);
+            System.exit(0);
         }
     }
 
@@ -82,6 +83,7 @@ public class Funcionario {
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.WARNING_MESSAGE);
+            System.exit(0);
         }
     }
 
@@ -94,10 +96,11 @@ public class Funcionario {
             if (cpf.length() == 11) {
                 this.cpf = cpf;
             } else {
-                throw new Exception("CPF Inválido. O CPF precisa ter 11 digitos");
+                throw new Exception("CPF Inválido, O CPF precisa ter 11 digitos. Tente novamente mais tarde");
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.WARNING_MESSAGE);
+            System.exit(0);
         }
     }
 
