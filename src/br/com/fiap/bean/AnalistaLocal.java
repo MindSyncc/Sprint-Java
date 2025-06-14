@@ -2,6 +2,7 @@ package br.com.fiap.bean;
 
 import javax.swing.*;
 import java.time.LocalDate;
+import java.util.List;
 
 public class AnalistaLocal extends Funcionario {
 
@@ -45,7 +46,13 @@ public class AnalistaLocal extends Funcionario {
         return new Pedido();
     }
 
-    public void verificarMovimentacoes() {
-        JOptionPane.showMessageDialog(null, "");
+    public void verificarMovimentacoes(List<Movimentacao> listaDeMovimentacoes) {
+        String string = "";
+
+        for (Movimentacao movimentacao : listaDeMovimentacoes) {
+            string += movimentacao.exibirInformacoesDaMovimentacao() + "\n";
+        }
+
+        JOptionPane.showMessageDialog(null, string, "Movimentacoes", JOptionPane.INFORMATION_MESSAGE);
     }
 }

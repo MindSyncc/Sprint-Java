@@ -110,34 +110,15 @@ public class Movimentacao {
 
     /**
      *
-     * Classe para exibir as informacoes do insumo em um string formatada
+     * Classe para exibir as informacoes da movimentacao em um string formatada
      *
      */
-    public void exibirInformacoesDaMovimentacao() {
+    public String exibirInformacoesDaMovimentacao() {
         String info = String.format(
-                """
-                🔄 Informações da Movimentação 🔄
-                📦 ID Movimentação: %d
-                📝 Motivo: %s
-                📅 Data: %s
-                ⏰ Entrada: %s
-                ⏳ Saída: %s
-                📂 Tipo: %s
-                🔢 Quantidade: %d
-                📍 Prateleira: %s
-                👤 Feito pelo funcionário: %s
-                """,
-                idMovimentacao,
-                motivo,
-                data,
-                dataHoraEntrada,
-                dataHoraSaida,
-                tipoMovimentacao,
-                quantidade,
-                prateleira,
-                funcionario
+                "ID Movimentação: %d Motivo: %s Data: %s Entrada: %s Saída: %s Tipo: %s Quantidade: %d Prateleira: %s Feito pelo funcionário: %s",
+                idMovimentacao, motivo, data, dataHoraEntrada, dataHoraSaida, tipoMovimentacao, quantidade, prateleira, funcionario
         );
 
-        JOptionPane.showMessageDialog(null, info, "Detalhes da Movimentação", JOptionPane.INFORMATION_MESSAGE);
+        return info;
     }
 }
