@@ -5,14 +5,14 @@ import javax.swing.*;
 public class PrateleiraInteligente {
     private int idPrateleira;
     private String status;
-    private AnalistaLocal responsavelPelaVerificacao;
+    private String responsavelPelaVerificacao;
 
     // construtores
 
     public PrateleiraInteligente() {
     }
 
-    public PrateleiraInteligente(int idPrateleira, String status, AnalistaLocal responsavelPelaVerificacao) {
+    public PrateleiraInteligente(int idPrateleira, String status, String responsavelPelaVerificacao) {
         this.idPrateleira = idPrateleira;
         this.status = status;
         this.responsavelPelaVerificacao = responsavelPelaVerificacao;
@@ -36,11 +36,11 @@ public class PrateleiraInteligente {
         this.status = status;
     }
 
-    public AnalistaLocal getResponsavelPelaVerificacao() {
+    public String getResponsavelPelaVerificacao() {
         return responsavelPelaVerificacao;
     }
 
-    public void setResponsavelPelaVerificacao(AnalistaLocal responsavelPelaVerificacao) {
+    public void setResponsavelPelaVerificacao(String responsavelPelaVerificacao) {
         this.responsavelPelaVerificacao = responsavelPelaVerificacao;
     }
 

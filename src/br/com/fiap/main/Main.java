@@ -17,6 +17,9 @@ public class Main {
         List<Pedido> pedidos = new ArrayList<>();
         List<Insumo> insumos = new ArrayList<>();
 
+        // mock de prateleira inteligente
+        PrateleiraInteligente prateleira = new PrateleiraInteligente(3, "Em manutenção", "Lucas dos Santos");
+
         // Formatador
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -80,33 +83,41 @@ public class Main {
                                 if (almoxarife.getNome().equals(nomeLogin) && almoxarife.getSenha().equals(senhaLogin)) {
                                     autenticado = true;
                                     while (true) {
-                                        int opcao = Integer.parseInt(JOptionPane.showInputDialog("MENU DO ALMOXARIFE \n\nEscolha uma opção \n1 - Exibir informações do usuário \n2 - Gerar QRCode \n3 - Retirar insumo \n4 - Registrar entrada de insumo\n5 - Deslogar\n6 - Sair do Sistema\n"));
+                                        int opcao = Integer.parseInt(JOptionPane.showInputDialog("MENU DO ALMOXARIFE \n\nEscolha uma opção \n1 - Exibir informações do usuário \n2 - Retirar insumo \n3 - Registrar entrada de insumo\n4 - Deslogar\n5 - Sair do Sistema\n"));
 
                                         switch (opcao) {
                                             case 1: // Exibir informações do usuário
+                                                almoxarife.exibirInformacoesDoFuncionario();
                                                 break;
 
-                                            case 2: // Gerar QRCode
+                                            case 2: // Retirar insumo
+                                                String insumo = JOptionPane.showInputDialog("Digite o nome do insumo que deseja retirar");
+                                                boolean existeMotivo = JOptionPane.showConfirmDialog(null, "Deseja inserir o motivo de retirada?", "Atenção", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
+                                                if (existeMotivo) {
+                                                    String motivo = JOptionPane.showInputDialog("Insira o motivo de retirada");
+                                                    almoxarife.retirarInsumo(insumos, insumo, motivo);
+                                                } else {
+                                                    almoxarife.retirarInsumo(insumos, insumo);
+                                                }
                                                 break;
 
-                                            case 3: // Retirar insumo
+                                            case 3: // Registrar entrada de insumo
+                                                almoxarife.registrarEntradaDeInsumo();
                                                 break;
 
-                                            case 4: // Registrar entrada de insumo
+                                            case 4: // Deslogar
                                                 break;
 
-                                            case 5: // Deslogar
-                                                break;
-
-                                            case 6: // Sair do Sistema
+                                            case 5: // Sair do Sistema
                                                 JOptionPane.showMessageDialog(null, "Até a próxima!");
                                                 System.exit(0);
                                                 break;
 
+
                                             default:
                                                 JOptionPane.showMessageDialog(null, "Opção inválida");
                                         }
-                                        if (opcao == 5) break;
+                                        if (opcao == 4) break;
                                     }
                                     break;
                                 }
@@ -120,12 +131,15 @@ public class Main {
                                         int opcao = Integer.parseInt(JOptionPane.showInputDialog("MENU DO ANALISTA LOCAL \n\nEscolha uma opção \n1 - Exibir informações do funcionário \n2 - Verificar status da prateleira \n3 - Realizar pedido \n4 - Verificar movimentações \n5 - Deslogar\n6 - Sair do Sistema\n"));
                                         switch (opcao) {
                                             case 1: // Exibir informacoes do Funcionario
+                                                analistaLocal.exibirInformacoesDoFuncionario();
                                                 break;
 
                                             case 2: // Verificar status da Prateleira
+                                                analistaLocal.verificarStatusDaPrateleira(prateleira);
                                                 break;
 
                                             case 3: // Realizar pedido de Insumo()
+                                                analistaLocal.realizarPedidoDeInsumo();
                                                 break;
 
                                             case 4: // Verificar movimentacoes()
