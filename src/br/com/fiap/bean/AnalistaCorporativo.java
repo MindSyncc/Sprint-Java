@@ -11,8 +11,9 @@ public class AnalistaCorporativo extends Funcionario{
 
     }
 
-    public AnalistaCorporativo(int idFuncionario, String nome, String senha, LocalDate dataDeNascimento, String cpf, float salario, LocalDate dataDeInicio, String turno, String funcao, String areaDeAtuacao, String departamento) {
-        super(idFuncionario, nome, senha, dataDeNascimento, cpf, salario, turno, funcao);
+    public AnalistaCorporativo(String nome, String senha, LocalDate dataDeNascimento, String cpf, float salario, LocalDate dataDeInicio, String turno,String areaDeAtuacao, String departamento) {
+        super(nome, senha, dataDeNascimento, cpf, salario, turno);
+        setFuncao("Analista Corporativo");
         this.areaDeAtuacao = areaDeAtuacao;
         this.departamento = departamento;
     }

@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import javax.swing.*;
 
 public class Funcionario {
+    private static int sequencial = 1;
+
+
     private int idFuncionario;
     private String nome;
     private String senha;
@@ -20,8 +23,8 @@ public class Funcionario {
 
     }
 
-    public Funcionario (int idFuncionario, String nome, String senha, LocalDate dataDeNascimento, String cpf, float salario, String turno, String funcao) {
-        this.idFuncionario = idFuncionario;
+    public Funcionario (String nome, String senha, LocalDate dataDeNascimento, String cpf, float salario, String turno) {
+        this.idFuncionario = sequencial++;
         this.nome = nome;
         setSenha(senha);
         setDataDeNascimento(dataDeNascimento);
@@ -29,7 +32,6 @@ public class Funcionario {
         this.salario = salario;
         this.dataDeInicio = LocalDate.now();
         this.turno = turno;
-        this.funcao = funcao;
     }
 
     public int getIdFuncionario() {

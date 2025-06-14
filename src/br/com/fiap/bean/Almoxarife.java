@@ -14,8 +14,9 @@ public class Almoxarife extends Funcionario {
 
     }
 
-    public Almoxarife(int idFuncionario, String nome, String senha, LocalDate dataDeNascimento, String cpf, float salario, String turno, String funcao, int qtdOperacoesDia, LocalDate dataUltimoReabastecimento, int qtdInsumosReabastecidos) {
-        super(idFuncionario, nome, senha, dataDeNascimento, cpf, salario, turno, funcao);
+    public Almoxarife(String nome, String senha, LocalDate dataDeNascimento, String cpf, float salario, String turno, int qtdOperacoesDia, LocalDate dataUltimoReabastecimento, int qtdInsumosReabastecidos) {
+        super(nome, senha, dataDeNascimento, cpf, salario, turno);
+        setFuncao("Almoxarife");
         this.qtdOperacoesDia = qtdOperacoesDia;
         this.dataUltimoReabastecimento = dataUltimoReabastecimento;
         this.qtdInsumosReabastecidos = qtdInsumosReabastecidos;

@@ -11,8 +11,9 @@ public class AnalistaLocal extends Funcionario {
 
     }
 
-    public AnalistaLocal(int idFuncionario, String nome, String senha, LocalDate dataDeNascimento, String cpf, float salario, String turno, String funcao) {
-        super(idFuncionario, nome, senha, dataDeNascimento, cpf, salario, turno, funcao);
+    public AnalistaLocal(String nome, String senha, LocalDate dataDeNascimento, String cpf, float salario, String turno) {
+        super(nome, senha, dataDeNascimento, cpf, salario, turno);
+        setFuncao("AnalistaCorporativo");
     }
 
     public void exibirInformacoesDoFuncionario() {
