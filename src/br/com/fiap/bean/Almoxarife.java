@@ -18,9 +18,6 @@ public class Almoxarife extends Funcionario {
         super(nome, senha, dataDeNascimento, cpf, salario, turno);
         setFuncao("Almoxarife");
         setDataUltimoReabastecimento(LocalDate.parse("2000-01-01"));
-        this.qtdOperacoesDia = qtdOperacoesDia;
-        this.dataUltimoReabastecimento = dataUltimoReabastecimento;
-        this.qtdInsumosReabastecidos = qtdInsumosReabastecidos;
     }
 
     public int getQtdOperacoesDia() {
@@ -166,6 +163,7 @@ public class Almoxarife extends Funcionario {
 
         boolean registrarCategoriaDoInsumo = JOptionPane.showConfirmDialog(null, "Gostaria de detalhar a categoria do insumo recebido?","ADICIONAR CATEGORIA DO INSUMO", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
 
+        // registra a categoria caso o usuário queira inseri-la
         CategoriaInsumo categoriaInsumo = null;
         if (registrarCategoriaDoInsumo) {
             int idCategoria = 20;
@@ -175,6 +173,7 @@ public class Almoxarife extends Funcionario {
             categoriaInsumo = new CategoriaInsumo(idCategoria, tipoCategoria, responsavelPeloRegistro);
         }
 
+        // registra um QRCode caso o usuário queira inseri-lo
         QRCode qrCode = null;
         boolean etiquetarQRCode = JOptionPane.showConfirmDialog(null, "Gostaria de gerar um QRCode para etiquetar o insumo recebido?","GERAR QRCODE", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
 
@@ -182,6 +181,7 @@ public class Almoxarife extends Funcionario {
             qrCode = gerarQRCode();
         }
 
+        setQtdInsumosReabastecidos(qtdInsumosReabastecidos + 1);
         String mensagem = "Insumo registrado com sucesso! \n" + "Motivo do registo" + motivo;
         JOptionPane.showMessageDialog(null, mensagem, "EXITO", JOptionPane.INFORMATION_MESSAGE);
 

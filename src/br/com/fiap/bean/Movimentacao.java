@@ -3,8 +3,12 @@ package br.com.fiap.bean;
 import javax.swing.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Movimentacao {
+    private static int sequencial = 1;
+
+
     private int idMovimentacao;
     private String motivo;
     private LocalDate data;
@@ -13,19 +17,17 @@ public class Movimentacao {
     private String tipoMovimentacao;
     private int quantidade;
     private PrateleiraInteligente prateleira;
-    private Funcionario funcionario;
+    private String funcionario;
 
     // construtores
 
     public Movimentacao() {
     }
 
-    public Movimentacao(int idMovimentacao, String motivo, LocalDate data, LocalDateTime dataHoraEntrada, LocalDateTime dataHoraSaida, String tipoMovimentacao, int quantidade, PrateleiraInteligente prateleira, Funcionario funcionario) {
-        this.idMovimentacao = idMovimentacao;
+    public Movimentacao(String motivo, LocalDate data, String tipoMovimentacao, int quantidade, PrateleiraInteligente prateleira, String funcionario) {
+        this.idMovimentacao = sequencial++;
         this.motivo = motivo;
         this.data = data;
-        this.dataHoraEntrada = dataHoraEntrada;
-        this.dataHoraSaida = dataHoraSaida;
         this.tipoMovimentacao = tipoMovimentacao;
         this.quantidade = quantidade;
         this.prateleira = prateleira;
@@ -98,11 +100,11 @@ public class Movimentacao {
         this.prateleira = prateleira;
     }
 
-    public Funcionario getFuncionario() {
+    public String getFuncionario() {
         return funcionario;
     }
 
-    public void setFuncionario(Funcionario funcionario) {
+    public void setFuncionario(String funcionario) {
         this.funcionario = funcionario;
     }
 
@@ -114,9 +116,8 @@ public class Movimentacao {
      *
      */
     public String exibirInformacoesDaMovimentacao() {
-        String info = String.format(
-                "ID Movimentação: %d Motivo: %s Data: %s Entrada: %s Saída: %s Tipo: %s Quantidade: %d Prateleira: %s Feito pelo funcionário: %s",
-                idMovimentacao, motivo, data, dataHoraEntrada, dataHoraSaida, tipoMovimentacao, quantidade, prateleira, funcionario
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String info = String.format("ID MOVIMENTAÇÃO: %d \nMOTIVO: %s \nDATA: %s \nTIPO: %s \nQNT: %d \nPRATELEIRA: %d \nRESPONSÁVEL: %s \n\n", idMovimentacao, motivo, dtf.format(data), tipoMovimentacao, quantidade, prateleira.getIdPrateleira(), funcionario
         );
 
         return info;

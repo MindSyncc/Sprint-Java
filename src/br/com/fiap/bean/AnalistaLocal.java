@@ -45,13 +45,13 @@ public class AnalistaLocal extends Funcionario {
         int quantidadeItem = Integer.parseInt(JOptionPane.showInputDialog("Digite a quantidade que será pedida: "));
         String nomeItem = JOptionPane.showInputDialog("Digite o nome do item que será pedido: ");
         String statusPedido = "Pendente";
-        LocalDate dataDoPedido = LocalDate.parse(LocalDate.now().format(dtf));
+        LocalDate dataDoPedido = LocalDate.now();
 
         return new Pedido(idPedido,quantidadeItem, nomeItem, dataDoPedido, statusPedido, getNome());
     }
 
     public void verificarMovimentacoes(List<Movimentacao> listaDeMovimentacoes) {
-        String string = "";
+        String string = "LISTA DE MOVIMENTAÇÕES\n";
 
         for (Movimentacao movimentacao : listaDeMovimentacoes) {
             string += movimentacao.exibirInformacoesDaMovimentacao() + "\n";

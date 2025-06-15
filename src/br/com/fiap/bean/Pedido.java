@@ -2,6 +2,7 @@ package br.com.fiap.bean;
 
 import javax.swing.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Pedido {
     private int idDoPedido;
@@ -76,9 +77,12 @@ public class Pedido {
     }
 
     public void exibirInformacoesDoPedido() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
         String info = String.format(
                 """
-                📦 Informações do Pedido 📦
+                ==== Informações do Pedido ====
+                
                 🆔 ID do Pedido: %d
                 📋 Nome do Item: %s
                 🔢 Quantidade: %d
@@ -89,7 +93,7 @@ public class Pedido {
                 idDoPedido,
                 nomeItem,
                 qtdItem,
-                dataPedido,
+                dtf.format(dataPedido),
                 status,
                 analistaResponsavelPeloPedido
         );
