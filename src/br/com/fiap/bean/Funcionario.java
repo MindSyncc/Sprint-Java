@@ -1,6 +1,7 @@
 package br.com.fiap.bean;
 
 import java.time.LocalDate;
+import java.time.Period;
 import javax.swing.*;
 
 public class Funcionario {
@@ -74,12 +75,16 @@ public class Funcionario {
     public void setDataDeNascimento(LocalDate dataDeNascimento) {
         LocalDate dataInicio = LocalDate.parse("1899-12-31");
         LocalDate dataAtual = LocalDate.now();
+        Period idade = Period.between(dataDeNascimento, dataAtual);
 
         try {
             if (dataDeNascimento.isAfter(dataInicio) && (dataDeNascimento.isBefore(dataAtual) || dataDeNascimento.equals(dataAtual))) {
                 this.dataDeNascimento = dataDeNascimento;
+            } else if (idade.getYears() < 18) {
+                throw new Exception("ERRO ao registrar data de nascimento. Idade mínima permitida é 18 anos");
             } else {
                 throw new Exception("ERRO ao registrar data de nascimento. Faixa permitida: Min=1900, Max=Data Atual");
+
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "ERRO", JOptionPane.WARNING_MESSAGE);

@@ -18,10 +18,6 @@
             List<Pedido> pedidos = new ArrayList<>();
             List<Insumo> insumos = new ArrayList<>();
 
-            // funcionários mock para fim de testes (deletar depois)
-            almoxarifes.add(new Almoxarife("admin", "admins", LocalDate.parse("2001-12-12"), "12345678912", 2500, "tarde"));
-            analistasLocais.add(new AnalistaLocal("admin", "admins", LocalDate.parse("2001-12-12"), "12345678912", 2500, "tarde"));
-            analistasCorporativos.add(new AnalistaCorporativo("admin", "admins", LocalDate.parse("2001-12-12"), "12345678912", 2500, "manha", "Saúde", "nenhum"));
 
             // mock de prateleira inteligente
             PrateleiraInteligente prateleira = new PrateleiraInteligente(3, "Em manutenção", "Lucas dos Santos");
@@ -40,7 +36,7 @@
                             String nomeCadastro = JOptionPane.showInputDialog("Digite o nome que será utilizado no cadastro. Recomendamos que utilize seu nome completo");
                             String senhaCadastro = JOptionPane.showInputDialog("Digite a senha de cadastro. A senha deve conter pelo menos 5 caracteres");
 
-                            LocalDate dataDeNascimento = LocalDate.parse(JOptionPane.showInputDialog("Digite sua data de nascimento"), dtf);
+                            LocalDate dataDeNascimento = LocalDate.parse(JOptionPane.showInputDialog("Digite sua data de nascimento (dd/mm/aaaa)"), dtf);
                             String cpf = JOptionPane.showInputDialog("Digite seu CPF");
                             float salario = Float.parseFloat(JOptionPane.showInputDialog("Digite seu salário"));
                             String turno = JOptionPane.showInputDialog("Digite seu turno (manhã, tarde ou noite)");
