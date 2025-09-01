@@ -1,9 +1,9 @@
-package br.com.fiap.bean;
+package br.com.fiap.dto;
 
 import javax.swing.*;
 import java.time.LocalDate;
 
-public class AnalistaCorporativo extends Funcionario{
+public class AnalistaCorporativo extends Funcionario {
     private String areaDeAtuacao;
     private String departamento;
 

@@ -1,6 +1,5 @@
-package br.com.fiap.bean;
+package br.com.fiap.dto;
 
-import javax.swing.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

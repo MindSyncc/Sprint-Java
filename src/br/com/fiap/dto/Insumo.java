@@ -1,6 +1,5 @@
-package br.com.fiap.bean;
+package br.com.fiap.dto;
 
-import javax.swing.*;
 import java.time.LocalDate;
 
 
@@ -18,7 +17,7 @@ public class Insumo {
     public Insumo() {
     }
 
-    public Insumo(int idInsumo, String lote, LocalDate dataValidade, String nome, String unidadeMedida, CategoriaInsumo categoriaInsumo, br.com.fiap.bean.QRCode QRCode) {
+    public Insumo(int idInsumo, String lote, LocalDate dataValidade, String nome, String unidadeMedida, CategoriaInsumo categoriaInsumo, br.com.fiap.dto.QRCode QRCode) {
         this.idInsumo = idInsumo;
         this.lote = lote;
         this.dataValidade = dataValidade;
