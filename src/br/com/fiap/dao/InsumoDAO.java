@@ -18,7 +18,7 @@ public class InsumoDAO {
     }
 
     public String inserir(Insumo insumo) {
-        String sql = "insert into INSUMO(IDInsumo, Lote, DataValidade, Nome, UnidadeMedida, Codigo_De_Barras values(?, ?, ?, ?, ?, ?)";
+        String sql = "insert into INSUMO(IDInsumo, Lote, DataValidade, Nome, UnidadeMedida, Codigo_De_Barras) values(?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = getCon().prepareStatement(sql);) {
             ps.setInt(1, insumo.getIdInsumo());
             ps.setString(2, insumo.getLote());
