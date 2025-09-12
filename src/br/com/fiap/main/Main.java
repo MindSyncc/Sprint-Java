@@ -20,9 +20,6 @@
             List<Insumo> insumos = new ArrayList<>();
 
 
-            // mock de prateleira inteligente
-            PrateleiraInteligente prateleira = new PrateleiraInteligente(3, "Em manutenção", "Lucas dos Santos");
-
             // Formatador
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -121,7 +118,7 @@
                                                 }
                                                 System.out.println("Lista de insumos" + "\n" + insumos);
 
-                                                movimentacoes.add(new Movimentacao("CONSUMO", LocalDate.now(), "SAIDA", 1, prateleira, almoxarifeLogado.getNome()));
+                                                movimentacoes.add(new Movimentacao("CONSUMO", LocalDate.now(), "SAIDA", 1, almoxarifeLogado.getNome()));
                                                 break;
 
                                             case 3: // Registrar entrada de insumo
@@ -137,7 +134,7 @@
                                                 }
                                                 System.out.println("Lista de insumos" + "\n" + insumos);
 
-                                                movimentacoes.add(new Movimentacao("RETIRADA", LocalDate.now(), "ENTRADA", 1, prateleira, almoxarifeLogado.getNome()));
+                                                movimentacoes.add(new Movimentacao("RETIRADA", LocalDate.now(), "ENTRADA", 1, almoxarifeLogado.getNome()));
                                                 break;
 
                                             case 4: // Deslogar
@@ -173,36 +170,32 @@
                                     autenticado = true;
 
                                     while (autenticado) {
-                                        int opcao = Integer.parseInt(JOptionPane.showInputDialog("====== MENU DO ANALISTA LOCAL ====== \n\nEscolha uma opção \n(1) Exibir informações do funcionário \n(2) Verificar status da prateleira \n(3) Realizar pedido \n(4) Verificar movimentações \n(5) Deslogar\n(6) Sair do Sistema"));
+                                        int opcao = Integer.parseInt(JOptionPane.showInputDialog("====== MENU DO ANALISTA LOCAL ====== \n\nEscolha uma opção \n(1) Exibir informações do funcionário \n(2) Realizar pedido \n(3) Verificar movimentações \n(4) Deslogar\n(5) Sair do Sistema"));
 
                                         switch (opcao) {
                                             case 1: // Exibir informações do funcionário
                                                 analistaLocalLogado.exibirInformacoesDoFuncionario();
                                                 break;
 
-                                            case 2: // Verificar status da prateleira
-                                                analistaLocalLogado.verificarStatusDaPrateleira(prateleira);
-                                                break;
-
-                                            case 3: // Realizar pedido
+                                            case 2: // Realizar pedido
                                                 Pedido pedido = analistaLocalLogado.realizarPedidoDeInsumo();
                                                 pedido.exibirInformacoesDoPedido();
                                                 pedidos.add(pedido);
 
-                                                movimentacoes.add(new Movimentacao("REABASTECIMENTO", pedido.getDataPedido(), "ENTRADA", pedido.getQtdItem(), prateleira, pedido.getAnalistaResponsavelPeloPedido()));
+                                                movimentacoes.add(new Movimentacao("REABASTECIMENTO", pedido.getDataPedido(), "ENTRADA", pedido.getQtdItem(), pedido.getAnalistaResponsavelPeloPedido()));
 
                                                 System.out.println("Lista de pedidos" + "\n" + pedidos);
                                                 break;
 
-                                            case 4: // Verificar movimentações
+                                            case 3: // Verificar movimentações
                                                 analistaLocalLogado.verificarMovimentacoes(movimentacoes);
                                                 break;
 
-                                            case 5: // Deslogar
+                                            case 4: // Deslogar
                                                 autenticado = false;
                                                 break;
 
-                                            case 6: // Sair do sistema
+                                            case 5: // Sair do sistema
                                                 JOptionPane.showMessageDialog(null, "Até a próxima!");
                                                 System.exit(0);
 

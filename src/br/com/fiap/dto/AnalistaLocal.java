@@ -27,14 +27,6 @@ public class AnalistaLocal extends Funcionario {
         JOptionPane.showMessageDialog(null, dadosFuncionario, "Dados do Analista Local", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    public void verificarStatusDaPrateleira(PrateleiraInteligente prateleira) {
-        if (prateleira.getStatus().equals("Ativo")) {
-            JOptionPane.showMessageDialog(null, "A prateleira inteligente está ativada!");
-        } else {
-            JOptionPane.showMessageDialog(null, "A prateleira inteligente está desativada!");
-        }
-    }
-
     public Pedido realizarPedidoDeInsumo() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         JOptionPane.showMessageDialog(null, "Para ordenar um novo pedido é necessário que preencha algumas informações relevantes",

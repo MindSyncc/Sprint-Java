@@ -15,7 +15,6 @@ public class Movimentacao {
     private LocalDateTime dataHoraSaida;
     private String tipoMovimentacao;
     private int quantidade;
-    private PrateleiraInteligente prateleira; // Será necessário retirar este atributo
     private String funcionario;
 
     // construtores
@@ -23,13 +22,12 @@ public class Movimentacao {
     public Movimentacao() {
     }
 
-    public Movimentacao(String motivo, LocalDate data, String tipoMovimentacao, int quantidade, PrateleiraInteligente prateleira, String funcionario) {
+    public Movimentacao(String motivo, LocalDate data, String tipoMovimentacao, int quantidade, String funcionario) {
         this.idMovimentacao = sequencial++;
         this.motivo = motivo;
         this.data = data;
         this.tipoMovimentacao = tipoMovimentacao;
         this.quantidade = quantidade;
-        this.prateleira = prateleira;
         this.funcionario = funcionario;
     }
 
@@ -91,14 +89,6 @@ public class Movimentacao {
         this.quantidade = quantidade;
     }
 
-    public PrateleiraInteligente getPrateleira() {
-        return prateleira;
-    }
-
-    public void setPrateleira(PrateleiraInteligente prateleira) {
-        this.prateleira = prateleira;
-    }
-
     public String getFuncionario() {
         return funcionario;
     }
@@ -116,7 +106,7 @@ public class Movimentacao {
      */
     public String exibirInformacoesDaMovimentacao() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        String info = String.format("ID MOVIMENTAÇÃO: %d \nMOTIVO: %s \nDATA: %s \nTIPO: %s \nQNT: %d \nPRATELEIRA: %d \nRESPONSÁVEL: %s \n\n", idMovimentacao, motivo, dtf.format(data), tipoMovimentacao, quantidade, prateleira.getIdPrateleira(), funcionario
+        String info = String.format("ID MOVIMENTAÇÃO: %d \nMOTIVO: %s \nDATA: %s \nTIPO: %s \nQNT: %d \nRESPONSÁVEL: %s \n\n", idMovimentacao, motivo, dtf.format(data), tipoMovimentacao, quantidade, funcionario
         );
 
         return info;
