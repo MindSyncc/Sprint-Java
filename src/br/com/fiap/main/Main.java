@@ -1,5 +1,6 @@
     package br.com.fiap.main;
 
+    import br.com.fiap.dao.FuncionarioFactory;
     import br.com.fiap.dto.*;
 
     import javax.swing.*;
@@ -31,6 +32,9 @@
                 switch (escolha) {
                     case 1: // Cadastro
                         try {
+                            // Preparar uma instância do FuncionárioFactory e para cada ocasião você terá perguntas específicas para cada classe que herda de funcionário
+                            // Mudança na classe Main
+
                             int tipoCadastro = Integer.parseInt(JOptionPane.showInputDialog(null, "Escolha o tipo de funcionário a ser cadastrado \n\n(1) Almoxarife \n(2) Analista Local \n(3) Analista Corporativo", "Seleção do Cargo para Cadastro", JOptionPane.INFORMATION_MESSAGE));
 
                             String nomeCadastro = JOptionPane.showInputDialog("Digite o nome que será utilizado no cadastro. Recomendamos que utilize seu nome completo");
@@ -41,6 +45,9 @@
                             float salario = Float.parseFloat(JOptionPane.showInputDialog("Digite seu salário"));
                             String turno = JOptionPane.showInputDialog("Digite seu turno (manhã, tarde ou noite)");
 
+                            Funcionario funcionario = FuncionarioFactory.criarFuncionario(tipoCadastro);
+
+                            // Achar uma forma de registar na lista de funcionários o funcionário específico
 
                             switch (tipoCadastro) {
                                 case 1: // Cadastro de um almoxarife

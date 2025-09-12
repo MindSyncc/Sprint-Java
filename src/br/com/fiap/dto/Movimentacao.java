@@ -15,7 +15,7 @@ public class Movimentacao {
     private LocalDateTime dataHoraSaida;
     private String tipoMovimentacao;
     private int quantidade;
-    private PrateleiraInteligente prateleira;
+    private PrateleiraInteligente prateleira; // Será necessário retirar este atributo
     private String funcionario;
 
     // construtores
