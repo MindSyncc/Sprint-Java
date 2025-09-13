@@ -45,7 +45,12 @@ public class TesteFunc {
 
 
 
-
+// cirar as classes dao faltantes
+            // fornecedor, unidade, estoque
+            // controller de cada classe
+            // teste do banco de dados
+            // remover qrcode
+            //
 
         } catch (Exception e) {
             e.printStackTrace();

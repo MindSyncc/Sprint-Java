@@ -94,18 +94,6 @@ public class Almoxarife extends Funcionario {
         JOptionPane.showMessageDialog(null, dados, "Informações do Almoxarife", JOptionPane.INFORMATION_MESSAGE);
     }
 
-
-    public QRCode gerarQRCode() {
-        JOptionPane.showMessageDialog(null, "Gerando um QRCode...");
-
-        // Informações do QRCode Mocadas
-        int IdQRCode = 22;
-        LocalDate dataDeCriacao = LocalDate.now();
-        boolean statusQRCode = true;
-
-        return new QRCode(IdQRCode, dataDeCriacao, null, statusQRCode);
-    }
-
     public List<Insumo> retirarInsumo(List<Insumo> listaDeInsumos, String nomeDoInsumo) {
         Insumo insumoBuscado = null;
         boolean encontrou = false;
@@ -175,11 +163,11 @@ public class Almoxarife extends Funcionario {
             categoriaInsumo = new CategoriaInsumo(idCategoria, tipoCategoria, responsavelPeloRegistro);
         }
 
-        QRCode qrCode = null;
+        String qrCode = "";
         boolean etiquetarQRCode = JOptionPane.showConfirmDialog(null, "Gostaria de gerar um QRCode para etiquetar o insumo recebido?","GERAR QRCODE", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
 
         if (etiquetarQRCode) {
-            qrCode = gerarQRCode();
+            qrCode = "123A456"; // valor mockado
         }
 
         setDataUltimoReabastecimento(LocalDate.now());
@@ -213,11 +201,11 @@ public class Almoxarife extends Funcionario {
         }
 
         // registra um QRCode caso o usuário queira inseri-lo
-        QRCode qrCode = null;
+        String qrCode = "";
         boolean etiquetarQRCode = JOptionPane.showConfirmDialog(null, "Gostaria de gerar um QRCode para etiquetar o insumo recebido?","GERAR QRCODE", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
 
         if (etiquetarQRCode) {
-            qrCode = gerarQRCode();
+            qrCode = "123A456";
         }
 
         setQtdInsumosReabastecidos(qtdInsumosReabastecidos + 1);
