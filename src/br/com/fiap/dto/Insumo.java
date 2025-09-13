@@ -9,7 +9,7 @@ public class Insumo {
     private LocalDate dataValidade;
     private String nome;
     private String unidadeMedida;
-    private CategoriaInsumo categoriaInsumo;
+    private int IdCategoriaInsumo;
     private String QRCode;
 
     // construtores
@@ -17,13 +17,13 @@ public class Insumo {
     public Insumo() {
     }
 
-    public Insumo(int idInsumo, String lote, LocalDate dataValidade, String nome, String unidadeMedida, CategoriaInsumo categoriaInsumo, String QRCode) {
+    public Insumo(int idInsumo, String lote, LocalDate dataValidade, String nome, String unidadeMedida, int idCategoriaInsumo, String QRCode) {
         this.idInsumo = idInsumo;
         this.lote = lote;
         this.dataValidade = dataValidade;
         this.nome = nome;
         this.unidadeMedida = unidadeMedida;
-        this.categoriaInsumo = categoriaInsumo;
+        this.IdCategoriaInsumo = idCategoriaInsumo;
         this.QRCode = QRCode;
     }
 
@@ -69,12 +69,12 @@ public class Insumo {
         this.unidadeMedida = unidadeMedida;
     }
 
-    public CategoriaInsumo getCategoriaInsumo() {
-        return categoriaInsumo;
+    public int getIdCategoriaInsumo() {
+        return IdCategoriaInsumo;
     }
 
-    public void setCategoriaInsumo(CategoriaInsumo categoriaInsumo) {
-        this.categoriaInsumo = categoriaInsumo;
+    public void setIdCategoriaInsumo(int idCategoriaInsumo) {
+        this.IdCategoriaInsumo = idCategoriaInsumo;
     }
 
     public String getQRCode() {

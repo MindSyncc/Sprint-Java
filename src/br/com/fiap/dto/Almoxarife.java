@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 
 public class Almoxarife extends Funcionario {
     private int qtdOperacoesDia;
@@ -61,6 +62,10 @@ public class Almoxarife extends Funcionario {
 
     public void setQtdInsumosReabastecidos(int qtdInsumosReabastecidos) {
         this.qtdInsumosReabastecidos = qtdInsumosReabastecidos;
+    }
+
+    public static String gerarQRCodeUUID() {
+        return UUID.randomUUID().toString().replace("-", "").substring(0, 8).toUpperCase();
     }
 
     public void exibirInformacoesDoFuncionario() {
@@ -167,14 +172,14 @@ public class Almoxarife extends Funcionario {
         boolean etiquetarQRCode = JOptionPane.showConfirmDialog(null, "Gostaria de gerar um QRCode para etiquetar o insumo recebido?","GERAR QRCODE", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
 
         if (etiquetarQRCode) {
-            qrCode = "123A456"; // valor mockado
+            qrCode = gerarQRCodeUUID();
         }
 
         setDataUltimoReabastecimento(LocalDate.now());
 
         JOptionPane.showMessageDialog(null, "Insumo registrado com sucesso!", "EXITO", JOptionPane.INFORMATION_MESSAGE);
 
-        return new Insumo(idInsumo, loteDoInsumo, dataDeValidade, nomeDoInsumo, unidadeDeMedida, categoriaInsumo, qrCode);
+        return new Insumo(idInsumo, loteDoInsumo, dataDeValidade, nomeDoInsumo, unidadeDeMedida, categoriaInsumo.getIdCategoria(), qrCode);
     }
 
     public Insumo registrarEntradaDeInsumo(String motivo) {
@@ -205,13 +210,13 @@ public class Almoxarife extends Funcionario {
         boolean etiquetarQRCode = JOptionPane.showConfirmDialog(null, "Gostaria de gerar um QRCode para etiquetar o insumo recebido?","GERAR QRCODE", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
 
         if (etiquetarQRCode) {
-            qrCode = "123A456";
+            qrCode = gerarQRCodeUUID();
         }
 
         setQtdInsumosReabastecidos(qtdInsumosReabastecidos + 1);
         String mensagem = "Insumo registrado com sucesso! \n" + "Motivo do registo" + motivo;
         JOptionPane.showMessageDialog(null, mensagem, "EXITO", JOptionPane.INFORMATION_MESSAGE);
 
-        return new Insumo(idInsumo, loteDoInsumo, dataDeValidade, nomeDoInsumo, unidadeDeMedida, categoriaInsumo, qrCode);
+        return new Insumo(idInsumo, loteDoInsumo, dataDeValidade, nomeDoInsumo, unidadeDeMedida, categoriaInsumo.getIdCategoria(), qrCode);
     }
 }

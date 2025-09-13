@@ -50,7 +50,7 @@ public class TesteFunc {
             // controller de cada classe
             // teste do banco de dados
             // remover qrcode
-            //
+            // verificar se essa categoriaInsumo existe antes de criá-la.
 
         } catch (Exception e) {
             e.printStackTrace();
