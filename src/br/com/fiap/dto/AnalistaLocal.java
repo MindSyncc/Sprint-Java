@@ -7,13 +7,28 @@ import java.util.List;
 
 public class AnalistaLocal extends Funcionario {
 
+
     public AnalistaLocal() {
 
     }
 
-    public AnalistaLocal(String nome, String senha, LocalDate dataDeNascimento, String cpf, float salario, String turno) {
-        super(nome, senha, dataDeNascimento, cpf, salario, turno);
-        setFuncao("AnalistaCorporativo");
+    public AnalistaLocal(String funcional, String nome, String senha, LocalDate dataDeNascimento,
+                      String cpf, float salario, LocalDate dataInicio, String turno,
+                      String cargo, String permissao,
+                      String rua, String numero, String bairro, String cidade, String estado, String cep,
+                      int idUnidade) {
+        super(funcional, nome, senha, dataDeNascimento, cpf, salario, dataInicio, turno,
+                cargo, permissao, rua, numero, bairro, cidade, estado, cep, idUnidade);
+    }
+
+    // Construtor que recebe um funcionário
+    public AnalistaLocal(Funcionario funcionario) {
+        super(funcionario.getFuncional(), funcionario.getNome(), funcionario.getSenha(), funcionario.getDataDeNascimento(),
+                funcionario.getCpf(), funcionario.getSalario(), funcionario.getDataDeInicio(), funcionario.getTurno(),
+                funcionario.getCargo(), funcionario.getPermissao(),
+                funcionario.getRua(), funcionario.getNumero(), funcionario.getBairro(), funcionario.getCidade(), funcionario.getEstado(), funcionario.getCep(),
+                funcionario.getIdUnidade());
+        this.setIdFuncionario(funcionario.getIdFuncionario()); // mantém o ID original
     }
 
     public void exibirInformacoesDoFuncionario() {
@@ -23,7 +38,7 @@ public class AnalistaLocal extends Funcionario {
                 "CPF do Funcionário: %s%n" +
                 "Turno Alocado: %s%n" +
                 "Função do Funcionário: %s%n" +
-                "Salário vigente: %.2f", getIdFuncionario(), getNome(), getDataDeNascimento(), getCpf(), getTurno(), getFuncao(), getSalario());
+                "Salário vigente: %.2f", getIdFuncionario(), getNome(), getDataDeNascimento(), getCpf(), getTurno(), getCargo(), getSalario());
         JOptionPane.showMessageDialog(null, dadosFuncionario, "Dados do Analista Local", JOptionPane.INFORMATION_MESSAGE);
     }
 

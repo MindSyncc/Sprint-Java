@@ -14,10 +14,29 @@ public class Almoxarife extends Funcionario {
 
     }
 
-    public Almoxarife(String nome, String senha, LocalDate dataDeNascimento, String cpf, float salario, String turno) {
-        super(nome, senha, dataDeNascimento, cpf, salario, turno);
-        setFuncao("Almoxarife");
-        setDataUltimoReabastecimento(LocalDate.parse("2000-01-01"));
+    public Almoxarife(String funcional, String nome, String senha, LocalDate dataDeNascimento,
+                      String cpf, float salario, LocalDate dataInicio, String turno,
+                      String cargo, String permissao,
+                      String rua, String numero, String bairro, String cidade, String estado, String cep,
+                      int idUnidade) {
+        super(funcional, nome, senha, dataDeNascimento, cpf, salario, dataInicio, turno,
+                cargo, permissao, rua, numero, bairro, cidade, estado, cep, idUnidade);
+        this.qtdOperacoesDia = 0;
+        this.qtdInsumosReabastecidos = 0;
+        this.dataUltimoReabastecimento = null;
+    }
+
+    // Construtor que recebe um funcionário
+    public Almoxarife(Funcionario f) {
+        super(f.getFuncional(), f.getNome(), f.getSenha(), f.getDataDeNascimento(),
+                f.getCpf(), f.getSalario(), f.getDataDeInicio(), f.getTurno(),
+                f.getCargo(), f.getPermissao(),
+                f.getRua(), f.getNumero(), f.getBairro(), f.getCidade(), f.getEstado(), f.getCep(),
+                f.getIdUnidade());
+        this.setIdFuncionario(f.getIdFuncionario()); // mantém o ID original
+        this.qtdOperacoesDia = 0;
+        this.qtdInsumosReabastecidos = 0;
+        this.dataUltimoReabastecimento = null;
     }
 
     public int getQtdOperacoesDia() {
@@ -45,16 +64,36 @@ public class Almoxarife extends Funcionario {
     }
 
     public void exibirInformacoesDoFuncionario() {
-        String dadosFuncionario = String.format("ID do Funcionário: %d%n" +
-                "Nome do Funcionário: %s%n" +
-                "Data de Nascimento: %s%n" +
-                "CPF do Funcionário: %s%n" +
-                "Turno Alocado: %s%n" +
-                "Função do Funcionário: %s%n" +
-                "Quantidade de movimentações realizadas nesse dia: %d%n" +
-                "Quantidade de insumos já reabastecidos: %d", getIdFuncionario(), getNome(), getDataDeNascimento(), getCpf(), getTurno(), getFuncao(), qtdOperacoesDia, qtdInsumosReabastecidos);
-        JOptionPane.showMessageDialog(null, dadosFuncionario, "Dados do Almoxarife", JOptionPane.INFORMATION_MESSAGE);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String dados = String.format(
+                "ID: %d%nFuncional: %s%nNome: %s%nCPF: %s%nData Nascimento: %s%n" +
+                        "Salário: %.2f%nData Início: %s%nData Término: %s%nTurno: %s%nCargo: %s%nPermissão: %s%n" +
+                        "Endereço: %s, %s, %s, %s - %s%nCEP: %s%nID Unidade: %d%n" +
+                        "Qtd Movimentos Hoje: %d%nQtd Insumos Reabastecidos: %d",
+                getIdFuncionario(),
+                getFuncional(),
+                getNome(),
+                getCpf(),
+                getDataDeNascimento().format(dtf),
+                getSalario(),
+                getDataDeInicio().format(dtf),
+                getDataTermino() != null ? getDataTermino().format(dtf) : "N/A",
+                getTurno(),
+                getCargo(),
+                getPermissao(),
+                getRua(),
+                getNumero(),
+                getBairro(),
+                getCidade(),
+                getEstado(),
+                getCep(),
+                getIdUnidade(),
+                qtdOperacoesDia,
+                qtdInsumosReabastecidos
+        );
+        JOptionPane.showMessageDialog(null, dados, "Informações do Almoxarife", JOptionPane.INFORMATION_MESSAGE);
     }
+
 
     public QRCode gerarQRCode() {
         JOptionPane.showMessageDialog(null, "Gerando um QRCode...");
