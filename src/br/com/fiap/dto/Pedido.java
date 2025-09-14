@@ -10,20 +10,22 @@ public class Pedido {
     private String nomeItem;
     private LocalDate dataPedido;
     private String status;
-    private String analistaResponsavelPeloPedido;
+    private int idFuncionario;
+    private int idFornecedor;
 
     // construtores
 
     public Pedido() {
     }
 
-    public Pedido(int idDoPedido, int qtdItem, String nomeItem, LocalDate dataPedido, String status, String analistaResponsavelPeloPedido) {
+    public Pedido(int idDoPedido, int qtdItem, String nomeItem, LocalDate dataPedido, String status, int idFuncionario, int idFornecedor) {
         this.idDoPedido = idDoPedido;
         this.qtdItem = qtdItem;
         this.nomeItem = nomeItem;
         this.dataPedido = dataPedido;
         this.status = status;
-        this.analistaResponsavelPeloPedido = analistaResponsavelPeloPedido;
+        this.idFuncionario = idFuncionario;
+        this.idFornecedor = idFornecedor;
     }
 
     // getters/setters
@@ -68,12 +70,20 @@ public class Pedido {
         this.status = status;
     }
 
-    public String getAnalistaResponsavelPeloPedido() {
-        return analistaResponsavelPeloPedido;
+    public int getIdFuncionario() {
+        return idFuncionario;
     }
 
-    public void setAnalistaResponsavelPeloPedido(String analistaResponsavelPeloPedido) {
-        this.analistaResponsavelPeloPedido = analistaResponsavelPeloPedido;
+    public void setIdFuncionario(int idFuncionario) {
+        this.idFuncionario = idFuncionario;
+    }
+
+    public int getIdFornecedor() {
+        return idFornecedor;
+    }
+
+    public void setIdFornecedor(int idFornecedor) {
+        this.idFornecedor = idFornecedor;
     }
 
     public void exibirInformacoesDoPedido() {
@@ -88,14 +98,12 @@ public class Pedido {
                 🔢 Quantidade: %d
                 📅 Data do Pedido: %s
                 📌 Status: %s
-                👨‍💼 Analista Responsável: %s
                 """,
                 idDoPedido,
                 nomeItem,
                 qtdItem,
                 dtf.format(dataPedido),
-                status,
-                analistaResponsavelPeloPedido
+                status
         );
 
         JOptionPane.showMessageDialog(null, info, "Detalhes do Pedido", JOptionPane.INFORMATION_MESSAGE);

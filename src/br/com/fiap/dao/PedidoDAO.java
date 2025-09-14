@@ -18,15 +18,16 @@ public class PedidoDAO {
 
     // CREATE
     public String createPedido(Pedido pedido) {
-        String insert = "INSERT INTO PEDIDOS(idDoPedido, QtdItem, NomeItem, DataPedido, status, analistaResponsavelPeloPedido) VALUES(?, ?, ?, ?, ?, ?)";
+        String insert = "INSERT INTO PEDIDOS(idPedido, QtdItem, NomeItem, DataPedido, status, idFuncionario, idFornecedor) VALUES(?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(insert)) {
-            preparedStatement.setString(1, Integer.toString(pedido.getIdDoPedido()));
+            preparedStatement.setInt(1, pedido.getIdDoPedido());
             preparedStatement.setInt(2, pedido.getQtdItem());
             preparedStatement.setString(3, pedido.getNomeItem());
             preparedStatement.setDate(4, Date.valueOf(pedido.getDataPedido()));
             preparedStatement.setString(5, pedido.getStatus());
-            preparedStatement.setString(6, pedido.getAnalistaResponsavelPeloPedido());
+            preparedStatement.setInt(6, pedido.getIdFuncionario());
+            preparedStatement.setInt(7, pedido.getIdFornecedor());
 
             if (preparedStatement.executeUpdate() > 0) {
                 return "Registro inserido com sucesso!";
@@ -48,12 +49,14 @@ public class PedidoDAO {
 
             Pedido pedido;
             while (resultado.next()) {
-                pedido = new Pedido(Integer.parseInt(resultado.getString("ID")),
-                        Integer.parseInt(resultado.getString("QtdItem")),
+                pedido = new Pedido(resultado.getInt("idPedido"),
+                        resultado.getInt("QtdItem"),
                         resultado.getString("NomeItem"),
                         LocalDate.parse(resultado.getString("DataPedido")),
                         resultado.getString("status"),
-                        resultado.getString("analistaResponsavel"));
+                        resultado.getInt("idFuncionario"),
+                        resultado.getInt("idFornecedor"));
+
                 pedido.exibirInformacoesDoPedido();
             }
         } catch (SQLException e) {
@@ -63,7 +66,7 @@ public class PedidoDAO {
 
     // UPDATE
     public String updatePedido(Pedido pedido) {
-        String update = "UPDATE PEDIDOS SET QtdItem=?, NomeItem=?, DataPedido=?, status=?, analistaResponsavel=? WHERE idDoPedido = ?";
+        String update = "UPDATE PEDIDOS SET QtdItem=?, NomeItem=?, DataPedido=?, status=?, idFuncionario=?,idFornecedor=? WHERE idDoPedido =?";
 
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(update)) {
 
@@ -71,8 +74,9 @@ public class PedidoDAO {
             preparedStatement.setString(2, pedido.getNomeItem());
             preparedStatement.setDate(3, Date.valueOf(pedido.getDataPedido()));
             preparedStatement.setString(4, pedido.getStatus());
-            preparedStatement.setString(5, pedido.getAnalistaResponsavelPeloPedido());
-            preparedStatement.setString(6, Integer.toString(pedido.getQtdItem()));
+            preparedStatement.setInt(5, pedido.getIdFuncionario());
+            preparedStatement.setInt(6, pedido.getIdFornecedor());
+            preparedStatement.setInt(7, pedido.getIdDoPedido());
 
             if (preparedStatement.executeUpdate() > 0) {
                 return "Atualização realizada com sucesso!";
@@ -90,7 +94,7 @@ public class PedidoDAO {
         String delete = "DELETE FROM PEDIDOS WHERE idDoPedido = ?";
 
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(delete)) {
-            preparedStatement.setString(1, Integer.toString(pedido.getIdDoPedido()));
+            preparedStatement.setInt(1, pedido.getIdDoPedido());
 
             if (preparedStatement.executeUpdate() > 0) {
                 return "Remoção realizada com sucesso!";
@@ -101,5 +105,4 @@ public class PedidoDAO {
             return e.getMessage();
         }
     }
-
 }
