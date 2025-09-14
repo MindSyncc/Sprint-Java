@@ -5,12 +5,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Movimentacao {
-    private static int sequencial = 1;
-
 
     private int idMovimentacao;
     private String motivo;
-    private LocalDate data;
     private LocalDateTime dataHoraEntrada;
     private LocalDateTime dataHoraSaida;
     private String tipoMovimentacao;
@@ -22,13 +19,17 @@ public class Movimentacao {
     public Movimentacao() {
     }
 
-    public Movimentacao(String motivo, LocalDate data, String tipoMovimentacao, int quantidade, String funcionario) {
-        this.idMovimentacao = sequencial++;
+    public Movimentacao(String motivo, String tipoMovimentacao, int quantidade, String funcionario) {
         this.motivo = motivo;
-        this.data = data;
         this.tipoMovimentacao = tipoMovimentacao;
         this.quantidade = quantidade;
         this.funcionario = funcionario;
+
+        if (tipoMovimentacao.equalsIgnoreCase("Entrada")) {
+            setDataHoraEntrada(LocalDateTime.now());
+        } else {
+            setDataHoraSaida(LocalDateTime.now());
+        }
     }
 
     // getters/setters
@@ -47,14 +48,6 @@ public class Movimentacao {
 
     public void setMotivo(String motivo) {
         this.motivo = motivo;
-    }
-
-    public LocalDate getData() {
-        return data;
-    }
-
-    public void setData(LocalDate data) {
-        this.data = data;
     }
 
     public LocalDateTime getDataHoraEntrada() {
@@ -106,7 +99,7 @@ public class Movimentacao {
      */
     public String exibirInformacoesDaMovimentacao() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        String info = String.format("ID MOVIMENTAÇÃO: %d \nMOTIVO: %s \nDATA: %s \nTIPO: %s \nQNT: %d \nRESPONSÁVEL: %s \n\n", idMovimentacao, motivo, dtf.format(data), tipoMovimentacao, quantidade, funcionario
+        String info = String.format("ID MOVIMENTAÇÃO: %d \nMOTIVO: %s \nTIPO: %s \nQNT: %d \nRESPONSÁVEL: %s \n\n", idMovimentacao, motivo, tipoMovimentacao, quantidade, funcionario
         );
 
         return info;

@@ -53,8 +53,9 @@ public class AnalistaLocal extends Funcionario {
         String nomeItem = JOptionPane.showInputDialog("Digite o nome do item que será pedido: ");
         String statusPedido = "Pendente";
         LocalDate dataDoPedido = LocalDate.now();
+        int idFornecedor = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID do fornecedor:"));
 
-        return new Pedido(idPedido,quantidadeItem, nomeItem, dataDoPedido, statusPedido, getNome());
+        return new Pedido(idPedido,quantidadeItem, nomeItem, dataDoPedido, statusPedido, getIdFuncionario(), idFornecedor);
     }
 
     public void verificarMovimentacoes(List<Movimentacao> listaDeMovimentacoes) {

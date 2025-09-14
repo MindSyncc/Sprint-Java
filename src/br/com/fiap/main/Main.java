@@ -112,7 +112,7 @@
                                                     }
                                                     System.out.println("Lista de insumos" + "\n" + insumos);
 
-                                                    movimentacoes.add(new Movimentacao("CONSUMO", LocalDate.now(), "SAIDA", 1, almoxarifeLogado.getNome()));
+                                                    movimentacoes.add(new Movimentacao("CONSUMO", "SAIDA", 1, Integer.toString(almoxarifeLogado.getIdFuncionario())));
                                                     break;
 
                                                 case 3: // Registrar entrada de insumo
@@ -128,7 +128,7 @@
                                                     }
                                                     System.out.println("Lista de insumos" + "\n" + insumos);
 
-                                                    movimentacoes.add(new Movimentacao("RETIRADA", LocalDate.now(), "ENTRADA", 1, almoxarifeLogado.getNome()));
+                                                    movimentacoes.add(new Movimentacao("RETIRADA", "ENTRADA", 1, Integer.toString(almoxarifeLogado.getIdFuncionario())));
                                                     break;
 
                                                 case 4: // Deslogar
@@ -161,7 +161,7 @@
                                                         pedido.exibirInformacoesDoPedido();
                                                         pedidos.add(pedido);
 
-                                                        movimentacoes.add(new Movimentacao("REABASTECIMENTO", pedido.getDataPedido(), "ENTRADA", pedido.getQtdItem(), pedido.getAnalistaResponsavelPeloPedido()));
+                                                        movimentacoes.add(new Movimentacao("REABASTECIMENTO", "ENTRADA", pedido.getQtdItem(), Integer.toString(pedido.getIdFuncionario())));
 
                                                         System.out.println("Lista de pedidos" + "\n" + pedidos);
                                                         break;
