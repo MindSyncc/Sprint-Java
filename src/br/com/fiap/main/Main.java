@@ -102,15 +102,8 @@
                                                     break;
 
                                                 case 2: // Retirar insumo
-                                                    String nomeInsumo = JOptionPane.showInputDialog("Digite o nome do insumo que deseja retirar");
-                                                    boolean existeMotivoRetirada = JOptionPane.showConfirmDialog(null, "Deseja inserir o motivo de retirada?", "Atenção", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
-                                                    if (existeMotivoRetirada) {
-                                                        String motivoDeRetirada = JOptionPane.showInputDialog("Insira o motivo de retirada");
-                                                        insumos = almoxarifeLogado.retirarInsumo(insumos, nomeInsumo, motivoDeRetirada);
-                                                    } else {
-                                                        insumos = almoxarifeLogado.retirarInsumo(insumos, nomeInsumo);
-                                                    }
-                                                    System.out.println("Lista de insumos" + "\n" + insumos);
+                                                    int IDInsumo = Integer.parseInt(JOptionPane.showInputDialog("Digite o nome do insumo que deseja retirar"));
+                                                    almoxarifeLogado.retirarInsumo(IDInsumo);
 
                                                     movimentacoes.add(new Movimentacao("CONSUMO", LocalDate.now(), "SAIDA", 1, almoxarifeLogado.getNome()));
                                                     break;
