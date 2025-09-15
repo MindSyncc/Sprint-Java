@@ -12,9 +12,9 @@ public class TesteFunc {
 
             // ===== 1. Criar funcionário mock =====
             Funcionario funcionario = new Funcionario();
-            funcionario.setFuncional("12345678");
+            funcionario.setFuncional("12345679");
             funcionario.setNome("João da Silva");
-            funcionario.setCpf("12345678901");
+            funcionario.setCpf("12345678902");
             funcionario.setSenha("senha123");
             funcionario.setSalario(3500.50f);
             funcionario.setTurno("Manhã");

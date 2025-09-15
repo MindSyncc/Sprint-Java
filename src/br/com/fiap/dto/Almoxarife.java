@@ -1,6 +1,9 @@
 package br.com.fiap.dto;
 
+import br.com.fiap.controller.InsumoController;
+
 import javax.swing.*;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -99,51 +102,26 @@ public class Almoxarife extends Funcionario {
         JOptionPane.showMessageDialog(null, dados, "Informações do Almoxarife", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    public List<Insumo> retirarInsumo(List<Insumo> listaDeInsumos, String nomeDoInsumo) {
-        Insumo insumoBuscado = null;
-        boolean encontrou = false;
+    public void retirarInsumo(int IDInsumo) {
 
-        for (Insumo insumo: listaDeInsumos) {
-            if (insumo.getNome().equalsIgnoreCase(nomeDoInsumo)) {
-                encontrou = true;
-                insumoBuscado = insumo;
-                break;
-            }
+        // Cria o controller
+        InsumoController insumoController = new InsumoController();
+        try {
+            String resultado = insumoController.deletarInsumo(IDInsumo);
+
+            // Atualiza a quantidade de operações do almoxarife
+            setQtdOperacoesDia(getQtdOperacoesDia() + 1);
+
+            // Mostra o resultado
+            JOptionPane.showMessageDialog(null, resultado, "RESULTADO", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null,
+                    "Erro ao acessar o banco: " + e.getMessage(),
+                    "ERRO", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro de SQL: " + e.getMessage());
         }
-
-        listaDeInsumos.remove(insumoBuscado);
-        if (encontrou) {
-            JOptionPane.showMessageDialog(null, "Produto Encontrado!");
-            JOptionPane.showMessageDialog(null, insumoBuscado.exibirInformacoesDoInsumo(), "INFORMAÇÕES DO INSUMO", JOptionPane.INFORMATION_MESSAGE);
-            return listaDeInsumos;
-        }
-
-        JOptionPane.showMessageDialog(null, "Produto não encontrado, por favor verifique se o nome do insumo foi digitado corretamente", "ERRO",  JOptionPane.WARNING_MESSAGE);
-        return listaDeInsumos;
-    }
-
-    public List<Insumo> retirarInsumo(List<Insumo> listaDeInsumos, String nomeDoInsumo, String motivoDeRetirada) {
-        Insumo insumoBuscado = null;
-        boolean encontrou = false;
-
-        for (Insumo insumo: listaDeInsumos) {
-            if (insumo.getNome().equalsIgnoreCase(nomeDoInsumo)) {
-                encontrou = true;
-                insumoBuscado = insumo;
-                break;
-            }
-        }
-
-        if (encontrou) {
-            listaDeInsumos.remove(insumoBuscado);
-            JOptionPane.showMessageDialog(null, "Produto Encontrado!");
-            String mensagem = "Motivo de retirada: " + motivoDeRetirada + "\n" + insumoBuscado.exibirInformacoesDoInsumo();
-            JOptionPane.showMessageDialog(null, mensagem, "INFORMAÇÕES DO INSUMO", JOptionPane.INFORMATION_MESSAGE);
-            return listaDeInsumos;
-        }
-
-        JOptionPane.showMessageDialog(null, "Produto não encontrado, por favor verifique se o nome do insumo foi digitado corretamente", "ERRO",  JOptionPane.WARNING_MESSAGE);
-        return listaDeInsumos;
     }
 
     public Insumo registrarEntradaDeInsumo() {

@@ -1,13 +1,10 @@
 package br.com.fiap.dao;
 
-import br.com.fiap.dto.Funcionario;
 import br.com.fiap.dto.Insumo;
 
 import javax.swing.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,35 +20,44 @@ public class InsumoDAO {
     }
 
     public String inserir(Insumo insumo) {
-        String sql = "insert into INSUMO(IDInsumo, Lote, DataValidade, Nome, UnidadeMedida, Codigo_De_Barras) values(?, ?, ?, ?, ?, ?)";
+        String sql = "insert into INSUMO(nome, lote, datavalidade, unidademedida, codigo_de_barras, id_categoria) values(?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = getCon().prepareStatement(sql);) {
-            ps.setInt(1, insumo.getIdInsumo());
+            ps.setString(1, insumo.getNome());
             ps.setString(2, insumo.getLote());
-            ps.setDate(3, java.sql.Date.valueOf(insumo.getDataValidade()));
-            ps.setString(4, insumo.getNome());
-            ps.setString(5, insumo.getUnidadeMedida());
-            ps.setInt(6, 2000); // REVISAR (MOCK)
+            if (insumo.getDataValidade() != null) {
+                ps.setDate(3, Date.valueOf(insumo.getDataValidade()));
+            } else {
+                ps.setNull(3, Types.DATE);
+            }
+            ps.setString(4, insumo.getUnidadeMedida());
+            ps.setString(5, insumo.getQRCode());
+            ps.setInt(6, insumo.getIdCategoriaInsumo());
 
             if (ps.executeUpdate() > 0) {
-                return "Inserido com sucesso";
+                JOptionPane.showMessageDialog(null, "Insumo inserido com sucesso");
+
             } else {
-                return "Erro ao inserir";
+                JOptionPane.showMessageDialog(null, "Erro ao inserir o insumo");
             }
         } catch (SQLException e) {
-            return "Erro de SQL: " + e.getMessage();
+            JOptionPane.showMessageDialog(null, "Erro de SQL: " + e.getMessage());
         }
+
+        return "Insumo inserido com sucesso";
     }
 
     public String atualizar(Insumo insumo) {
-        String sql = "UPDATE INSUMO SET Lote=?, DataValidade=?, Nome=?, UnidadeMedida=?, Codigo_De_Barras=? " +
-                "WHERE IDInsumo=?";
+        String sql = "UPDATE INSUMO SET nome=?, lote=?, datavalidade=?, unidademedida=?, codigo_de_barras=?, id_categoria=?" +
+                "WHERE ID_INSUMO=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
-            ps.setString(1, insumo.getLote());
-            ps.setDate(2, java.sql.Date.valueOf(insumo.getDataValidade()));
-            ps.setString(3, insumo.getNome());
+            ps.setString(1, insumo.getNome());
+            ps.setString(2, insumo.getLote());
+            ps.setDate(3, java.sql.Date.valueOf(insumo.getDataValidade()));
             ps.setString(4, insumo.getUnidadeMedida());
-            ps.setInt(6, 2000); // REVISAR (MOCK)
-            ps.setInt(6, insumo.getIdInsumo());
+            ps.setString(5, insumo.getQRCode());
+            ps.setInt(6, insumo.getIdCategoriaInsumo());
+
+            ps.setInt(7, insumo.getIdInsumo()); // WHERE
 
             if (ps.executeUpdate() > 0) {
                 return "Atualizado com sucesso";
@@ -64,7 +70,7 @@ public class InsumoDAO {
     }
 
     public String deletar(int idInsumo) {
-        String sql = "DELETE FROM INSUMO WHERE IDInsumo=?";
+        String sql = "DELETE FROM INSUMO WHERE id_insumo=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
             ps.setInt(1, idInsumo);
 
@@ -79,7 +85,7 @@ public class InsumoDAO {
     }
 
     public String listarUm(Insumo insumo) {
-        String sql = "SELECT * FROM INSUMO WHERE ID_INSUMO = ?";
+        String sql = "SELECT * FROM INSUMO where id_insumo=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
             ps.setInt(1, insumo.getIdInsumo());
             ResultSet rs = ps.executeQuery();
@@ -88,13 +94,13 @@ public class InsumoDAO {
                 String dados = String.format(
                         "ID: %d%nNome: %s%nLote: %s%nData Validade: %s%n" +
                                 "Unidade de Medida: %s%nCódigo de Barras: %s%nID Categoria: %d",
-                        rs.getInt("ID_INSUMO"),
-                        rs.getString("NOME"),
-                        rs.getString("LOTE") != null ? rs.getString("LOTE") : "N/A",
-                        rs.getDate("DATAVALIDADE") != null ? rs.getDate("DATAVALIDADE").toString() : "N/A",
-                        rs.getString("UNIDADEMEDIDA"),
-                        rs.getString("CODIGO_DE_BARRAS"),
-                        rs.getInt("ID_CATEGORIA")
+                        rs.getInt("id_insumo"),
+                        rs.getString("nome"),
+                        rs.getString("lote") != null ? rs.getString("LOTE") : "N/A",
+                        rs.getDate("datavalidade") != null ? rs.getDate("DATAVALIDADE").toString() : "N/A",
+                        rs.getString("unidademedida"),
+                        rs.getString("codigo_de_barras"),
+                        rs.getInt("id_categoria")
                 );
                 return dados;
             } else {
@@ -127,7 +133,7 @@ public class InsumoDAO {
                 }
 
                 insumo.setQRCode(rs.getString("codigo_de_barras"));
-                insumo.setUnidadeMedida(rs.getString("unidadeMedida"));
+                insumo.setUnidadeMedida(rs.getString("unidademedida"));
                 insumo.setIdCategoriaInsumo(rs.getInt("id_categoria"));
 
                 insumos.add(insumo);

@@ -63,7 +63,7 @@ public class FuncionarioDAO {
                 JOptionPane.showMessageDialog(null, "Erro ao inserir funcionário");
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro de SQL: " + e.getMessage()); ;
+            JOptionPane.showMessageDialog(null, "Erro de SQL: " + e.getMessage());
         }
         return sucesso;
     }
