@@ -69,10 +69,10 @@ public class InsumoDAO {
         }
     }
 
-    public String deletar(int idInsumo) {
-        String sql = "DELETE FROM INSUMO WHERE id_insumo=?";
+    public String deletar(String QRCodeInsumo) {
+        String sql = "DELETE FROM INSUMO WHERE codigo_de_barras=?";
         try (PreparedStatement ps = getCon().prepareStatement(sql)) {
-            ps.setInt(1, idInsumo);
+            ps.setString(1, QRCodeInsumo);
 
             if (ps.executeUpdate() > 0) {
                 return "Deletado com sucesso";

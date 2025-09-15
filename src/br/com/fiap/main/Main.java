@@ -77,7 +77,7 @@
 
                             List<Funcionario> funcionarios = funcionarioController.listarTodosFuncionarios();
 
-                            // procura no banco
+                            // Procura o funcionário do banco de dados
                             Funcionario funcionarioEncontrado = null;
                             for (Funcionario funcionario : funcionarios) {
                                 if (funcionario.getNome().equals(nomeLogin) && funcionario.getSenha().equals(senhaLogin)) {
@@ -86,6 +86,7 @@
                                 }
                             }
 
+                            // Se encontrar o funcionário, autentica ele
                             if (funcionarioEncontrado != null) {
                                 autenticado = true;
 
@@ -102,24 +103,14 @@
                                                     break;
 
                                                 case 2: // Retirar insumo
-                                                    int IDInsumo = Integer.parseInt(JOptionPane.showInputDialog("Digite o nome do insumo que deseja retirar"));
-                                                    almoxarifeLogado.retirarInsumo(IDInsumo);
+                                                    String QRCodeInsumo = JOptionPane.showInputDialog("Digite o código de barras do insumo que deseja retirar");
+                                                    almoxarifeLogado.retirarInsumo(QRCodeInsumo);
 
                                                     movimentacoes.add(new Movimentacao("CONSUMO", "SAIDA", 1, Integer.toString(almoxarifeLogado.getIdFuncionario())));
                                                     break;
 
                                                 case 3: // Registrar entrada de insumo
-                                                    boolean existeMotivoRegistro = JOptionPane.showConfirmDialog(null, "Deseja inserir o motivo do registro?", "Atenção", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
-                                                    Insumo insumo;
-                                                    if (existeMotivoRegistro) {
-                                                        String motivoDeRegistro = JOptionPane.showInputDialog("Insira o motivo de registro");
-                                                        insumo = almoxarifeLogado.registrarEntradaDeInsumo(motivoDeRegistro);
-                                                        insumos.add(insumo);
-                                                    } else {
-                                                        insumo = almoxarifeLogado.registrarEntradaDeInsumo();
-                                                        insumos.add(insumo);
-                                                    }
-                                                    System.out.println("Lista de insumos" + "\n" + insumos);
+                                                    almoxarifeLogado.registrarEntradaDeInsumo();
 
                                                     movimentacoes.add(new Movimentacao("RETIRADA", "ENTRADA", 1, Integer.toString(almoxarifeLogado.getIdFuncionario())));
                                                     break;

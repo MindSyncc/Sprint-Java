@@ -102,12 +102,12 @@ public class Almoxarife extends Funcionario {
         JOptionPane.showMessageDialog(null, dados, "Informações do Almoxarife", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    public void retirarInsumo(int IDInsumo) {
+    public void retirarInsumo(String QRCodeInsumo) {
 
         // Cria o controller
         InsumoController insumoController = new InsumoController();
         try {
-            String resultado = insumoController.deletarInsumo(IDInsumo);
+            String resultado = insumoController.deletarInsumo(QRCodeInsumo);
 
             // Atualiza a quantidade de operações do almoxarife
             setQtdOperacoesDia(getQtdOperacoesDia() + 1);
@@ -195,6 +195,20 @@ public class Almoxarife extends Funcionario {
         String mensagem = "Insumo registrado com sucesso! \n" + "Motivo do registo" + motivo;
         JOptionPane.showMessageDialog(null, mensagem, "EXITO", JOptionPane.INFORMATION_MESSAGE);
 
-        return new Insumo(idInsumo, loteDoInsumo, dataDeValidade, nomeDoInsumo, unidadeDeMedida, categoriaInsumo.getIdCategoria(), qrCode);
+        // Criação do objeto insumo
+        Insumo insumo = new Insumo(idInsumo, loteDoInsumo, dataDeValidade, nomeDoInsumo, unidadeDeMedida, categoriaInsumo.getIdCategoria(), qrCode);
+
+        // Adiciona o insumo no banco de dados
+        try {
+            InsumoController insumoController = new InsumoController();
+            String resultadoInserir = insumoController.inserirInsumo(insumo);
+            System.out.println("Resultado Inserir: " + resultadoInserir);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro de SQL: " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage());
+        }
+
+        return insumo;
     }
 }

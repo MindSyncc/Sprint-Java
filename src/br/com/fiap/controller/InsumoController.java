@@ -31,11 +31,11 @@ public class InsumoController {
         return resultado;
     }
 
-    public String deletarInsumo(int idInsumo) throws ClassNotFoundException, SQLException {
+    public String deletarInsumo(String QRCodeInsumo) throws ClassNotFoundException, SQLException {
         Connection con = ConnectionFactory.abrirConexao();
         InsumoDAO insumoDAO = new InsumoDAO(con);
 
-        String resultado = insumoDAO.deletar(idInsumo);
+        String resultado = insumoDAO.deletar(QRCodeInsumo);
 
         ConnectionFactory.fecharConexao(con);
         return resultado;
