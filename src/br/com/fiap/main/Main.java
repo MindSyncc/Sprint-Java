@@ -99,6 +99,7 @@
 
                                             switch (opcao) {
                                                 case 1: // Exibir informações do usuário
+                                                    almoxarifeLogado.exibirInformacoesDoFuncionario();
 
                                                     break;
 
