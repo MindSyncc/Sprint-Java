@@ -1,5 +1,8 @@
 package br.com.fiap.dto;
 
+import javax.swing.*;
+import java.time.format.DateTimeFormatter;
+
 public class Unidade {
     private int idUnidade;
     private String nomeUnidade;
@@ -9,12 +12,13 @@ public class Unidade {
     private String cidade;
     private String estado;
     private String cep;
+    private int idEstoque;
 
     public Unidade() {
 
     }
 
-    public Unidade(int idUnidade, String nomeUnidade, String rua, String numero, String bairro, String cidade, String estado, String cep) {
+    public Unidade(int idUnidade, String nomeUnidade, String rua, String numero, String bairro, String cidade, String estado, String cep, int idEstoque) {
         this.idUnidade = idUnidade;
         this.nomeUnidade = nomeUnidade;
         this.rua = rua;
@@ -23,6 +27,7 @@ public class Unidade {
         this.cidade = cidade;
         this.estado = estado;
         this.cep = cep;
+        this.idEstoque = idEstoque;
     }
 
     public int getIdUnidade() {
@@ -87,5 +92,34 @@ public class Unidade {
 
     public void setCep(String cep) {
         this.cep = cep;
+    }
+
+    public int getIdEstoque() {
+        return idEstoque;
+    }
+
+    public void setIdEstoque(int idEstoque) {
+        this.idEstoque = idEstoque;
+    }
+
+    public void exibirInformacoesDaUnidade() {
+        String info = String.format(
+                """
+                ==== Informações do Pedido ====
+                
+                ID da Unidade: %d
+                Nome da Unidade: %s
+                Estado: %s
+                Bairro: %s
+                Rua: %s
+                """,
+                idUnidade,
+                nomeUnidade,
+                estado,
+                bairro,
+                rua
+        );
+
+        JOptionPane.showMessageDialog(null, info, "Detalhes da Unidade", JOptionPane.INFORMATION_MESSAGE);
     }
 }

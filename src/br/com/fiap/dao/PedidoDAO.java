@@ -17,8 +17,8 @@ public class PedidoDAO {
     }
 
     // CREATE
-    public String createPedido(Pedido pedido) {
-        String insert = "INSERT INTO PEDIDOS(idPedido, QtdItem, NomeItem, DataPedido, status, idFuncionario, idFornecedor) VALUES(?, ?, ?, ?, ?, ?, ?)";
+    public String inserir(Pedido pedido) {
+        String insert = "INSERT INTO PEDIDO(ID_PEDIDO, QUANTIDADE, NOME_ITEM, DATA_PEDIDO, STATUS, ID_FUNCIONARIO, ID_FORNECEDOR) VALUES(?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(insert)) {
             preparedStatement.setInt(1, pedido.getIdDoPedido());
@@ -41,21 +41,21 @@ public class PedidoDAO {
     }
 
     // READ
-    public void readPedido() {
-        String read = "SELECT * FROM PEDIDOS";
+    public void listarTodos() {
+        String read = "SELECT * FROM PEDIDO";
 
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(read)) {
             ResultSet resultado = preparedStatement.executeQuery();
 
             Pedido pedido;
             while (resultado.next()) {
-                pedido = new Pedido(resultado.getInt("idPedido"),
-                        resultado.getInt("QtdItem"),
-                        resultado.getString("NomeItem"),
-                        LocalDate.parse(resultado.getString("DataPedido")),
-                        resultado.getString("status"),
-                        resultado.getInt("idFuncionario"),
-                        resultado.getInt("idFornecedor"));
+                pedido = new Pedido(resultado.getInt("ID_PEDIDO"),
+                        resultado.getInt("QUANTIDADE"),
+                        resultado.getString("NOME_ITEM"),
+                        resultado.getDate("DATA_PEDIDO").toLocalDate(),
+                        resultado.getString("STATUS"),
+                        resultado.getInt("ID_FUNCIONARIO"),
+                        resultado.getInt("ID_FORNECEDOR"));
 
                 pedido.exibirInformacoesDoPedido();
             }
@@ -64,9 +64,34 @@ public class PedidoDAO {
         }
     }
 
+    public void listarUm(Pedido pedido) {
+        String sqlQuery = "SELECT * FROM PEDIDO WHERE ID_PEDIDO=?";
+
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(sqlQuery)) {
+
+            preparedStatement.setInt(1, pedido.getIdDoPedido());
+            ResultSet resultado = preparedStatement.executeQuery();
+
+            while (resultado.next()) {
+                pedido = new Pedido(resultado.getInt("ID_PEDIDO"),
+                        resultado.getInt("QUANTIDADE"),
+                        resultado.getString("NOME_ITEM"),
+                        resultado.getDate("DATA_PEDIDO").toLocalDate(),
+                        resultado.getString("STATUS"),
+                        resultado.getInt("ID_FUNCIONARIO"),
+                        resultado.getInt("ID_FORNECEDOR"));
+
+                pedido.exibirInformacoesDoPedido();
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
     // UPDATE
-    public String updatePedido(Pedido pedido) {
-        String update = "UPDATE PEDIDOS SET QtdItem=?, NomeItem=?, DataPedido=?, status=?, idFuncionario=?,idFornecedor=? WHERE idDoPedido =?";
+    public String atualizar(Pedido pedido) {
+        String update = "UPDATE PEDIDO SET QUANTIDADE=?, NOME_ITEM=?, DATA_PEDIDO=?, STATUS=?, ID_FUNCIONARIO=?,ID_FORNECEDOR=? WHERE ID_PEDIDO=?";
 
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(update)) {
 
@@ -90,8 +115,8 @@ public class PedidoDAO {
     }
 
     // DELETE
-    public String deletePedido(Pedido pedido) {
-        String delete = "DELETE FROM PEDIDOS WHERE idDoPedido = ?";
+    public String deletar(Pedido pedido) {
+        String delete = "DELETE FROM PEDIDO WHERE ID_PEDIDO = ?";
 
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(delete)) {
             preparedStatement.setInt(1, pedido.getIdDoPedido());
