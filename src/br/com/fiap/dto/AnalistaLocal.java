@@ -1,6 +1,11 @@
 package br.com.fiap.dto;
 
+import br.com.fiap.controller.PedidoController;
+import br.com.fiap.dao.ConnectionFactory;
+
 import javax.swing.*;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -55,7 +60,23 @@ public class AnalistaLocal extends Funcionario {
         LocalDate dataDoPedido = LocalDate.now();
         int idFornecedor = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID do fornecedor:"));
 
-        return new Pedido(idPedido,quantidadeItem, nomeItem, dataDoPedido, statusPedido, getIdFuncionario(), idFornecedor);
+        // Cria o objeto pedido
+        Pedido pedido = new Pedido(idPedido,quantidadeItem, nomeItem, dataDoPedido, statusPedido, getIdFuncionario(), idFornecedor);
+
+        // Armazena o pedido no banco de dados
+        try {
+            PedidoController pedidoController = new PedidoController();
+            String resultadoInserir = pedidoController.inserirPedido(pedido);
+            System.out.println(resultadoInserir);
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro de SQL: " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage());
+        }
+
+
+        return pedido;
     }
 
     public void verificarMovimentacoes(List<Movimentacao> listaDeMovimentacoes) {
