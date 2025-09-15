@@ -1,5 +1,7 @@
 package br.com.fiap.dto;
 
+import javax.swing.*;
+
 public class Estoque {
     private int idEstoque;
     private int qtdAtual;
@@ -57,5 +59,26 @@ public class Estoque {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public void exibirInformacoesDoEstoque() {
+        String info = String.format(
+                """
+                ==== Informações do Pedido ====
+                
+                ID da Unidade: %d
+                Quant. Atual: %d
+                Quant. Mínima: %d
+                Quant. Máxima: %d
+                Status: %s
+                """,
+                idEstoque,
+                qtdAtual,
+                qtdMinima,
+                qtdMaxima,
+                status
+        );
+
+        JOptionPane.showMessageDialog(null, info, "Detalhes da Unidade", JOptionPane.INFORMATION_MESSAGE);
     }
 }
