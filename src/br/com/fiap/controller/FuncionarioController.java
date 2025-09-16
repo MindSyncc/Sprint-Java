@@ -1,9 +1,8 @@
 package br.com.fiap.controller;
 
-import br.com.fiap.dao.FuncionarioDAO;
-import br.com.fiap.dto.Funcionario;
-import br.com.fiap.dao.ConnectionFactory;
-import br.com.fiap.dao.FuncionarioFactory;
+import br.com.fiap.model.dao.FuncionarioDAO;
+import br.com.fiap.model.dto.Funcionario;
+import br.com.fiap.model.dao.ConnectionFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;

@@ -1,8 +1,8 @@
 package br.com.fiap.controller;
 
-import br.com.fiap.dao.ConnectionFactory;
-import br.com.fiap.dao.EstoqueDAO;
-import br.com.fiap.dto.Estoque;
+import br.com.fiap.model.dao.ConnectionFactory;
+import br.com.fiap.model.dao.EstoqueDAO;
+import br.com.fiap.model.dto.Estoque;
 
 import java.sql.Connection;
 

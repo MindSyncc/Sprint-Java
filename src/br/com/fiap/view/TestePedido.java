@@ -1,0 +1,29 @@
+package br.com.fiap.view;
+
+import br.com.fiap.model.dao.ConnectionFactory;
+import br.com.fiap.model.dao.PedidoDAO;
+import br.com.fiap.model.dto.Pedido;
+
+import java.sql.Connection;
+import java.time.LocalDate;
+
+public class TestePedido {
+    public static void main(String[] args) {
+        Connection connection = ConnectionFactory.abrirConexao();
+        PedidoDAO pedidoDao = new PedidoDAO(connection);
+
+        Pedido pedido = new Pedido(1, 10, "Luvas", LocalDate.now(), "Andamento", 8, 1);
+        pedido.setNomeItem("Seringas");
+        System.out.println(pedidoDao.atualizar(pedido));
+
+        Pedido pedido1 = new Pedido(2, 5, "Tubos de Ensaio", LocalDate.now(), "Andamento", 8, 1);
+        System.out.println(pedidoDao.inserir(pedido1));
+
+        pedidoDao.listarUm(pedido1);
+        pedidoDao.listarTodos();
+
+        System.out.println(pedidoDao.deletar(pedido1));
+
+        ConnectionFactory.fecharConexao(connection);
+    }
+}

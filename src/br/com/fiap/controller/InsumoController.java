@@ -1,8 +1,8 @@
 package br.com.fiap.controller;
 
-import br.com.fiap.dao.ConnectionFactory;
-import br.com.fiap.dao.InsumoDAO;
-import br.com.fiap.dto.Insumo;
+import br.com.fiap.model.dao.ConnectionFactory;
+import br.com.fiap.model.dao.InsumoDAO;
+import br.com.fiap.model.dto.Insumo;
 
 import java.sql.Connection;
 import java.sql.SQLException;

@@ -1,8 +1,8 @@
 package br.com.fiap.controller;
 
-import br.com.fiap.dao.ConnectionFactory;
-import br.com.fiap.dao.UnidadeDAO;
-import br.com.fiap.dto.Unidade;
+import br.com.fiap.model.dao.ConnectionFactory;
+import br.com.fiap.model.dao.UnidadeDAO;
+import br.com.fiap.model.dto.Unidade;
 
 import java.sql.Connection;
 import java.sql.SQLException;
