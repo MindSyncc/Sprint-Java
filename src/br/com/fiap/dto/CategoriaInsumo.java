@@ -1,19 +1,19 @@
 package br.com.fiap.dto;
 
+import javax.swing.*;
+
 public class CategoriaInsumo {
     private int idCategoria;
     private String tipoCategoria;
-    private String responsavelPeloRegistro;
 
     // construtores
 
     public CategoriaInsumo() {
     }
 
-    public CategoriaInsumo(int idCategoria, String tipoCategoria, String responsavelPeloRegistro) {
+    public CategoriaInsumo(int idCategoria, String tipoCategoria) {
         this.idCategoria = idCategoria;
         this.tipoCategoria = tipoCategoria;
-        this.responsavelPeloRegistro = responsavelPeloRegistro;
     }
 
     // getters/setters
@@ -34,11 +34,18 @@ public class CategoriaInsumo {
         this.tipoCategoria = tipoCategoria;
     }
 
-    public String getResponsavelPeloRegistro() {
-        return responsavelPeloRegistro;
-    }
+    public void exibirInformacoesDoEstoque() {
+        String info = String.format(
+                """
+                ==== Informações da Categoria ====
+                
+                ID da Categoria: %d
+                Tipo de Categoria: %s
+                """,
+                idCategoria,
+                tipoCategoria
+        );
 
-    public void setResponsavelPeloRegistro(String responsavelPeloRegistro) {
-        this.responsavelPeloRegistro = responsavelPeloRegistro;
+        JOptionPane.showMessageDialog(null, info, "Detalhes da Unidade", JOptionPane.INFORMATION_MESSAGE);
     }
 }

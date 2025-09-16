@@ -64,7 +64,7 @@ public class Estoque {
     public void exibirInformacoesDoEstoque() {
         String info = String.format(
                 """
-                ==== Informações do Pedido ====
+                ==== Informações do Estoque ====
                 
                 ID da Unidade: %d
                 Quant. Atual: %d

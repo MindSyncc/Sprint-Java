@@ -105,7 +105,7 @@ public class Unidade {
     public void exibirInformacoesDaUnidade() {
         String info = String.format(
                 """
-                ==== Informações do Pedido ====
+                ==== Informações da Unidade ====
                 
                 ID da Unidade: %d
                 Nome da Unidade: %s

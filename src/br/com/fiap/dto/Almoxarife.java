@@ -141,9 +141,8 @@ public class Almoxarife extends Funcionario {
         if (registrarCategoriaDoInsumo) {
             int idCategoria = 20;
             String tipoCategoria = JOptionPane.showInputDialog("Digite a categoria do insumo recebido: ");
-            String responsavelPeloRegistro = getNome();
 
-            categoriaInsumo = new CategoriaInsumo(idCategoria, tipoCategoria, responsavelPeloRegistro);
+            categoriaInsumo = new CategoriaInsumo(idCategoria, tipoCategoria);
         }
 
         String qrCode = "";
@@ -178,9 +177,8 @@ public class Almoxarife extends Funcionario {
         if (registrarCategoriaDoInsumo) {
             int idCategoria = 20;
             String tipoCategoria = JOptionPane.showInputDialog("Digite a categoria do insumo recebido: ");
-            String responsavelPeloRegistro = getNome();
 
-            categoriaInsumo = new CategoriaInsumo(idCategoria, tipoCategoria, responsavelPeloRegistro);
+            categoriaInsumo = new CategoriaInsumo(idCategoria, tipoCategoria);
         }
 
         // registra um QRCode caso o usuário queira inseri-lo
