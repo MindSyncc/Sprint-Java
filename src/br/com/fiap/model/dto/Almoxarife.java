@@ -1,11 +1,15 @@
 package br.com.fiap.model.dto;
 
+import br.com.fiap.controller.CategoriaInsumoController;
+import br.com.fiap.controller.EstoqueInsumoController;
 import br.com.fiap.controller.InsumoController;
 
 import javax.swing.*;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class Almoxarife extends Funcionario {
@@ -103,109 +107,264 @@ public class Almoxarife extends Funcionario {
 
     public void retirarInsumo(String QRCodeInsumo) {
 
-        // Cria o controller
+        // Cria os controladores necessários
         InsumoController insumoController = new InsumoController();
+        EstoqueInsumoController estoqueInsumoController = new EstoqueInsumoController();
+
         try {
-            String resultado = insumoController.deletarInsumo(QRCodeInsumo);
+            // 1. Busca o insumo pelo QRCode
+            Insumo insumo = insumoController.listarUmInsumo(QRCodeInsumo);
+            if (insumo == null) {
+                JOptionPane.showMessageDialog(null,
+                        "Insumo não encontrado com este QRCode!",
+                        "ERRO", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-            // Atualiza a quantidade de operações do almoxarife
-            setQtdOperacoesDia(getQtdOperacoesDia() + 1);
+            // 2. Buscar o registro do insumo no estoque
+            int idEstoquePrincipal = 1; // Estoque principal de teste
+            EstoqueInsumo estoqueInsumo = estoqueInsumoController.listarUmEstoqueInsumo(idEstoquePrincipal, insumo.getIdInsumo());
 
-            // Mostra o resultado
-            JOptionPane.showMessageDialog(null, resultado, "RESULTADO", JOptionPane.INFORMATION_MESSAGE);
+            if (estoqueInsumo == null) {
+                JOptionPane.showMessageDialog(null,
+                        "Este insumo ainda não está vinculado ao estoque!",
+                        "ERRO", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (estoqueInsumo != null && estoqueInsumo.getQuantidade() > 0) {
+                estoqueInsumo.setQuantidade(estoqueInsumo.getQuantidade() - 1);
+
+                // atualiza o Estoque com o insumo já retirado e aumenta a qnt de operações por dia do Almoxarife
+                String resultado = estoqueInsumoController.atualizarEstoqueInsumo(estoqueInsumo);
+                setQtdOperacoesDia(getQtdOperacoesDia() + 1);
+
+                JOptionPane.showMessageDialog(null, resultado, "RESULTADO", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null,
+                        "Não há quantidade disponível deste insumo no estoque.",
+                        "ESTOQUE VAZIO", JOptionPane.WARNING_MESSAGE);
+            }
 
         } catch (ClassNotFoundException e) {
             JOptionPane.showMessageDialog(null,
-                    "Erro ao acessar o banco: " + e.getMessage(),
+                    "Erro: " + e.getMessage(),
                     "ERRO", JOptionPane.ERROR_MESSAGE);
+
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro de SQL: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "ERRO", e.getMessage(), JOptionPane.ERROR_MESSAGE);
         }
     }
 
     public Insumo registrarEntradaDeInsumo() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        JOptionPane.showMessageDialog(null, "Para registar um novo insumo e necessário preencher algumas informações relevantes", "PREENCHIEMENTO DE DADOS", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(null,
+                "Para registrar um novo insumo é necessário preencher algumas informações relevantes",
+                "PREENCHIMENTO DE DADOS", JOptionPane.WARNING_MESSAGE);
 
-        // Dados para a criação do objeto Insumo
-        int idInsumo = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID do Insumo recebido: "));
-        String nomeDoInsumo = JOptionPane.showInputDialog("Digite o nome do insumo recebido: ");
-        String loteDoInsumo = JOptionPane.showInputDialog("Digite o lote do insumo recebido: ");
-        String unidadeDeMedida = JOptionPane.showInputDialog("Digite a unidade de medida do insumo (Caso o insumo não possua uma unidade de medida digite 'Unitário'): ");
-        LocalDate dataDeValidade = LocalDate.parse(JOptionPane.showInputDialog("Digite a data de validade prescrita no insumo recebido: "), dtf);
+        Insumo novoInsumo = null;
 
-        boolean registrarCategoriaDoInsumo = JOptionPane.showConfirmDialog(null, "Gostaria de detalhar a categoria do insumo recebido?","ADICIONAR CATEGORIA DO INSUMO", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
+        try {
+            // ===== Entrada dos dados =====
+            String nomeDoInsumo = JOptionPane.showInputDialog("Digite o nome do insumo recebido: ");
+            String loteDoInsumo = JOptionPane.showInputDialog("Digite o lote do insumo recebido: ");
+            String unidadeDeMedida = JOptionPane.showInputDialog("Digite a unidade de medida do insumo (ou 'Unitário'): ");
+            LocalDate dataDeValidade = LocalDate.parse(
+                    JOptionPane.showInputDialog("Digite a data de validade prescrita no insumo recebido (dd/MM/yyyy): "),
+                    dtf);
 
-        CategoriaInsumo categoriaInsumo = null;
-        if (registrarCategoriaDoInsumo) {
-            int idCategoria = 20;
-            String tipoCategoria = JOptionPane.showInputDialog("Digite a categoria do insumo recebido: ");
+            int quantidade = Integer.parseInt(JOptionPane.showInputDialog("Digite a quantidade recebida"));
 
-            categoriaInsumo = new CategoriaInsumo(idCategoria, tipoCategoria);
+            // Registro de categoria
+            boolean registrarCategoriaDoInsumo = JOptionPane.showConfirmDialog(null, "Gostaria de detalhar a categoria do insumo recebido?", "ADICIONAR CATEGORIA DO INSUMO", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
+
+            CategoriaInsumo categoriaInsumo = null;
+            if (registrarCategoriaDoInsumo) {
+                categoriaInsumo = registrarCategoria(); // aqui já retornaria a categoria criada
+            }
+
+            // gera um QRCode para o insumo recebido
+            String qrCode = gerarQRCodeUUID();
+
+            // Criação do objeto insumo
+            novoInsumo = new Insumo(
+                    loteDoInsumo,
+                    dataDeValidade,
+                    nomeDoInsumo,
+                    unidadeDeMedida,
+                    categoriaInsumo != null ? categoriaInsumo.getIdCategoria() : null,
+                    qrCode
+            );
+
+            // Cria os controladores para acessar o banco
+            InsumoController insumoController = new InsumoController();
+            EstoqueInsumoController estoqueInsumoController = new EstoqueInsumoController();
+
+            // Verifica a existência do insumo recebido
+            int idInsumo = 0;
+            Insumo insumoExiste = insumoController.listarUmInsumo(qrCode);
+
+            if (insumoExiste == null) {
+                // não existe, então cria
+                insumoController.inserirInsumo(novoInsumo);
+                idInsumo = insumoController.listarUmInsumo(novoInsumo.getQRCode()).getIdInsumo();
+
+            } else { // existe, então recupera o ID para vínculo com EstoqueInsumo
+                idInsumo = insumoExiste.getIdInsumo();
+            }
+
+            // Vincula o insumo ao estoque (Criação de uma classe EstoqueInsumo)
+            int idEstoquePrincipal = 1; // supondo estoque padrão
+            EstoqueInsumo estoqueInsumo = estoqueInsumoController.listarUmEstoqueInsumo(idEstoquePrincipal, idInsumo);
+
+            if (estoqueInsumo == null) {
+                // Se não existe vínculo, cria o registro de estoqueInsumo
+                estoqueInsumo = new EstoqueInsumo(idEstoquePrincipal, idInsumo, quantidade);
+                estoqueInsumoController.inserirEstoqueInsumo(estoqueInsumo);
+            } else {
+                // Se já existe, apenas atualiza o registro aumentando a quantidade
+                estoqueInsumo.setQuantidade(quantidade);
+                estoqueInsumoController.atualizarEstoqueInsumo(estoqueInsumo);
+            }
+
+            setDataUltimoReabastecimento(LocalDate.now());
+            JOptionPane.showMessageDialog(null, "Insumo registrado com sucesso!", "SUCESSO", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao registrar insumo: " + e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+            return null;
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
 
-        String qrCode = "";
-        boolean etiquetarQRCode = JOptionPane.showConfirmDialog(null, "Gostaria de gerar um QRCode para etiquetar o insumo recebido?","GERAR QRCODE", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
-
-        if (etiquetarQRCode) {
-            qrCode = gerarQRCodeUUID();
-        }
-
-        setDataUltimoReabastecimento(LocalDate.now());
-
-        JOptionPane.showMessageDialog(null, "Insumo registrado com sucesso!", "EXITO", JOptionPane.INFORMATION_MESSAGE);
-
-        return new Insumo(idInsumo, loteDoInsumo, dataDeValidade, nomeDoInsumo, unidadeDeMedida, categoriaInsumo.getIdCategoria(), qrCode);
+        return novoInsumo;
     }
 
     public Insumo registrarEntradaDeInsumo(String motivo) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        JOptionPane.showMessageDialog(null, "Para registar um novo insumo e necessário preencher algumas informações relevantes", "PREENCHIEMENTO DE DADOS", JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showMessageDialog(null,
+                "Para registrar um novo insumo é necessário preencher algumas informações relevantes",
+                "PREENCHIMENTO DE DADOS", JOptionPane.WARNING_MESSAGE);
 
-        // Dados para a criação do objeto Insumo
-        int idInsumo = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID do Insumo recebido: "));
-        String nomeDoInsumo = JOptionPane.showInputDialog("Digite o nome do insumo recebido: ");
-        String loteDoInsumo = JOptionPane.showInputDialog("Digite o lote do insumo recebido: ");
-        String unidadeDeMedida = JOptionPane.showInputDialog("Digite a unidade de medida do insumo (Caso o insumo não possuia uma unidade de medida digite Unitário): ");
-        LocalDate dataDeValidade = LocalDate.parse(JOptionPane.showInputDialog("Digite a data de validade prescrita no insumo recebido: "), dtf);
+        Insumo novoInsumo = null;
 
-        boolean registrarCategoriaDoInsumo = JOptionPane.showConfirmDialog(null, "Gostaria de detalhar a categoria do insumo recebido?","ADICIONAR CATEGORIA DO INSUMO", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
-
-        // registra a categoria caso o usuário queira inseri-la
-        CategoriaInsumo categoriaInsumo = null;
-        if (registrarCategoriaDoInsumo) {
-            int idCategoria = 20;
-            String tipoCategoria = JOptionPane.showInputDialog("Digite a categoria do insumo recebido: ");
-
-            categoriaInsumo = new CategoriaInsumo(idCategoria, tipoCategoria);
-        }
-
-        // registra um QRCode caso o usuário queira inseri-lo
-        String qrCode = "";
-        boolean etiquetarQRCode = JOptionPane.showConfirmDialog(null, "Gostaria de gerar um QRCode para etiquetar o insumo recebido?","GERAR QRCODE", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
-
-        if (etiquetarQRCode) {
-            qrCode = gerarQRCodeUUID();
-        }
-
-        setQtdInsumosReabastecidos(qtdInsumosReabastecidos + 1);
-        String mensagem = "Insumo registrado com sucesso! \n" + "Motivo do registo" + motivo;
-        JOptionPane.showMessageDialog(null, mensagem, "EXITO", JOptionPane.INFORMATION_MESSAGE);
-
-        // Criação do objeto insumo
-        Insumo insumo = new Insumo(idInsumo, loteDoInsumo, dataDeValidade, nomeDoInsumo, unidadeDeMedida, categoriaInsumo.getIdCategoria(), qrCode);
-
-        // Adiciona o insumo no banco de dados
         try {
+            // ===== Entrada dos dados =====
+            String nomeDoInsumo = JOptionPane.showInputDialog("Digite o nome do insumo recebido: ");
+            String loteDoInsumo = JOptionPane.showInputDialog("Digite o lote do insumo recebido: ");
+            String unidadeDeMedida = JOptionPane.showInputDialog("Digite a unidade de medida do insumo (ou 'Unitário'): ");
+            LocalDate dataDeValidade = LocalDate.parse(
+                    JOptionPane.showInputDialog("Digite a data de validade prescrita no insumo recebido (dd/MM/yyyy): "),
+                    dtf);
+
+            int quantidade = Integer.parseInt(JOptionPane.showInputDialog("Digite a quantidade recebida"));
+
+            // Registro de categoria
+            boolean registrarCategoriaDoInsumo = JOptionPane.showConfirmDialog(null, "Gostaria de detalhar a categoria do insumo recebido?", "ADICIONAR CATEGORIA DO INSUMO", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
+
+            CategoriaInsumo categoriaInsumo = null;
+            if (registrarCategoriaDoInsumo) {
+                categoriaInsumo = registrarCategoria(); // aqui já retornaria a categoria criada
+            }
+
+            // gera um QRCode para o insumo recebido
+            String qrCode = gerarQRCodeUUID();
+
+            // Criação do objeto insumo
+            novoInsumo = new Insumo(
+                    loteDoInsumo,
+                    dataDeValidade,
+                    nomeDoInsumo,
+                    unidadeDeMedida,
+                    categoriaInsumo != null ? categoriaInsumo.getIdCategoria() : null,
+                    qrCode
+            );
+
+            // Cria os controladores para acessar o banco
             InsumoController insumoController = new InsumoController();
-            String resultadoInserir = insumoController.inserirInsumo(insumo);
-            System.out.println("Resultado Inserir: " + resultadoInserir);
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro de SQL: " + e.getMessage());
+            EstoqueInsumoController estoqueInsumoController = new EstoqueInsumoController();
+
+            // Verifica a existência do insumo recebido
+            int idInsumo = 0;
+            Insumo insumoExiste = insumoController.listarUmInsumo(qrCode);
+
+            if (insumoExiste == null) {
+                // não existe, então cria
+                insumoController.inserirInsumo(novoInsumo);
+                idInsumo = insumoController.listarUmInsumo(novoInsumo.getQRCode()).getIdInsumo();
+
+            } else { // existe, então recupera o ID para vínculo com EstoqueInsumo
+                idInsumo = insumoExiste.getIdInsumo();
+            }
+
+            // Vincula o insumo ao estoque (Criação de uma classe EstoqueInsumo)
+            int idEstoquePrincipal = 1; // supondo estoque padrão
+            EstoqueInsumo estoqueInsumo = estoqueInsumoController.listarUmEstoqueInsumo(idEstoquePrincipal, idInsumo);
+
+            if (estoqueInsumo == null) {
+                // Se não existe vínculo, cria o registro de estoqueInsumo
+                estoqueInsumo = new EstoqueInsumo(idEstoquePrincipal, idInsumo, quantidade);
+                estoqueInsumoController.inserirEstoqueInsumo(estoqueInsumo);
+            } else {
+                // Se já existe, apenas atualiza o registro aumentando a quantidade
+                estoqueInsumo.setQuantidade(quantidade);
+                estoqueInsumoController.atualizarEstoqueInsumo(estoqueInsumo);
+            }
+
+            setDataUltimoReabastecimento(LocalDate.now());
+            JOptionPane.showMessageDialog(null, "Insumo registrado com sucesso!", "SUCESSO", JOptionPane.INFORMATION_MESSAGE);
+
         } catch (ClassNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao registrar insumo: " + e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+            return null;
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
 
-        return insumo;
+        return novoInsumo;
+    }
+
+    public CategoriaInsumo registrarCategoria() {
+        CategoriaInsumoController categoriaController = new CategoriaInsumoController();
+
+        List<CategoriaInsumo> listaDeCategorias = categoriaController.listarTodasCategorias();
+
+        // Monta as opções para o JOptionPane
+        String categorias = "";
+        int index = 0;
+        for (CategoriaInsumo categoria : listaDeCategorias) {
+            categorias += index + " - " + categoria.getTipoCategoria() + "\n";
+            index++;
+        }
+        categorias += index + " - " + "Outra Categoria"; // última opção
+
+        int escolha = 0;
+
+        // Menu de escolha de categoria
+        try {
+            escolha = Integer.parseInt(JOptionPane.showInputDialog(null, "Selecione a categoria do insumo: \n\n" + categorias, "Inserção de categoria", JOptionPane.QUESTION_MESSAGE
+            ));
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Opção inválida!", "ERRO", JOptionPane.ERROR_MESSAGE);
+        }
+
+        CategoriaInsumo categoriaEscolhida = null;
+
+        // Cria uma nova categoria no banco de dados
+        if (escolha == listaDeCategorias.size()) {
+            String nomeCategoria = JOptionPane.showInputDialog("Digite o nome da nova categoria:");
+            categoriaEscolhida = new CategoriaInsumo(nomeCategoria);
+            categoriaController.inserirCategoria(categoriaEscolhida); //
+        }
+        // Recebe uma categoria já existente
+        else if (escolha >= 0 && escolha < listaDeCategorias.size()) {
+            categoriaEscolhida = listaDeCategorias.get(escolha);
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "Opção inválida!");
+        }
+
+        return categoriaEscolhida;
     }
 }

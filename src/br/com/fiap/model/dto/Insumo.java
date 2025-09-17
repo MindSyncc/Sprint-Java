@@ -17,6 +17,15 @@ public class Insumo {
     public Insumo() {
     }
 
+    public Insumo(String lote, LocalDate dataValidade, String nome, String unidadeMedida, int idCategoriaInsumo, String QRCode) {
+        this.lote = lote;
+        this.dataValidade = dataValidade;
+        this.nome = nome;
+        this.unidadeMedida = unidadeMedida;
+        this.IdCategoriaInsumo = idCategoriaInsumo;
+        this.QRCode = QRCode;
+    }
+
     public Insumo(int idInsumo, String lote, LocalDate dataValidade, String nome, String unidadeMedida, int idCategoriaInsumo, String QRCode) {
         this.idInsumo = idInsumo;
         this.lote = lote;

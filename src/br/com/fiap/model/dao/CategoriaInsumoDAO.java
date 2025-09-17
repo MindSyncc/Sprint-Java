@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CategoriaInsumoDAO {
     private Connection connection;
@@ -57,27 +59,28 @@ public class CategoriaInsumoDAO {
         }
     }
 
-    public void listarTodos() {
+    public List<CategoriaInsumo> listarTodos() {
+        List<CategoriaInsumo> categorias = new ArrayList<>();
         String sqlQuery = "SELECT * FROM CATEGORIA";
 
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(sqlQuery)) {
-
             ResultSet result = preparedStatement.executeQuery();
 
-            CategoriaInsumo categoriaInsumo;
             while (result.next()) {
-                categoriaInsumo = new CategoriaInsumo(result.getInt("ID_CATEGORIA"),
-                        result.getString("TIPOCATEGORIA"));
-
-                categoriaInsumo.exibirInformacoesDoEstoque();
+                categorias.add(new CategoriaInsumo(
+                        result.getInt("ID_CATEGORIA"),
+                        result.getString("TIPOCATEGORIA")
+                ));
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException("Erro ao listar categorias: " + e.getMessage());
         }
+
+        return categorias;
     }
 
-    public void listarUm(CategoriaInsumo categoriaInsumo) {
+    public CategoriaInsumo listarUm(CategoriaInsumo categoriaInsumo) {
         String sqlQuery = "SELECT * FROM CATEGORIA WHERE ID_CATEGORIA=?";
 
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(sqlQuery)) {
@@ -95,6 +98,8 @@ public class CategoriaInsumoDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
+
+        return categoriaInsumo;
     }
 
     public String deletar(CategoriaInsumo categoriaInsumo) {

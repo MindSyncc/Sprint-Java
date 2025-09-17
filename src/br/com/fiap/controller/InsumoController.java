@@ -41,14 +41,11 @@ public class InsumoController {
         return resultado;
     }
 
-    public String listarUmInsumo(int idInsumo) throws ClassNotFoundException, SQLException {
+    public Insumo listarUmInsumo(String QRCode) throws ClassNotFoundException, SQLException {
         Connection con = ConnectionFactory.abrirConexao();
         InsumoDAO insumoDAO = new InsumoDAO(con);
 
-        Insumo insumo = new Insumo();
-        insumo.setIdInsumo(idInsumo);
-
-        String resultado = insumoDAO.listarUm(insumo);
+        Insumo resultado = insumoDAO.listarUm(QRCode);
 
         ConnectionFactory.fecharConexao(con);
         return resultado;

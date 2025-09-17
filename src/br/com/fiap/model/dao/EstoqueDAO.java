@@ -86,9 +86,9 @@ public class EstoqueDAO {
     }
 
     public void listarUm(Estoque estoque) {
-        String sqlQuery = "SELECT * FROM ESTOQUE WHERE ID_ESTOQUE=?";
+        String sql = "SELECT * FROM ESTOQUE WHERE ID_ESTOQUE=?";
 
-        try (PreparedStatement preparedStatement = getConnection().prepareStatement(sqlQuery)) {
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(sql)) {
 
             preparedStatement.setInt(1, estoque.getIdEstoque());
             ResultSet result = preparedStatement.executeQuery();

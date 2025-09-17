@@ -5,6 +5,7 @@ import br.com.fiap.model.dao.ConnectionFactory;
 import br.com.fiap.model.dto.CategoriaInsumo;
 
 import java.sql.Connection;
+import java.util.List;
 
 public class CategoriaInsumoController {
     CategoriaInsumoDAO categoriaInsumoDAO;
@@ -31,22 +32,25 @@ public class CategoriaInsumoController {
         return resultado;
     }
 
-    public void listarTodasCategorias() {
+    public List<CategoriaInsumo> listarTodasCategorias() {
         Connection connection = ConnectionFactory.abrirConexao();
         categoriaInsumoDAO = new CategoriaInsumoDAO(connection);
 
-        categoriaInsumoDAO.listarTodos();
+        List<CategoriaInsumo> categorias = categoriaInsumoDAO.listarTodos();
 
         ConnectionFactory.fecharConexao(connection);
+        return categorias;
     }
 
-    public void listarUmaCategoria(CategoriaInsumo categoriaInsumo) {
+    public CategoriaInsumo listarUmaCategoria(CategoriaInsumo categoriaInsumo) {
         Connection connection = ConnectionFactory.abrirConexao();
         categoriaInsumoDAO = new CategoriaInsumoDAO(connection);
 
-        categoriaInsumoDAO.listarUm(categoriaInsumo);
+        CategoriaInsumo categoriaInsumoDB = categoriaInsumoDAO.listarUm(categoriaInsumo);
 
         ConnectionFactory.fecharConexao(connection);
+
+        return categoriaInsumoDB;
     }
 
     public String deletarCategoria(CategoriaInsumo categoriaInsumo) {

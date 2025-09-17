@@ -84,33 +84,33 @@ public class InsumoDAO {
         }
     }
 
-    public String listarUm(Insumo insumo) {
-        String sql = "SELECT * FROM INSUMO where id_insumo=?";
-        try (PreparedStatement ps = getCon().prepareStatement(sql)) {
-            ps.setInt(1, insumo.getIdInsumo());
-            ResultSet rs = ps.executeQuery();
+    public Insumo listarUm(String QRCode) {
+        Insumo insumo = null;
 
-            if (rs.next()) {
-                String dados = String.format(
-                        "ID: %d%nNome: %s%nLote: %s%nData Validade: %s%n" +
-                                "Unidade de Medida: %s%nCódigo de Barras: %s%nID Categoria: %d",
-                        rs.getInt("id_insumo"),
-                        rs.getString("nome"),
-                        rs.getString("lote") != null ? rs.getString("LOTE") : "N/A",
-                        rs.getDate("datavalidade") != null ? rs.getDate("DATAVALIDADE").toString() : "N/A",
-                        rs.getString("unidademedida"),
-                        rs.getString("codigo_de_barras"),
-                        rs.getInt("id_categoria")
+        String sql = "SELECT * FROM INSUMO WHERE codigo_de_barras = ?";
+        try (PreparedStatement preparedStatement = getCon().prepareStatement(sql)) {
+            preparedStatement.setString(1, QRCode);
+            ResultSet result = preparedStatement.executeQuery();
+
+            while (result.next()) {
+                insumo = new Insumo(
+                        result.getInt("id_insumo"),
+                        result.getString("lote"),
+                        result.getDate("datavalidade") != null ? result.getDate("datavalidade").toLocalDate() : null,
+                        result.getString("nome"),
+                        result.getString("unidademedida"),
+                        result.getInt("id_categoria"),
+                        result.getString("codigo_de_barras")
                 );
-                return dados;
-            } else {
-                return "Registro de insumo não encontrado!";
             }
 
         } catch (SQLException e) {
-            return "Erro de SQL: " + e.getMessage();
+            JOptionPane.showMessageDialog(null, "Erro de SQL: " + e.getMessage());
         }
+
+        return insumo;
     }
+
 
 
     public List<Insumo> listarTodos() {

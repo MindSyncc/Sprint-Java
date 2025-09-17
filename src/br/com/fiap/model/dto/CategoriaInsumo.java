@@ -16,6 +16,10 @@ public class CategoriaInsumo {
         this.tipoCategoria = tipoCategoria;
     }
 
+    public CategoriaInsumo(String tipoCategoria) {
+        this.tipoCategoria = tipoCategoria;
+    }
+
     // getters/setters
 
     public int getIdCategoria() {
