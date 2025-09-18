@@ -228,7 +228,6 @@ public class Almoxarife extends Funcionario {
             }
 
             setDataUltimoReabastecimento(LocalDate.now());
-            JOptionPane.showMessageDialog(null, "Insumo registrado com sucesso!", "SUCESSO", JOptionPane.INFORMATION_MESSAGE);
 
         } catch (ClassNotFoundException e) {
             JOptionPane.showMessageDialog(null, "Erro ao registrar insumo: " + e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);

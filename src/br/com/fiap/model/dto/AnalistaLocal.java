@@ -1,6 +1,8 @@
 package br.com.fiap.model.dto;
 
+import br.com.fiap.controller.InsumoController;
 import br.com.fiap.controller.PedidoController;
+import br.com.fiap.controller.PedidoInsumoController;
 
 import javax.swing.*;
 import java.sql.SQLException;
@@ -46,33 +48,57 @@ public class AnalistaLocal extends Funcionario {
     }
 
     public Pedido realizarPedidoDeInsumo() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        Pedido pedido = null;
+
         JOptionPane.showMessageDialog(null, "Para ordenar um novo pedido é necessário que preencha algumas informações relevantes",
                 "PREENCHIMENTO DE DADOS", JOptionPane.WARNING_MESSAGE);
 
         // Informações do Pedido
-        int idPedido = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID do pedido: "));
-        int quantidadeItem = Integer.parseInt(JOptionPane.showInputDialog("Digite a quantidade que será pedida: "));
-        String nomeItem = JOptionPane.showInputDialog("Digite o nome do item que será pedido: ");
-        String statusPedido = "Pendente";
-        LocalDate dataDoPedido = LocalDate.now();
-        int idFornecedor = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID do fornecedor:"));
-
-        // Cria o objeto pedido
-        Pedido pedido = new Pedido(idPedido,quantidadeItem, nomeItem, dataDoPedido, statusPedido, getIdFuncionario(), idFornecedor);
-
-        // Armazena o pedido no banco de dados
         try {
+            InsumoController insumoController = new InsumoController(); // Inicia o controlador de Insumo
+            List<Insumo> listaDeInsumos = insumoController.listarTodosInsumos();
+
+            // Monta as opções para o JOptionPane
+            String insumos = "";
+            int index = 0;
+            for (Insumo insumo : listaDeInsumos) {
+                insumos += index + " - " + insumo.getNome() + "\n";
+                index++;
+            }
+
+            String nomeItem = JOptionPane.showInputDialog("Digite o nome do item que será pedido: \n\n" + insumos);
+            int quantidadeItem = Integer.parseInt(JOptionPane.showInputDialog("Digite a quantidade que será pedida: "));
+            String statusPedido = "Pendente";
+            LocalDate dataDoPedido = LocalDate.now();
+            int idFornecedor = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID do fornecedor:"));
+
+            // Cria o objeto pedido
+            pedido = new Pedido(quantidadeItem, nomeItem, dataDoPedido, statusPedido, getIdFuncionario(), idFornecedor);
+
+            // Armazena o pedido no banco de dados
             PedidoController pedidoController = new PedidoController();
             String resultadoInserir = pedidoController.inserirPedido(pedido);
             System.out.println(resultadoInserir);
+
+            // Recupera o ID do pedido após inserção no banco para criação do vínculo entre Insumo e Pedido
+            int idPedido = pedido.getIdDoPedido();
+            
+            // Recupera o ID do insumo no banco pelo nome do insumo para criação do vínculo entre Insumo e Pedido
+            int idInsumo = insumoController.listarUmInsumoPorNome(nomeItem).getIdInsumo();
+
+            // Criação do controlador e objeto de PedidoInsumo para vínculo com Insumo
+            PedidoInsumoController pedidoInsumoController = new PedidoInsumoController();
+            PedidoInsumo pedidoInsumo = new PedidoInsumo(idPedido, idInsumo, quantidadeItem);
+
+            // Cria o registro de PedidoInsumo no banco (vínculo entre Pedido e Insumo)
+            pedidoInsumoController.inserirPedidoInsumo(pedidoInsumo);
 
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro de SQL: " + e.getMessage());
         } catch (ClassNotFoundException e) {
             JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage());
         }
-
 
         return pedido;
     }

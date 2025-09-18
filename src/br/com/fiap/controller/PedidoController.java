@@ -39,13 +39,15 @@ public class PedidoController {
         return resultado;
     }
 
-    public void listarUmPedido(Pedido pedido) throws ClassNotFoundException, SQLException {
+    public Pedido listarUmPedido(Pedido pedido) throws ClassNotFoundException, SQLException {
         Connection con = ConnectionFactory.abrirConexao();
         PedidoDAO pedidoDAO = new PedidoDAO(con);
 
-        pedidoDAO.listarUm(pedido);
+        Pedido resultado = pedidoDAO.listarUm(pedido);
 
         ConnectionFactory.fecharConexao(con);
+
+        return resultado;
     }
 
     public void listarTodosPedidos() throws ClassNotFoundException, SQLException {

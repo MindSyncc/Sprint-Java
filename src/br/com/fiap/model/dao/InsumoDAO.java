@@ -24,6 +24,7 @@ public class InsumoDAO {
         try (PreparedStatement ps = getCon().prepareStatement(sql);) {
             ps.setString(1, insumo.getNome());
             ps.setString(2, insumo.getLote());
+
             if (insumo.getDataValidade() != null) {
                 ps.setDate(3, Date.valueOf(insumo.getDataValidade()));
             } else {
@@ -34,13 +35,13 @@ public class InsumoDAO {
             ps.setInt(6, insumo.getIdCategoriaInsumo());
 
             if (ps.executeUpdate() > 0) {
-                JOptionPane.showMessageDialog(null, "Insumo inserido com sucesso");
+                JOptionPane.showMessageDialog(null, "Insumo inserido com sucesso", "SUCESSO", JOptionPane.INFORMATION_MESSAGE);
 
             } else {
-                JOptionPane.showMessageDialog(null, "Erro ao inserir o insumo");
+                JOptionPane.showMessageDialog(null, "Erro ao inserir o insumo", "ERRO", JOptionPane.ERROR_MESSAGE);
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro de SQL: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro de SQL: " + e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
         }
 
         return "Insumo inserido com sucesso";
@@ -106,6 +107,37 @@ public class InsumoDAO {
 
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro de SQL: " + e.getMessage());
+        }
+
+        return insumo;
+    }
+
+    public Insumo listarUmPorNome(String nomeDoInsumo) {
+        Insumo insumo = null;
+
+        String sql = "SELECT * FROM INSUMO WHERE nome = ?";
+        try (PreparedStatement preparedStatement = getCon().prepareStatement(sql)) {
+            preparedStatement.setString(1, nomeDoInsumo);
+            ResultSet result = preparedStatement.executeQuery();
+
+            while (result.next()) {
+                insumo = new Insumo(
+                        result.getInt("id_insumo"),
+                        result.getString("lote"),
+                        result.getDate("datavalidade") != null ? result.getDate("datavalidade").toLocalDate() : null,
+                        result.getString("nome"),
+                        result.getString("unidademedida"),
+                        result.getInt("id_categoria"),
+                        result.getString("codigo_de_barras")
+                );
+            }
+
+            if (insumo == null) {
+                throw new SQLException("O insumo" + nomeDoInsumo + "não está disponível para petição");
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro de SQL: " + e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
         }
 
         return insumo;
