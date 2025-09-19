@@ -69,7 +69,7 @@ public class AnalistaLocal extends Funcionario {
 
             // Monta as opções para o JOptionPane que exibe a lista de fornecedores
             String fornecedores = "";
-            int indexF = 0;
+            int indexF = 1;
             for (Fornecedor fornecedor : listaDeFornecedores) {
                 fornecedores += indexF + " - " + fornecedor.getNomeFornecedor() + "\n";
                 indexF++;

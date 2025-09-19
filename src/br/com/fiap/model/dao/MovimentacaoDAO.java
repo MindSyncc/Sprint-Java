@@ -3,6 +3,8 @@ package br.com.fiap.model.dao;
 import br.com.fiap.model.dto.Movimentacao;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MovimentacaoDAO {
     private Connection connection;
@@ -16,25 +18,23 @@ public class MovimentacaoDAO {
     }
 
     public String inserir(Movimentacao movimentacao) {
-        String sqlQuery  = "INSERT INTO MOVIMENTACOES(ID_MOVIMENTACOES, MOTIVO, TIPO_MOVIMENTACAO, DATA_HORA_ENTRADA, DATA_HORA_SAIDA, QUANTIDADE, ID_FUNCIONARIO) " +
-                "VALUES(?, ?, ?, ?, ?, ?, ?)";
+        String sqlQuery  = "INSERT INTO MOVIMENTACOES(MOTIVO, DATA_HORA_ENTRADA, DATA_HORA_SAIDA, TIPO_MOVIMENTACAO, QUANTIDADE, ID_FUNCIONARIO)" +
+                "VALUES(?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(sqlQuery)) {
-
-            preparedStatement.setInt(1, movimentacao.getIdMovimentacao());
-            preparedStatement.setString(2, movimentacao.getMotivo());
-            preparedStatement.setString(3, movimentacao.getTipoMovimentacao());
+            preparedStatement.setString(1, movimentacao.getMotivo());
 
             if (movimentacao.getTipoMovimentacao().equalsIgnoreCase("ENTRADA")) {
-                preparedStatement.setDate(4, Date.valueOf(movimentacao.getDataHoraEntrada().toLocalDate()));
-                preparedStatement.setNull(5, java.sql.Types.DATE);
-            } else {
-                preparedStatement.setNull(4, java.sql.Types.DATE);
-                preparedStatement.setDate(5, Date.valueOf(movimentacao.getDataHoraSaida().toLocalDate()));
+                preparedStatement.setDate(2, Date.valueOf(movimentacao.getDataHoraEntrada().toLocalDate()));
+                preparedStatement.setNull(3, java.sql.Types.DATE);
+            } else { // SAÍDA
+                preparedStatement.setNull(2, java.sql.Types.DATE);
+                preparedStatement.setDate(3, Date.valueOf(movimentacao.getDataHoraSaida().toLocalDate()));
             }
 
-            preparedStatement.setInt(6, movimentacao.getQuantidade());
-            preparedStatement.setInt(7, Integer.parseInt(movimentacao.getFuncionario()));
+            preparedStatement.setString(4, movimentacao.getTipoMovimentacao());
+            preparedStatement.setInt(5, movimentacao.getQuantidade());
+            preparedStatement.setInt(6, Integer.parseInt(movimentacao.getFuncionario()));
 
             if (preparedStatement.executeUpdate() > 0) {
                 return "Registro inserido com sucesso!";
@@ -79,42 +79,16 @@ public class MovimentacaoDAO {
         }
     }
 
-    public void listarTodos() {
+    // 🔹 Agora retorna lista
+    public List<Movimentacao> listarTodos() {
         String sqlQuery = "SELECT * FROM MOVIMENTACOES";
+        List<Movimentacao> movimentacoes = new ArrayList<>();
 
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(sqlQuery)) {
-            ResultSet result = preparedStatement.executeQuery(sqlQuery);
-
-            Movimentacao movimentacao;
-            while (result.next()) {
-                movimentacao = new Movimentacao (
-                        result.getString("MOTIVO"),
-                        result.getString("TIPO_MOVIMENTACAO"),
-                        result.getInt("QUANTIDADE"),
-                        result.getString("ID_FUNCIONARIO")
-                );
-                movimentacao.setIdMovimentacao(result.getInt("ID_MOVIMENTACOES"));
-
-                String mensagem = movimentacao.exibirInformacoesDaMovimentacao();
-                System.out.println(mensagem);
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e.getMessage());
-        }
-    }
-
-    public void listarUm(Movimentacao movimentacao) {
-        String sqlQuery = "SELECT * FROM MOVIMENTACOES WHERE ID_MOVIMENTACOES=?";
-
-        try (PreparedStatement preparedStatement = getConnection().prepareStatement(sqlQuery)) {
-
-            preparedStatement.setInt(1, movimentacao.getIdMovimentacao());
-
             ResultSet result = preparedStatement.executeQuery();
 
             while (result.next()) {
-                movimentacao = new Movimentacao (
+                Movimentacao movimentacao = new Movimentacao(
                         result.getString("MOTIVO"),
                         result.getString("TIPO_MOVIMENTACAO"),
                         result.getInt("QUANTIDADE"),
@@ -122,19 +96,48 @@ public class MovimentacaoDAO {
                 );
                 movimentacao.setIdMovimentacao(result.getInt("ID_MOVIMENTACOES"));
 
-                movimentacao.exibirInformacoesDaMovimentacao();
+                movimentacoes.add(movimentacao);
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException("Erro ao listar movimentações: " + e.getMessage());
         }
+
+        return movimentacoes;
     }
 
-    public String deletar(Movimentacao movimentacao) {
+    // 🔹 Agora retorna um objeto ou null
+    public Movimentacao listarUm(int idMovimentacao) {
+        String sqlQuery = "SELECT * FROM MOVIMENTACOES WHERE ID_MOVIMENTACOES=?";
+        Movimentacao movimentacao = null;
+
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(sqlQuery)) {
+            preparedStatement.setInt(1, idMovimentacao);
+
+            ResultSet result = preparedStatement.executeQuery();
+
+            if (result.next()) {
+                movimentacao = new Movimentacao(
+                        result.getString("MOTIVO"),
+                        result.getString("TIPO_MOVIMENTACAO"),
+                        result.getInt("QUANTIDADE"),
+                        result.getString("ID_FUNCIONARIO")
+                );
+                movimentacao.setIdMovimentacao(result.getInt("ID_MOVIMENTACOES"));
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao buscar movimentação: " + e.getMessage());
+        }
+
+        return movimentacao;
+    }
+
+    public String deletar(int idMovimentacao) {
         String sqlQuery = "DELETE FROM MOVIMENTACOES WHERE ID_MOVIMENTACOES=?";
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(sqlQuery)) {
 
-            preparedStatement.setInt(1, movimentacao.getIdMovimentacao());
+            preparedStatement.setInt(1, idMovimentacao);
 
             if (preparedStatement.executeUpdate() > 0) {
                 return "Movimentação removida com sucesso!";

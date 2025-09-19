@@ -3,6 +3,8 @@ package br.com.fiap.model.dao;
 import br.com.fiap.model.dto.Pedido;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PedidoDAO {
     private Connection connection;
@@ -48,28 +50,34 @@ public class PedidoDAO {
     }
 
     // READ
-    public void listarTodos() {
+    public List<Pedido> listarTodos() {
+        List<Pedido> pedidos = new ArrayList<>();
         String read = "SELECT * FROM PEDIDO";
 
-        try (PreparedStatement preparedStatement = getConnection().prepareStatement(read)) {
-            ResultSet resultado = preparedStatement.executeQuery();
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(read);
+             ResultSet resultado = preparedStatement.executeQuery()) {
 
-            Pedido pedido;
             while (resultado.next()) {
-                pedido = new Pedido(resultado.getInt("ID_PEDIDO"),
+                Pedido pedido = new Pedido(
+                        resultado.getInt("ID_PEDIDO"),
                         resultado.getInt("QUANTIDADE"),
                         resultado.getString("NOME_ITEM"),
                         resultado.getDate("DATA_PEDIDO").toLocalDate(),
                         resultado.getString("STATUS"),
                         resultado.getInt("ID_FUNCIONARIO"),
-                        resultado.getInt("ID_FORNECEDOR"));
+                        resultado.getInt("ID_FORNECEDOR")
+                );
 
-                pedido.exibirInformacoesDoPedido();
+                pedidos.add(pedido);
             }
+
         } catch (SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
+
+        return pedidos;
     }
+
 
     public Pedido listarUm(Pedido pedido) {
         Pedido resultado = null;

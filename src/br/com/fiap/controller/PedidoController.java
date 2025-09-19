@@ -6,6 +6,7 @@ import br.com.fiap.model.dto.Pedido;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 public class PedidoController {
 
@@ -50,12 +51,13 @@ public class PedidoController {
         return resultado;
     }
 
-    public void listarTodosPedidos() throws ClassNotFoundException, SQLException {
+    public List<Pedido> listarTodosPedidos() throws ClassNotFoundException, SQLException {
         Connection con = ConnectionFactory.abrirConexao();
         PedidoDAO pedidoDAO = new PedidoDAO(con);
 
-        pedidoDAO.listarTodos();
+        List<Pedido> pedidos = pedidoDAO.listarTodos();
 
         ConnectionFactory.fecharConexao(con);
+        return pedidos;
     }
 }
