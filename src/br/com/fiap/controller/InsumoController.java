@@ -41,21 +41,24 @@ public class InsumoController {
         return resultado;
     }
 
-    public Insumo listarUmInsumoPorNome(String nomeDoInsumo) throws ClassNotFoundException, SQLException {
+    public Insumo listarUmInsumo(String tipo, Object valor) throws ClassNotFoundException, SQLException {
         Connection con = ConnectionFactory.abrirConexao();
         InsumoDAO insumoDAO = new InsumoDAO(con);
 
-        Insumo resultado = insumoDAO.listarUmPorNome(nomeDoInsumo);
-
-        ConnectionFactory.fecharConexao(con);
-        return resultado;
-    }
-
-    public Insumo listarUmInsumo(String QRCode) throws ClassNotFoundException, SQLException {
-        Connection con = ConnectionFactory.abrirConexao();
-        InsumoDAO insumoDAO = new InsumoDAO(con);
-
-        Insumo resultado = insumoDAO.listarUm(QRCode);
+        Insumo resultado = null;
+        switch (tipo.toLowerCase()) {
+            case "id":
+                resultado = insumoDAO.listarUmPorID((int) valor);
+                break;
+            case "nome":
+                resultado = insumoDAO.listarUmPorNome((String) valor);
+                break;
+            case "qrcode":
+                resultado = insumoDAO.listarUm((String) valor);
+                break;
+            default:
+                throw new IllegalArgumentException("Tipo de busca inválido: " + tipo);
+        }
 
         ConnectionFactory.fecharConexao(con);
         return resultado;

@@ -142,7 +142,7 @@
                                         AnalistaLocal analistaLocalLogado = new AnalistaLocal(funcionarioEncontrado);
 
                                             while (autenticado) {
-                                                int opcao = Integer.parseInt(JOptionPane.showInputDialog("====== MENU DO ANALISTA LOCAL ====== \n\nEscolha uma opção \n(1) Exibir informações do funcionário \n(2) Realizar pedido \n(3) Verificar movimentações \n(4) Deslogar\n(5) Sair do Sistema"));
+                                                int opcao = Integer.parseInt(JOptionPane.showInputDialog("====== MENU DO ANALISTA LOCAL ====== \n\nEscolha uma opção \n(1) Exibir informações do funcionário \n(2) Realizar pedido \n(3) Verificar movimentações \n(4) Verificar estoque\n(5) Deslogar\n(6) Sair do Sistema"));
 
                                                 switch (opcao) {
                                                     case 1: // Exibir informações do funcionário
@@ -169,11 +169,15 @@
                                                         analistaLocalLogado.verificarMovimentacoes(movimentacoes);
                                                         break;
 
-                                                    case 4: // Deslogar
+                                                    case 4: // Verificar estoque
+                                                        analistaLocalLogado.verificarEstoque();
+                                                        break;
+
+                                                    case 5: // Deslogar
                                                         autenticado = false;
                                                         break;
 
-                                                    case 5: // Sair do sistema
+                                                    case 6: // Sair do sistema
                                                         JOptionPane.showMessageDialog(null, "Até a próxima!");
                                                         System.exit(0);
 

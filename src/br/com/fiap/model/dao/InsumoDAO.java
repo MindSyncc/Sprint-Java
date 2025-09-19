@@ -143,6 +143,37 @@ public class InsumoDAO {
         return insumo;
     }
 
+    public Insumo listarUmPorID(int IDInsumo) {
+        Insumo insumo = null;
+
+        String sql = "SELECT * FROM INSUMO WHERE id_insumo = ?";
+        try (PreparedStatement preparedStatement = getCon().prepareStatement(sql)) {
+            preparedStatement.setInt(1, IDInsumo);
+            ResultSet result = preparedStatement.executeQuery();
+
+            while (result.next()) {
+                insumo = new Insumo(
+                        result.getInt("id_insumo"),
+                        result.getString("lote"),
+                        result.getDate("datavalidade") != null ? result.getDate("datavalidade").toLocalDate() : null,
+                        result.getString("nome"),
+                        result.getString("unidademedida"),
+                        result.getInt("id_categoria"),
+                        result.getString("codigo_de_barras")
+                );
+            }
+
+            if (insumo == null) {
+                throw new SQLException("O insumo" + IDInsumo + "não está disponível para petição");
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro de SQL: " + e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+        }
+
+        return insumo;
+    }
+
 
 
     public List<Insumo> listarTodos() {

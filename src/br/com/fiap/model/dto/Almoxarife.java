@@ -112,7 +112,7 @@ public class Almoxarife extends Funcionario {
 
         try {
             // 1. Busca o insumo pelo QRCode
-            Insumo insumo = insumoController.listarUmInsumo(QRCodeInsumo);
+            Insumo insumo = insumoController.listarUmInsumo("qrcode",QRCodeInsumo);
             if (insumo == null) {
                 JOptionPane.showMessageDialog(null,
                         "Insumo não encontrado com este QRCode!",
@@ -201,12 +201,12 @@ public class Almoxarife extends Funcionario {
 
             // Verifica a existência do insumo recebido
             int idInsumo = 0;
-            Insumo insumoExiste = insumoController.listarUmInsumo(qrCode);
+            Insumo insumoExiste = insumoController.listarUmInsumo("qrcode", qrCode);
 
             if (insumoExiste == null) {
                 // não existe, então cria
                 insumoController.inserirInsumo(novoInsumo);
-                idInsumo = insumoController.listarUmInsumo(novoInsumo.getQRCode()).getIdInsumo();
+                idInsumo = insumoController.listarUmInsumo("qrcode", novoInsumo.getQRCode()).getIdInsumo();
 
             } else { // existe, então recupera o ID para vínculo com EstoqueInsumo
                 idInsumo = insumoExiste.getIdInsumo();
@@ -284,12 +284,12 @@ public class Almoxarife extends Funcionario {
 
             // Verifica a existência do insumo recebido
             int idInsumo = 0;
-            Insumo insumoExiste = insumoController.listarUmInsumo(qrCode);
+            Insumo insumoExiste = insumoController.listarUmInsumo("qrcode", qrCode);
 
             if (insumoExiste == null) {
                 // não existe, então cria
                 insumoController.inserirInsumo(novoInsumo);
-                idInsumo = insumoController.listarUmInsumo(novoInsumo.getQRCode()).getIdInsumo();
+                idInsumo = insumoController.listarUmInsumo("qrcode", novoInsumo.getQRCode()).getIdInsumo();
 
             } else { // existe, então recupera o ID para vínculo com EstoqueInsumo
                 idInsumo = insumoExiste.getIdInsumo();

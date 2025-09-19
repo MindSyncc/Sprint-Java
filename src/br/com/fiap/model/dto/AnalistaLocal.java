@@ -1,9 +1,6 @@
 package br.com.fiap.model.dto;
 
-import br.com.fiap.controller.FornecedorController;
-import br.com.fiap.controller.InsumoController;
-import br.com.fiap.controller.PedidoController;
-import br.com.fiap.controller.PedidoInsumoController;
+import br.com.fiap.controller.*;
 
 import javax.swing.*;
 import java.sql.SQLException;
@@ -97,7 +94,7 @@ public class AnalistaLocal extends Funcionario {
             int idPedido = pedido.getIdDoPedido();
             
             // Recupera o ID do insumo no banco pelo nome do insumo para criação do vínculo entre Insumo e Pedido
-            int idInsumo = insumoController.listarUmInsumoPorNome(nomeItem).getIdInsumo();
+            int idInsumo = insumoController.listarUmInsumo("nome", nomeItem).getIdInsumo();
 
             // Criação do controlador e objeto de PedidoInsumo para vínculo com Insumo
             PedidoInsumoController pedidoInsumoController = new PedidoInsumoController();
@@ -123,5 +120,36 @@ public class AnalistaLocal extends Funcionario {
         }
 
         JOptionPane.showMessageDialog(null, string, "Movimentacoes", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public void verificarEstoque() {
+        try {
+            // Instanciando controladores necessários para a exibição do estoque.
+            EstoqueInsumoController estoqueInsumoController = new EstoqueInsumoController();
+            InsumoController insumoController = new InsumoController();
+            List<EstoqueInsumo> listaEstoque = estoqueInsumoController.listarTodosEstoqueInsumo();
+
+
+            String aux = "";
+
+            aux += "==== Informações do Estoque ==== \n\n";
+
+            for (EstoqueInsumo estoque : listaEstoque) {
+                // Consulta insumo para recuperar o nome e exibi-lo.
+                Insumo insumo = insumoController.listarUmInsumo("id", estoque.getIdInsumo());
+
+                // Adiciona informações básicas na string
+                aux += String.format("🆔 ID Insumo: %d | 📊 Quantidade: %d | 📋 Nome: %s \n",
+                        estoque.getIdInsumo(),
+                        estoque.getQuantidade(), insumo.getNome());
+
+                aux += "---------------------------------------------------------------------------------- \n";
+            }
+
+            JOptionPane.showMessageDialog(null, aux, "ESTOQUE", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            System.out.println("Erro ao verificar estoque: " + e.getMessage());
+        }
     }
 }
