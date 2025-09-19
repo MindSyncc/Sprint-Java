@@ -114,6 +114,30 @@ public class PedidoInsumoDAO {
             JOptionPane.showMessageDialog(null, "Erro de SQL: " + e.getMessage());
         }
 
+
+
+        return lista;
+    }
+
+    // Retorna uma lista de PedidoInsumo referentes a um ID de pedido específico
+    public List<PedidoInsumo> listarPorPedido(int idPedido) {
+        List<PedidoInsumo> lista = new ArrayList<>();
+        String sql = "SELECT * FROM PEDIDO_INSUMO WHERE ID_PEDIDO = ?";
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(sql)) {
+            preparedStatement.setInt(1, idPedido);
+
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(
+                            new PedidoInsumo(rs.getInt("id_pedido"),
+                            rs.getInt("id_insumo"),
+                            rs.getInt("quantidade"))
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro de SQL: " + e.getMessage());
+        }
         return lista;
     }
 }

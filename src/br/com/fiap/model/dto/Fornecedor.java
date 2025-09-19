@@ -1,5 +1,12 @@
 package br.com.fiap.model.dto;
 
+import br.com.fiap.controller.EstoqueInsumoController;
+import br.com.fiap.controller.PedidoController;
+import br.com.fiap.controller.PedidoInsumoController;
+
+import javax.swing.*;
+import java.util.List;
+
 public class Fornecedor {
     private int idFornecedor;
     private String nomeFornecedor;
@@ -122,4 +129,42 @@ public class Fornecedor {
     public void setCep(String cep) {
         this.cep = cep;
     }
+
+    // métodos
+    public void atenderPedido(Pedido pedido) {
+        try {
+            // 1. Atualiza o status do pedido
+            PedidoController pedidoController = new PedidoController();
+            pedido.setStatus("Atendido");
+            System.out.println(pedidoController.atualizarPedido(pedido));
+
+            // Recupera a lista de insumos presentes em um pedido
+            PedidoInsumoController pedidoInsumoController = new PedidoInsumoController();
+            List<PedidoInsumo> listaPedidoInsumo = pedidoInsumoController.listarPorPedido(pedido.getIdDoPedido());
+
+            // Atualiza o estoque utilizando a lista de insumos presentes para o mesmo pedido
+            EstoqueInsumoController estoqueInsumoController = new EstoqueInsumoController();
+
+            for (PedidoInsumo pedidoInsumo : listaPedidoInsumo) {
+                EstoqueInsumo estoqueInsumo = estoqueInsumoController.listarUmEstoqueInsumo(1, pedidoInsumo.getIdInsumo());
+
+                if (estoqueInsumo == null) {
+                    // Se o insumo não tiver a sua quantidade registrada em EstoqueInsumo, cria um novo EstoqueInsumo e atribui a quantidade do pedido.
+                    estoqueInsumo = new EstoqueInsumo(1, pedidoInsumo.getIdInsumo(), pedidoInsumo.getQuantidade());
+                    estoqueInsumoController.inserirEstoqueInsumo(estoqueInsumo);
+                } else {
+                    // Se o insumo já tiver a sua quantidade registrada, atualiza a quantidade.
+                    estoqueInsumo.setQuantidade(estoqueInsumo.getQuantidade() + pedidoInsumo.getQuantidade());
+                    estoqueInsumoController.atualizarEstoqueInsumo(estoqueInsumo);
+                }
+            }
+
+            // Mensagem de sucesso
+            JOptionPane.showMessageDialog(null, "O pedido já foi atendido e os insumos foram inseridos no estoque!", "Mensagem do fornecedor", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            System.out.println("Erro ao atender pedido: " + e.getMessage());
+        }
+    }
+
 }

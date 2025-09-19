@@ -100,11 +100,14 @@ public class Insumo {
      * Classe para exibir as informacoes do insumo em um string formatada
      */
     public String exibirInformacoesDoInsumo() {
-        String info = String.format("ID do Insumo: %d%n" +
-                "Nome: %s%n" +
-                "Validade: %s%n" +
-                "Lote: %s%n" +
-                "Unidade de Medida: %s%n", idInsumo, nome, dataValidade, lote, unidadeMedida);
+        String info = String.format("""
+            ==== Informações do Insumo ====
+            🆔 ID do Insumo: %d%n
+            📋 Nome: %s%n
+            📅 Validade: %s%n
+            🏷️ Lote: %s%n
+            📏 Unidade de Medida: %s%n
+            """, idInsumo, nome, dataValidade, lote, unidadeMedida);
 
         return info;
     }

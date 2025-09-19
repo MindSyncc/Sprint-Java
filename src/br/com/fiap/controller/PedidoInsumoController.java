@@ -59,4 +59,14 @@ public class PedidoInsumoController {
         ConnectionFactory.fecharConexao(con);
         return lista;
     }
+
+    public List<PedidoInsumo> listarPorPedido(int idPedido) throws ClassNotFoundException, SQLException {
+        Connection con = ConnectionFactory.abrirConexao();
+        PedidoInsumoDAO pedidoInsumoDAO = new PedidoInsumoDAO(con);
+
+        List<PedidoInsumo> lista = pedidoInsumoDAO.listarPorPedido(idPedido);
+
+        ConnectionFactory.fecharConexao(con);
+        return lista;
+    }
 }

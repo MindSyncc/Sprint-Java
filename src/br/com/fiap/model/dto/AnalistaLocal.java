@@ -1,5 +1,6 @@
 package br.com.fiap.model.dto;
 
+import br.com.fiap.controller.FornecedorController;
 import br.com.fiap.controller.InsumoController;
 import br.com.fiap.controller.PedidoController;
 import br.com.fiap.controller.PedidoInsumoController;
@@ -7,7 +8,6 @@ import br.com.fiap.controller.PedidoInsumoController;
 import javax.swing.*;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class AnalistaLocal extends Funcionario {
@@ -59,7 +59,7 @@ public class AnalistaLocal extends Funcionario {
             InsumoController insumoController = new InsumoController(); // Inicia o controlador de Insumo
             List<Insumo> listaDeInsumos = insumoController.listarTodosInsumos();
 
-            // Monta as opções para o JOptionPane
+            // Monta as opções para o JOptionPane que exibe a lista de insumos
             String insumos = "";
             int index = 0;
             for (Insumo insumo : listaDeInsumos) {
@@ -67,11 +67,23 @@ public class AnalistaLocal extends Funcionario {
                 index++;
             }
 
+            FornecedorController fornecedorController = new FornecedorController();
+            List<Fornecedor> listaDeFornecedores = fornecedorController.listarTodosFornecedores();
+
+            // Monta as opções para o JOptionPane que exibe a lista de fornecedores
+            String fornecedores = "";
+            int indexF = 0;
+            for (Fornecedor fornecedor : listaDeFornecedores) {
+                fornecedores += indexF + " - " + fornecedor.getNomeFornecedor() + "\n";
+                indexF++;
+            }
+
+            // perguntas para o usuário
             String nomeItem = JOptionPane.showInputDialog("Digite o nome do item que será pedido: \n\n" + insumos);
             int quantidadeItem = Integer.parseInt(JOptionPane.showInputDialog("Digite a quantidade que será pedida: "));
             String statusPedido = "Pendente";
             LocalDate dataDoPedido = LocalDate.now();
-            int idFornecedor = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID do fornecedor:"));
+            int idFornecedor = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID do fornecedor: \n\n Fornecedores disponíveis \n" + fornecedores));
 
             // Cria o objeto pedido
             pedido = new Pedido(quantidadeItem, nomeItem, dataDoPedido, statusPedido, getIdFuncionario(), idFornecedor);

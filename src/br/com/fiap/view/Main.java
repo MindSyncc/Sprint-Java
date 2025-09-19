@@ -105,14 +105,24 @@
                                                     String QRCodeInsumo = JOptionPane.showInputDialog("Digite o código de barras do insumo que deseja retirar");
                                                     almoxarifeLogado.retirarInsumo(QRCodeInsumo);
 
+                                                    // Exibe a lista de insumos
+                                                    System.out.println("Lista de insumos" + "\n" + insumos);
+
                                                     movimentacoes.add(new Movimentacao("CONSUMO", "SAIDA", 1, Integer.toString(almoxarifeLogado.getIdFuncionario())));
                                                     break;
 
                                                 case 3: // Registrar entrada de insumo
-                                                    almoxarifeLogado.registrarEntradaDeInsumo();
+                                                    Insumo insumo = almoxarifeLogado.registrarEntradaDeInsumo();
+                                                    insumo.exibirInformacoesDoInsumo();
+
+                                                    // Adiciona o insumo na lista
+                                                    insumos.add(insumo);
 
                                                     movimentacoes.add(new Movimentacao("RETIRADA", "ENTRADA", 1, Integer.toString(almoxarifeLogado.getIdFuncionario())));
+                                                    System.out.println("Lista de insumos" + "\n" + insumos);
                                                     break;
+
+
 
                                                 case 4: // Deslogar
                                                     autenticado = false;
@@ -142,6 +152,12 @@
                                                     case 2: // Realizar pedido
                                                         Pedido pedido = analistaLocalLogado.realizarPedidoDeInsumo();
                                                         pedido.exibirInformacoesDoPedido();
+
+                                                        // Chama o fornecedor para atender o pedido
+                                                        Fornecedor fornecedor = new Fornecedor();
+                                                        fornecedor.atenderPedido(pedido);
+
+                                                        // Adiciona o pedido na lista
                                                         pedidos.add(pedido);
 
                                                         movimentacoes.add(new Movimentacao("REABASTECIMENTO", "ENTRADA", pedido.getQtdItem(), Integer.toString(pedido.getIdFuncionario())));
