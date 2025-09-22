@@ -31,7 +31,6 @@ public class Pedido {
 
     // construtor sem IdDoPedido
     public Pedido(int qtdItem, String nomeItem, LocalDate dataPedido, String status, int idFuncionario, int idFornecedor) {
-        this.idDoPedido = idDoPedido;
         this.qtdItem = qtdItem;
         this.nomeItem = nomeItem;
         this.dataPedido = dataPedido;

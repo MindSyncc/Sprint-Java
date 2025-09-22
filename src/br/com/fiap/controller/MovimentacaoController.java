@@ -10,7 +10,7 @@ import java.util.List;
 
 public class MovimentacaoController {
 
-    public String inserir(Movimentacao movimentacao) throws SQLException, ClassNotFoundException {
+    public String inserirMovimentacao(Movimentacao movimentacao) throws SQLException, ClassNotFoundException {
         Connection con = ConnectionFactory.abrirConexao();
         MovimentacaoDAO movimentacaoDAO = new MovimentacaoDAO(con);
 
@@ -20,7 +20,7 @@ public class MovimentacaoController {
         return saida;
     }
 
-    public String atualizar(Movimentacao movimentacao) throws SQLException, ClassNotFoundException {
+    public String atualizarMovimentacao(Movimentacao movimentacao) throws SQLException, ClassNotFoundException {
         Connection con = ConnectionFactory.abrirConexao();
         MovimentacaoDAO dao = new MovimentacaoDAO(con);
 
@@ -30,17 +30,17 @@ public class MovimentacaoController {
         return saida;
     }
 
-    public List<Movimentacao> listarTodos() throws SQLException, ClassNotFoundException {
+    public String deletarMovimentacao(int idMovimentacao) throws SQLException, ClassNotFoundException {
         Connection con = ConnectionFactory.abrirConexao();
         MovimentacaoDAO dao = new MovimentacaoDAO(con);
 
-        List<Movimentacao> lista = dao.listarTodos();
+        String saida = dao.deletar(idMovimentacao);
 
         ConnectionFactory.fecharConexao(con);
-        return lista;
+        return saida;
     }
 
-    public Movimentacao listarUm(int idMovimentacao) throws SQLException, ClassNotFoundException {
+    public Movimentacao listarUmaMovimentacao(int idMovimentacao) throws SQLException, ClassNotFoundException {
         Connection con = ConnectionFactory.abrirConexao();
         MovimentacaoDAO dao = new MovimentacaoDAO(con);
 
@@ -50,13 +50,15 @@ public class MovimentacaoController {
         return movimentacao;
     }
 
-    public String deletar(int idMovimentacao) throws SQLException, ClassNotFoundException {
+    public List<Movimentacao> listarTodasMovimentacoes() throws SQLException, ClassNotFoundException {
         Connection con = ConnectionFactory.abrirConexao();
         MovimentacaoDAO dao = new MovimentacaoDAO(con);
 
-        String saida = dao.deletar(idMovimentacao);
+        List<Movimentacao> lista = dao.listarTodos();
 
         ConnectionFactory.fecharConexao(con);
-        return saida;
+        return lista;
     }
+
+
 }

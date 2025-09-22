@@ -62,26 +62,21 @@ public class EstoqueDAO {
         }
     }
 
-    public void listarTodos() {
-        String sqlQuery = "SELECT * FROM ESTOQUE";
+    public String deletar(Estoque estoque) {
+        String sqlQuery = "DELETE FROM ESTOQUE WHERE ID_ESTOQUE=?";
 
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(sqlQuery)) {
 
-            ResultSet result = preparedStatement.executeQuery();
+            preparedStatement.setInt(1, estoque.getIdEstoque());
 
-            Estoque estoque;
-            while (result.next()) {
-                estoque = new Estoque(result.getInt("ID_ESTOQUE"),
-                        result.getInt("QTDATUAL"),
-                        result.getInt("QTDMINIMA"),
-                        result.getInt("QTDMAXIMA"),
-                        result.getString("STATUS"));
-
-                estoque.exibirInformacoesDoEstoque();
+            if (preparedStatement.executeUpdate() > 0) {
+                return "Registro de estoque removido com sucesso!";
             }
 
+            return "Não foi possível remover o registro";
+
         } catch (SQLException e) {
-            throw new RuntimeException(e.getMessage());
+            return "Erro de SQL: " + e.getMessage();
         }
     }
 
@@ -108,21 +103,26 @@ public class EstoqueDAO {
         }
     }
 
-    public String deletar(Estoque estoque) {
-        String sqlQuery = "DELETE FROM ESTOQUE WHERE ID_ESTOQUE=?";
+    public void listarTodos() {
+        String sqlQuery = "SELECT * FROM ESTOQUE";
 
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(sqlQuery)) {
 
-            preparedStatement.setInt(1, estoque.getIdEstoque());
+            ResultSet result = preparedStatement.executeQuery();
 
-            if (preparedStatement.executeUpdate() > 0) {
-                return "Registro de estoque removido com sucesso!";
+            Estoque estoque;
+            while (result.next()) {
+                estoque = new Estoque(result.getInt("ID_ESTOQUE"),
+                        result.getInt("QTDATUAL"),
+                        result.getInt("QTDMINIMA"),
+                        result.getInt("QTDMAXIMA"),
+                        result.getString("STATUS"));
+
+                estoque.exibirInformacoesDoEstoque();
             }
 
-            return "Não foi possível remover o registro";
-
         } catch (SQLException e) {
-            return "Erro de SQL: " + e.getMessage();
+            throw new RuntimeException(e.getMessage());
         }
     }
 }

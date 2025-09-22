@@ -49,63 +49,6 @@ public class PedidoDAO {
         }
     }
 
-    // READ
-    public List<Pedido> listarTodos() {
-        List<Pedido> pedidos = new ArrayList<>();
-        String read = "SELECT * FROM PEDIDO";
-
-        try (PreparedStatement preparedStatement = getConnection().prepareStatement(read);
-             ResultSet resultado = preparedStatement.executeQuery()) {
-
-            while (resultado.next()) {
-                Pedido pedido = new Pedido(
-                        resultado.getInt("ID_PEDIDO"),
-                        resultado.getInt("QUANTIDADE"),
-                        resultado.getString("NOME_ITEM"),
-                        resultado.getDate("DATA_PEDIDO").toLocalDate(),
-                        resultado.getString("STATUS"),
-                        resultado.getInt("ID_FUNCIONARIO"),
-                        resultado.getInt("ID_FORNECEDOR")
-                );
-
-                pedidos.add(pedido);
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e.getMessage());
-        }
-
-        return pedidos;
-    }
-
-
-    public Pedido listarUm(Pedido pedido) {
-        Pedido resultado = null;
-
-        String sqlQuery = "SELECT * FROM PEDIDO WHERE ID_PEDIDO=?";
-
-        try (PreparedStatement preparedStatement = getConnection().prepareStatement(sqlQuery)) {
-
-            preparedStatement.setInt(1, pedido.getIdDoPedido());
-            ResultSet result = preparedStatement.executeQuery();
-
-            while (result.next()) {
-                resultado = new Pedido(result.getInt("ID_PEDIDO"),
-                        result.getInt("QUANTIDADE"),
-                        result.getString("NOME_ITEM"),
-                        result.getDate("DATA_PEDIDO").toLocalDate(),
-                        result.getString("STATUS"),
-                        result.getInt("ID_FUNCIONARIO"),
-                        result.getInt("ID_FORNECEDOR"));
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e.getMessage());
-        }
-
-        return resultado;
-    }
-
     // UPDATE
     public String atualizar(Pedido pedido) {
         String update = "UPDATE PEDIDO SET QUANTIDADE=?, NOME_ITEM=?, DATA_PEDIDO=?, STATUS=?, ID_FUNCIONARIO=?,ID_FORNECEDOR=? WHERE ID_PEDIDO=?";
@@ -146,5 +89,60 @@ public class PedidoDAO {
         } catch (SQLException e) {
             return e.getMessage();
         }
+    }
+
+    public Pedido listarUm(Pedido pedido) {
+        Pedido resultado = null;
+
+        String sqlQuery = "SELECT * FROM PEDIDO WHERE ID_PEDIDO=?";
+
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(sqlQuery)) {
+
+            preparedStatement.setInt(1, pedido.getIdDoPedido());
+            ResultSet result = preparedStatement.executeQuery();
+
+            while (result.next()) {
+                resultado = new Pedido(result.getInt("ID_PEDIDO"),
+                        result.getInt("QUANTIDADE"),
+                        result.getString("NOME_ITEM"),
+                        result.getDate("DATA_PEDIDO").toLocalDate(),
+                        result.getString("STATUS"),
+                        result.getInt("ID_FUNCIONARIO"),
+                        result.getInt("ID_FORNECEDOR"));
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+        return resultado;
+    }
+
+    public List<Pedido> listarTodos() {
+        List<Pedido> pedidos = new ArrayList<>();
+        String read = "SELECT * FROM PEDIDO";
+
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(read);
+             ResultSet resultado = preparedStatement.executeQuery()) {
+
+            while (resultado.next()) {
+                Pedido pedido = new Pedido(
+                        resultado.getInt("ID_PEDIDO"),
+                        resultado.getInt("QUANTIDADE"),
+                        resultado.getString("NOME_ITEM"),
+                        resultado.getDate("DATA_PEDIDO").toLocalDate(),
+                        resultado.getString("STATUS"),
+                        resultado.getInt("ID_FUNCIONARIO"),
+                        resultado.getInt("ID_FORNECEDOR")
+                );
+
+                pedidos.add(pedido);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+        return pedidos;
     }
 }

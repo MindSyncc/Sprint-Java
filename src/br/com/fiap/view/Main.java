@@ -13,6 +13,8 @@
 
     public class Main {
         public static void main(String[] args) {
+
+
             FuncionarioController funcionarioController = new FuncionarioController();
 
             // Criação do controlador de movimentação, pedido e insumo para as operações dos funcionários.
@@ -27,7 +29,7 @@
 
             try {
                 // Atribuição dos valores do banco às listas
-                movimentacoes = movimentacaoController.listarTodos();
+                movimentacoes = movimentacaoController.listarTodasMovimentacoes();
                 pedidos = pedidoController.listarTodosPedidos();
                 insumos = insumoController.listarTodosInsumos();
 
@@ -41,15 +43,40 @@
 
 
             while (true) {
-                int escolha = Integer.parseInt(JOptionPane.showInputDialog(null, "Bem-vindo ao Sistema de Gerenciamento! \nPor favor, selecione uma opção \n\n(1) Cadastrar \n(2) Login \n(3) Sair do sistema", "Menu inicial", JOptionPane.INFORMATION_MESSAGE));
+                int escolha = Integer.parseInt(JOptionPane.showInputDialog(
+                        null,
+                        """
+                        Bem-vindo ao Sistema de Gerenciamento da MindSync!
+                
+                        Este software foi desenvolvido com o propósito de simular o funcionamento
+                        da cadeia de suprimentos em um laboratório. O programa contempla diferentes
+                        níveis de acesso, cada um correspondendo a atribuições específicas no contexto organizacional,
+                        buscando representar como a gestão de recursos poderia ser estruturada
+                        dentro de um ambiente laboratorial.
+                
+                        • Almoxarife → responsável pelo controle físico dos insumos. (Login: admin1 | Senha: admin)
+                        • Analista Local → encarregado de registrar pedidos e acompanhar movimentações. (Login: admin2 | Senha: admin)
+                        • Analista Corporativo → exerce uma visão mais ampla, monitorando o estado geral das unidades. (Login: admin3 | Senha: admin)
+                
+                        Para acessar, selecione uma opção e crie seu cadastro ou entre com as credenciais acima e explore as funcionalidades.
+                        
+                        (1) Cadastrar
+                        (2) Login
+                        (3) Sair do sistema
+                        """,
+                        "Apresentação do Sistema",
+                        JOptionPane.INFORMATION_MESSAGE
+                ));
 
                 switch (escolha) {
                     case 1: // Cadastro
                         try {
-                            // Preparar uma instância do FuncionárioFactory e para cada ocasião você terá perguntas específicas para cada classe que herda de funcionário
-                            // Mudança na classe Main
-
-                            int tipoCadastro = Integer.parseInt(JOptionPane.showInputDialog(null, "Escolha o tipo de funcionário a ser cadastrado \n\n(1) Almoxarife \n(2) Analista Local \n(3) Analista Corporativo", "Seleção do Cargo para Cadastro", JOptionPane.INFORMATION_MESSAGE));
+                            int tipoCadastro = Integer.parseInt(JOptionPane.showInputDialog(null, """
+                            Escolha o DÍGITO do tipo de funcionário a ser cadastrado: 
+                            (1) Almoxarife
+                            (2) Analista Local
+                            (3) Analista Corporativo"""
+                            , "Seleção do Cargo para Cadastro", JOptionPane.INFORMATION_MESSAGE));
 
                             // Objeto funcionario que recebe um funcionário já criado de FuncionarioFactory
                             Funcionario funcionario = FuncionarioFactory.criarFuncionario(tipoCadastro);
@@ -68,7 +95,17 @@
                         try {
                             boolean autenticado = false;
 
-                            int tipoLogin = Integer.parseInt(JOptionPane.showInputDialog(null, "Escolha o tipo de funcionário \n\n(1) Almoxarife \n(2) Analista Local \n(3) Analista Corporativo", "Seleção do Cargo para Login", JOptionPane.INFORMATION_MESSAGE));
+                            int tipoLogin = Integer.parseInt(JOptionPane.showInputDialog(null, """
+                            Dados de login para acesso direto
+                            
+                            Almoxarife → (Login: admin1 | Senha: admin)
+                            Analista Local → (Login: admin2 | Senha: admin)
+                            Analista Corporativo → (Login: admin3 | Senha: admin)
+
+                            Escolha o DÍGITO do tipo de funcionário a ser cadastrado:
+                            (1) Almoxarife
+                            (2) Analista Local
+                            (3) Analista Corporativo""", "Seleção do Cargo para Login", JOptionPane.INFORMATION_MESSAGE));
 
                             String nomeLogin = JOptionPane.showInputDialog("Digite o nome");
                             String senhaLogin = JOptionPane.showInputDialog("Digite a senha");
@@ -110,7 +147,7 @@
                                                     Movimentacao movimentacaoSaida = new Movimentacao("Transferência", "Saída", 1, Integer.toString(almoxarifeLogado.getIdFuncionario()));
 
                                                     // Insere a movimentação no banco
-                                                    movimentacaoController.inserir(movimentacaoSaida);
+                                                    movimentacaoController.inserirMovimentacao(movimentacaoSaida);
                                                     movimentacoes.add(movimentacaoSaida);
 
                                                     System.out.println("Lista de insumos" + "\n" + insumos);
@@ -127,7 +164,7 @@
                                                     Movimentacao movimentacaoEntrada = new Movimentacao("Reabastecimento", "Entrada", 1, Integer.toString(almoxarifeLogado.getIdFuncionario()));
 
                                                     // Insere a movimentação no banco
-                                                    movimentacaoController.inserir(movimentacaoEntrada);
+                                                    movimentacaoController.inserirMovimentacao(movimentacaoEntrada);
                                                     movimentacoes.add(movimentacaoEntrada);
 
                                                     System.out.println("Lista de insumos" + "\n" + insumos);
@@ -172,7 +209,7 @@
                                                         Movimentacao movimentacaoPedido = new Movimentacao("Reabastecimento", "Entrada", pedido.getQtdItem(), Integer.toString(pedido.getIdFuncionario()));
 
                                                         // Insere a movimentação no banco
-                                                        movimentacaoController.inserir(movimentacaoPedido);
+                                                        movimentacaoController.inserirMovimentacao(movimentacaoPedido);
                                                         movimentacoes.add(movimentacaoPedido);
 
                                                         System.out.println("Lista de pedidos" + "\n" + pedidos);

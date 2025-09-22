@@ -174,13 +174,8 @@ public class Almoxarife extends Funcionario {
 
             int quantidade = Integer.parseInt(JOptionPane.showInputDialog("Digite a quantidade recebida"));
 
-            // Registro de categoria
-            boolean registrarCategoriaDoInsumo = JOptionPane.showConfirmDialog(null, "Gostaria de detalhar a categoria do insumo recebido?", "ADICIONAR CATEGORIA DO INSUMO", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
-
             CategoriaInsumo categoriaInsumo = null;
-            if (registrarCategoriaDoInsumo) {
-                categoriaInsumo = registrarCategoria(); // aqui já retornaria a categoria criada
-            }
+            categoriaInsumo = registrarCategoria(); // retorna uma categoria existente ou cria uma nova
 
             // gera um QRCode para o insumo recebido
             String qrCode = gerarQRCodeUUID();
@@ -257,13 +252,8 @@ public class Almoxarife extends Funcionario {
 
             int quantidade = Integer.parseInt(JOptionPane.showInputDialog("Digite a quantidade recebida"));
 
-            // Registro de categoria
-            boolean registrarCategoriaDoInsumo = JOptionPane.showConfirmDialog(null, "Gostaria de detalhar a categoria do insumo recebido?", "ADICIONAR CATEGORIA DO INSUMO", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
-
             CategoriaInsumo categoriaInsumo = null;
-            if (registrarCategoriaDoInsumo) {
-                categoriaInsumo = registrarCategoria(); // aqui já retornaria a categoria criada
-            }
+            categoriaInsumo = registrarCategoria(); // retorna a categoria existente ou cria uma nova.
 
             // gera um QRCode para o insumo recebido
             String qrCode = gerarQRCodeUUID();

@@ -45,29 +45,46 @@ public class AnalistaLocal extends Funcionario {
     }
 
     public Pedido realizarPedidoDeInsumo() {
-
         Pedido pedido = null;
 
-        JOptionPane.showMessageDialog(null, "Para ordenar um novo pedido é necessário que preencha algumas informações relevantes",
+        JOptionPane.showMessageDialog(null,
+                "Para ordenar um novo pedido é necessário que preencha algumas informações relevantes",
                 "PREENCHIMENTO DE DADOS", JOptionPane.WARNING_MESSAGE);
 
-        // Informações do Pedido
         try {
-            InsumoController insumoController = new InsumoController(); // Inicia o controlador de Insumo
+            // Controlador de insumos para verificar os insumos do sistema
+            InsumoController insumoController = new InsumoController();
             List<Insumo> listaDeInsumos = insumoController.listarTodosInsumos();
 
-            // Monta as opções para o JOptionPane que exibe a lista de insumos
+            // Monta a lista de insumos
             String insumos = "";
-            int index = 0;
+            int index = 1;
             for (Insumo insumo : listaDeInsumos) {
                 insumos += index + " - " + insumo.getNome() + "\n";
                 index++;
             }
 
+            // Pergunta o nome do item
+            int escolhaInsumo = Integer.parseInt(JOptionPane.showInputDialog("Insira o DÍGITO do item que será pedido: \n\n" + insumos));
+
+            if (escolhaInsumo < 1 || escolhaInsumo > listaDeInsumos.size()) {
+                JOptionPane.showMessageDialog(null,
+                        "Opção inválida! O insumo selecionado não existe.",
+                        "INSUMO INEXISTENTE", JOptionPane.ERROR_MESSAGE);
+                return null;
+            }
+
+            // recupera o insumo escolhido
+            Insumo insumoSelecionado = listaDeInsumos.get(escolhaInsumo - 1); // diminui um pois a lista de insumos é zero-indexada nossas opções começaram pelo 1
+
+            // se o item existir, procede com a criação do pedido
+            int quantidadeItem = Integer.parseInt(JOptionPane.showInputDialog("Digite a quantidade que será pedida: "));
+            String statusPedido = "Pendente";
+            LocalDate dataDoPedido = LocalDate.now();
+
             FornecedorController fornecedorController = new FornecedorController();
             List<Fornecedor> listaDeFornecedores = fornecedorController.listarTodosFornecedores();
 
-            // Monta as opções para o JOptionPane que exibe a lista de fornecedores
             String fornecedores = "";
             int indexF = 1;
             for (Fornecedor fornecedor : listaDeFornecedores) {
@@ -75,32 +92,23 @@ public class AnalistaLocal extends Funcionario {
                 indexF++;
             }
 
-            // perguntas para o usuário
-            String nomeItem = JOptionPane.showInputDialog("Digite o nome do item que será pedido: \n\n" + insumos);
-            int quantidadeItem = Integer.parseInt(JOptionPane.showInputDialog("Digite a quantidade que será pedida: "));
-            String statusPedido = "Pendente";
-            LocalDate dataDoPedido = LocalDate.now();
-            int idFornecedor = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID do fornecedor: \n\n Fornecedores disponíveis \n" + fornecedores));
+            int idFornecedor = Integer.parseInt(JOptionPane.showInputDialog("Insira o DÍGITO referente ao fornecedor que deseja selecionar: \n\n Fornecedores disponíveis \n" + fornecedores));
 
             // Cria o objeto pedido
-            pedido = new Pedido(quantidadeItem, nomeItem, dataDoPedido, statusPedido, getIdFuncionario(), idFornecedor);
+            pedido = new Pedido(quantidadeItem, insumoSelecionado.getNome(), dataDoPedido, statusPedido, getIdFuncionario(), idFornecedor);
 
-            // Armazena o pedido no banco de dados
+            // Insere no banco
             PedidoController pedidoController = new PedidoController();
             String resultadoInserir = pedidoController.inserirPedido(pedido);
             System.out.println(resultadoInserir);
 
-            // Recupera o ID do pedido após inserção no banco para criação do vínculo entre Insumo e Pedido
+            // Recupera IDs
             int idPedido = pedido.getIdDoPedido();
-            
-            // Recupera o ID do insumo no banco pelo nome do insumo para criação do vínculo entre Insumo e Pedido
-            int idInsumo = insumoController.listarUmInsumo("nome", nomeItem).getIdInsumo();
+            int idInsumo = insumoSelecionado.getIdInsumo();
 
-            // Criação do controlador e objeto de PedidoInsumo para vínculo com Insumo
+            // Cria vínculo PedidoInsumo
             PedidoInsumoController pedidoInsumoController = new PedidoInsumoController();
             PedidoInsumo pedidoInsumo = new PedidoInsumo(idPedido, idInsumo, quantidadeItem);
-
-            // Cria o registro de PedidoInsumo no banco (vínculo entre Pedido e Insumo)
             pedidoInsumoController.inserirPedidoInsumo(pedidoInsumo);
 
         } catch (SQLException e) {
@@ -111,6 +119,7 @@ public class AnalistaLocal extends Funcionario {
 
         return pedido;
     }
+
 
     public void verificarMovimentacoes(List<Movimentacao> listaDeMovimentacoes) {
         String string = "LISTA DE MOVIMENTAÇÕES\n";

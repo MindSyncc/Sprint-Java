@@ -85,7 +85,7 @@ public class InsumoDAO {
         }
     }
 
-    public Insumo listarUm(String QRCode) {
+        public Insumo listarUm(String QRCode) {
         Insumo insumo = null;
 
         String sql = "SELECT * FROM INSUMO WHERE codigo_de_barras = ?";

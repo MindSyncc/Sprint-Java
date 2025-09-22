@@ -132,6 +132,11 @@ public class Fornecedor {
 
     // métodos
     public void atenderPedido(Pedido pedido) {
+
+        if (pedido == null) {
+            return;
+        }
+
         try {
             // 1. Atualiza o status do pedido
             PedidoController pedidoController = new PedidoController();

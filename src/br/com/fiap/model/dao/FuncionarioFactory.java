@@ -24,8 +24,14 @@ public class FuncionarioFactory {
         LocalDate dataInicio = LocalDate.now(); // inicia hoje
         String turno = JOptionPane.showInputDialog("Digite seu turno (Manhã, Tarde ou Noite)");
         String cargo = JOptionPane.showInputDialog("Digite seu cargo");
-        String permissao = JOptionPane.showInputDialog("Digite sua permissão (Analista Local, Analista Corporativo, Almoxarife, Colaborador Interno)");
 
+        String permissao = JOptionPane.showInputDialog("Selecione o dígito da sua permissão \n\n (1) Analista Local \n(2) Analista Corporativo \n(3) Almoxarife");
+        switch (permissao) {
+            case "1": permissao = "Analista Local"; break;
+            case "2": permissao = "Analista Corporativo"; break;
+            case "3": permissao = "Almoxarife"; break;
+            default: JOptionPane.showMessageDialog(null, "Número de permissão inválido! Digite entre 1 e 4.");
+        }
         // Endereço
         String rua = JOptionPane.showInputDialog("Digite a rua");
         String numero = JOptionPane.showInputDialog("Digite o número");
@@ -33,7 +39,7 @@ public class FuncionarioFactory {
         String cidade = JOptionPane.showInputDialog("Digite a cidade");
         String estado = JOptionPane.showInputDialog("Digite o estado (2 caracteres)");
         String cep = JOptionPane.showInputDialog("Digite o CEP (8 ou 9 caracteres)");
-        int idUnidade = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID da unidade"));
+        int idUnidade = 1;
 
         switch (tipoDeFuncionario) {
             case 1:

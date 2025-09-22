@@ -59,6 +59,46 @@ public class CategoriaInsumoDAO {
         }
     }
 
+    public String deletar(CategoriaInsumo categoriaInsumo) {
+        String sqlQuery = "DELETE FROM CATEGORIA WHERE ID_CATEGORIA=?";
+
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(sqlQuery)) {
+
+            preparedStatement.setInt(1, categoriaInsumo.getIdCategoria());
+
+            if (preparedStatement.executeUpdate() > 0) {
+                return "Registro de categoria removido com sucesso!";
+            }
+
+            return "Não foi possível remover o registro";
+
+        } catch (SQLException e) {
+            return "Erro de SQL: " + e.getMessage();
+        }
+    }
+
+    public CategoriaInsumo listarUm(CategoriaInsumo categoriaInsumo) {
+        String sqlQuery = "SELECT * FROM CATEGORIA WHERE ID_CATEGORIA=?";
+
+        try (PreparedStatement preparedStatement = getConnection().prepareStatement(sqlQuery)) {
+
+            preparedStatement.setInt(1, categoriaInsumo.getIdCategoria());
+            ResultSet result = preparedStatement.executeQuery();
+
+            while (result.next()) {
+                categoriaInsumo = new CategoriaInsumo(result.getInt("ID_CATEGORIA"),
+                        result.getString("TIPOCATEGORIA"));
+
+                categoriaInsumo.exibirInformacoesDaCategoria();
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+        return categoriaInsumo;
+    }
+
     public List<CategoriaInsumo> listarTodos() {
         List<CategoriaInsumo> categorias = new ArrayList<>();
         String sqlQuery = "SELECT * FROM CATEGORIA";
@@ -78,45 +118,5 @@ public class CategoriaInsumoDAO {
         }
 
         return categorias;
-    }
-
-    public CategoriaInsumo listarUm(CategoriaInsumo categoriaInsumo) {
-        String sqlQuery = "SELECT * FROM CATEGORIA WHERE ID_CATEGORIA=?";
-
-        try (PreparedStatement preparedStatement = getConnection().prepareStatement(sqlQuery)) {
-
-            preparedStatement.setInt(1, categoriaInsumo.getIdCategoria());
-            ResultSet result = preparedStatement.executeQuery();
-
-            while (result.next()) {
-                categoriaInsumo = new CategoriaInsumo(result.getInt("ID_CATEGORIA"),
-                        result.getString("TIPOCATEGORIA"));
-
-                categoriaInsumo.exibirInformacoesDoEstoque();
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e.getMessage());
-        }
-
-        return categoriaInsumo;
-    }
-
-    public String deletar(CategoriaInsumo categoriaInsumo) {
-        String sqlQuery = "DELETE FROM CATEGORIA WHERE ID_CATEGORIA=?";
-
-        try (PreparedStatement preparedStatement = getConnection().prepareStatement(sqlQuery)) {
-
-            preparedStatement.setInt(1, categoriaInsumo.getIdCategoria());
-
-            if (preparedStatement.executeUpdate() > 0) {
-                return "Registro de categoria removido com sucesso!";
-            }
-
-            return "Não foi possível remover o registro";
-
-        } catch (SQLException e) {
-            return "Erro de SQL: " + e.getMessage();
-        }
     }
 }

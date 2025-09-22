@@ -32,14 +32,15 @@ public class CategoriaInsumoController {
         return resultado;
     }
 
-    public List<CategoriaInsumo> listarTodasCategorias() {
+    public String deletarCategoria(CategoriaInsumo categoriaInsumo) {
         Connection connection = ConnectionFactory.abrirConexao();
         categoriaInsumoDAO = new CategoriaInsumoDAO(connection);
 
-        List<CategoriaInsumo> categorias = categoriaInsumoDAO.listarTodos();
+        String resultado = categoriaInsumoDAO.deletar(categoriaInsumo);
 
         ConnectionFactory.fecharConexao(connection);
-        return categorias;
+
+        return resultado;
     }
 
     public CategoriaInsumo listarUmaCategoria(CategoriaInsumo categoriaInsumo) {
@@ -53,14 +54,13 @@ public class CategoriaInsumoController {
         return categoriaInsumoDB;
     }
 
-    public String deletarCategoria(CategoriaInsumo categoriaInsumo) {
+    public List<CategoriaInsumo> listarTodasCategorias() {
         Connection connection = ConnectionFactory.abrirConexao();
         categoriaInsumoDAO = new CategoriaInsumoDAO(connection);
 
-        String resultado = categoriaInsumoDAO.deletar(categoriaInsumo);
+        List<CategoriaInsumo> categorias = categoriaInsumoDAO.listarTodos();
 
         ConnectionFactory.fecharConexao(connection);
-
-        return resultado;
+        return categorias;
     }
 }

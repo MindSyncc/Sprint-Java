@@ -38,7 +38,7 @@ public class CategoriaInsumo {
         this.tipoCategoria = tipoCategoria;
     }
 
-    public void exibirInformacoesDoEstoque() {
+    public void exibirInformacoesDaCategoria() {
         String info = String.format(
                 """
                 ==== Informações da Categoria ====

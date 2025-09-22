@@ -31,13 +31,15 @@ public class EstoqueController {
         return resultado;
     }
 
-    public void listarTodosEstoques() {
+    public String deletarEstoque(Estoque estoque) {
         Connection connection = ConnectionFactory.abrirConexao();
         estoqueDAO = new EstoqueDAO(connection);
 
-        estoqueDAO.listarTodos();
+        String resultado = estoqueDAO.deletar(estoque);
 
         ConnectionFactory.fecharConexao(connection);
+
+        return resultado;
     }
 
     public void listarUmEstoque(Estoque estoque) {
@@ -49,14 +51,12 @@ public class EstoqueController {
         ConnectionFactory.fecharConexao(connection);
     }
 
-    public String deletarEstoque(Estoque estoque) {
+    public void listarTodosEstoques() {
         Connection connection = ConnectionFactory.abrirConexao();
         estoqueDAO = new EstoqueDAO(connection);
 
-        String resultado = estoqueDAO.deletar(estoque);
+        estoqueDAO.listarTodos();
 
         ConnectionFactory.fecharConexao(connection);
-
-        return resultado;
     }
 }

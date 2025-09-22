@@ -79,34 +79,23 @@ public class MovimentacaoDAO {
         }
     }
 
-    // 🔹 Agora retorna lista
-    public List<Movimentacao> listarTodos() {
-        String sqlQuery = "SELECT * FROM MOVIMENTACOES";
-        List<Movimentacao> movimentacoes = new ArrayList<>();
-
+    public String deletar(int idMovimentacao) {
+        String sqlQuery = "DELETE FROM MOVIMENTACOES WHERE ID_MOVIMENTACOES=?";
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(sqlQuery)) {
-            ResultSet result = preparedStatement.executeQuery();
 
-            while (result.next()) {
-                Movimentacao movimentacao = new Movimentacao(
-                        result.getString("MOTIVO"),
-                        result.getString("TIPO_MOVIMENTACAO"),
-                        result.getInt("QUANTIDADE"),
-                        result.getString("ID_FUNCIONARIO")
-                );
-                movimentacao.setIdMovimentacao(result.getInt("ID_MOVIMENTACOES"));
+            preparedStatement.setInt(1, idMovimentacao);
 
-                movimentacoes.add(movimentacao);
+            if (preparedStatement.executeUpdate() > 0) {
+                return "Movimentação removida com sucesso!";
             }
 
-        } catch (SQLException e) {
-            throw new RuntimeException("Erro ao listar movimentações: " + e.getMessage());
-        }
+            return "Nenhuma movimentação encontrada com esse ID.";
 
-        return movimentacoes;
+        } catch (SQLException e) {
+            return "Erro de SQL: " + e.getMessage();
+        }
     }
 
-    // 🔹 Agora retorna um objeto ou null
     public Movimentacao listarUm(int idMovimentacao) {
         String sqlQuery = "SELECT * FROM MOVIMENTACOES WHERE ID_MOVIMENTACOES=?";
         Movimentacao movimentacao = null;
@@ -133,20 +122,29 @@ public class MovimentacaoDAO {
         return movimentacao;
     }
 
-    public String deletar(int idMovimentacao) {
-        String sqlQuery = "DELETE FROM MOVIMENTACOES WHERE ID_MOVIMENTACOES=?";
+    public List<Movimentacao> listarTodos() {
+        String sqlQuery = "SELECT * FROM MOVIMENTACOES";
+        List<Movimentacao> movimentacoes = new ArrayList<>();
+
         try (PreparedStatement preparedStatement = getConnection().prepareStatement(sqlQuery)) {
+            ResultSet result = preparedStatement.executeQuery();
 
-            preparedStatement.setInt(1, idMovimentacao);
+            while (result.next()) {
+                Movimentacao movimentacao = new Movimentacao(
+                        result.getString("MOTIVO"),
+                        result.getString("TIPO_MOVIMENTACAO"),
+                        result.getInt("QUANTIDADE"),
+                        result.getString("ID_FUNCIONARIO")
+                );
+                movimentacao.setIdMovimentacao(result.getInt("ID_MOVIMENTACOES"));
 
-            if (preparedStatement.executeUpdate() > 0) {
-                return "Movimentação removida com sucesso!";
+                movimentacoes.add(movimentacao);
             }
 
-            return "Nenhuma movimentação encontrada com esse ID.";
-
         } catch (SQLException e) {
-            return "Erro de SQL: " + e.getMessage();
+            throw new RuntimeException("Erro ao listar movimentações: " + e.getMessage());
         }
+
+        return movimentacoes;
     }
 }
